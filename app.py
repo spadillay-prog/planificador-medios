@@ -5,7 +5,7 @@ import io
 import os
 
 st.set_page_config(
-    page_title="Planificador de Medios Chile & Exportador JPG",
+    page_title="Planificador de Medios Chile / Vía pública",
     page_icon="🎯",
     layout="wide"
 )
