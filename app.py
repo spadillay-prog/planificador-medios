@@ -10,15 +10,15 @@ st.set_page_config(
     layout="wide"
 )
 
-# Carga garantizada de tipografías del sistema con soporte Unicode completo
+# Carga directa de la fuente DejaVuSans instalada por packages.txt
 def obtener_fuente(size=24, bold=False):
-    candidatos = [
+    rutas_fuentes = [
         "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf" if bold else "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
         "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf" if bold else "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",
         "/usr/share/fonts/truetype/freefont/FreeSansBold.ttf" if bold else "/usr/share/fonts/truetype/freefont/FreeSans.ttf",
         "arialbd.ttf" if bold else "arial.ttf"
     ]
-    for ruta in candidatos:
+    for ruta in rutas_fuentes:
         if os.path.exists(ruta):
             try:
                 return ImageFont.truetype(ruta, size)
@@ -27,7 +27,7 @@ def obtener_fuente(size=24, bold=False):
     try:
         return ImageFont.truetype("DejaVuSans.ttf", size)
     except Exception:
-        return ImageFont.load_default(size=size) if hasattr(ImageFont, "load_default") else ImageFont.load_default()
+        return ImageFont.load_default()
 
 COLORES_BASE = {
     "Amarillo (Smart Fit)": "#FFB800",
@@ -56,7 +56,7 @@ FORMATOS = {
 
 # --- CONFIGURACIÓN DE INTERFAZ ---
 st.sidebar.header("🎨 Diseño de la Lámina")
-modo_fondo = st.sidebar.radio("Estilo de Fondo:", ["Fondo Claro (Blanco)", "Fondo Oscuro"])
+modo_fondo = st.sidebar.radio("Estilo de Fondo:", ["Fondo Oscuro", "Fondo Claro (Blanco)"])
 color_acento_nombre = st.sidebar.selectbox("Color de Acento / Cliente:", list(COLORES_BASE.keys()))
 color_acento = COLORES_BASE[color_acento_nombre]
 
@@ -114,24 +114,23 @@ tabla_esc = [
     {"esc": "Optimista", "rate": info_f["o"], "dia": universo * info_f["o"] * factor_escala, "tot": universo * info_f["o"] * factor_escala * dias_campana}
 ]
 
-# --- RENDERIZADOR PIL EN ALTA RESOLUCIÓN Y TIPOGRAFÍAS GRANDES ---
+# --- RENDERIZADOR PIL EN ALTA RESOLUCIÓN ---
 def render_lamina_jpg():
     W, H = 1920, 1080
     im = Image.new("RGB", (W, H), c_bg)
     draw = ImageDraw.Draw(im)
 
-    # Tipografías con proporciones idénticas a la lámina de referencia
-    f_title = obtener_fuente(48, bold=True)
-    f_sub = obtener_fuente(26, bold=False)
-    f_num_big = obtener_fuente(44, bold=True)
+    f_title = obtener_fuente(46, bold=True)
+    f_sub = obtener_fuente(24, bold=False)
+    f_num_big = obtener_fuente(42, bold=True)
     f_label = obtener_fuente(22, bold=False)
-    f_table_head = obtener_fuente(21, bold=True)
-    f_table_row = obtener_fuente(23, bold=False)
+    f_table_head = obtener_fuente(20, bold=True)
+    f_table_row = obtener_fuente(22, bold=False)
     f_comment_title = obtener_fuente(22, bold=True)
-    f_comment_body = obtener_fuente(21, bold=False)
+    f_comment_body = obtener_fuente(20, bold=False)
     f_footer = obtener_fuente(18, bold=False)
 
-    # 1. Cabecera (usando guion estándar ASCII " - " compatible)
+    # 1. Cabecera (guion ASCII estándar)
     title_text = f"{plaza_sel.upper()} - {formato_sel.upper()}"
     subtitle_text = f"{cant_unidades} {info_f['unidad']} · {dias_campana} días"
     
@@ -166,7 +165,7 @@ def render_lamina_jpg():
     draw.text((x_offset + card_w + 55, 165), f"Costo por {info_f['unidad'][:-1]} / mes", fill=c_text_muted, font=f_label)
     draw.text((x_offset + card_w + 55, 202), f"${costo_unitario:,.0f}".replace(",", "."), fill=c_text_primary, font=f_num_big)
 
-    # Tarjeta 3: Impactos Totales (Destacada)
+    # Tarjeta 3: Impactos Totales
     draw.rounded_rectangle([(x_offset + card_w*2 + 60, 145), (x_offset + card_w*3 + 60, 145 + card_h)], radius=12, fill=c_card_highlight_bg)
     draw.text((x_offset + card_w*2 + 85, 165), f"Impactos {dias_campana} días (caso medio)", fill=c_card_highlight_text, font=f_label)
     draw.text((x_offset + card_w*2 + 85, 202), f"{imp_totales_m:,.0f}".replace(",", "."), fill=c_card_highlight_text, font=f_num_big)
@@ -186,7 +185,7 @@ def render_lamina_jpg():
         c_fill = c_accent if is_medio else c_text_primary
         cpm_val = (inversion_total / item["tot"] * 1000) if item["tot"] > 0 else 0
         
-        draw.text((x_offset + 20, row_y), item["esc"], fill=c_fill, font=obtener_fuente(23, bold=is_medio))
+        draw.text((x_offset + 20, row_y), item["esc"], fill=c_fill, font=obtener_fuente(22, bold=is_medio))
         draw.text((x_offset + 300, row_y), f"{int(item['rate']*100)}%", fill=c_text_primary, font=f_table_row)
         draw.text((x_offset + 520, row_y), f"{int(item['dia']):,}".replace(",", "."), fill=c_text_primary, font=f_table_row)
         draw.text((x_offset + 750, row_y), f"{int(item['tot']):,}".replace(",", "."), fill=c_text_primary, font=f_table_row)
