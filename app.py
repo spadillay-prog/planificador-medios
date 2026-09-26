@@ -775,13 +775,10 @@ FORMATOS_METRO = {
     }
 }
 
-# --- 7. BARRA LATERAL: BRANDING Y CONFIGURACIÓN ---
+# --- 7. BARRA LATERAL: LOGO MADCOM LIMPIO Y CONFIGURACIÓN ---
 st.sidebar.markdown("### 🏢 Agencia")
 logo_preview = generar_logo_madcom(fondo_oscuro=True)
 st.sidebar.image(logo_preview, width=170)
-
-nombre_agencia = st.sidebar.text_input("Nombre de la Agencia:", value="MADCOM")
-logo_custom_file = st.sidebar.file_uploader("Reemplazar Logo (opcional):", type=["png", "jpg", "jpeg"])
 
 st.sidebar.markdown("---")
 st.sidebar.header("🎨 Diseño de la Lámina")
@@ -849,13 +846,20 @@ else:
         if not puntos_comuna:
             puntos_comuna = ["Toda la comuna (General)"]
             
-        pto_sel = st.sidebar.selectbox("4. Georreferencia / Punto:", puntos_comuna)
+        # Incorporar la opción personalizada de georreferencia
+        puntos_disponibles = puntos_comuna + ["➕ Otro punto específico (Personalizado)"]
+        pto_sel = st.sidebar.selectbox("4. Georreferencia / Punto:", puntos_disponibles)
         nombre_titulo_lamina = com_sel.split("/")[0].strip().upper()
         
         if pto_sel == "Toda la comuna (General)":
             universo_calculo = com_data["res"] + com_data["flot"]
             nombre_territorio = com_sel
             texto_estrategico_default = com_data.get("contexto", "Cobertura continua sobre residentes y población flotante.")
+        elif pto_sel == "➕ Otro punto específico (Personalizado)":
+            punto_custom_nombre = st.sidebar.text_input("Nombre del Punto / Intersección:", "Ej: Vicuña Mackenna con Departamental")
+            universo_calculo = st.sidebar.number_input("Flujo Activo Diario Estimado (Vehículos + Peatones):", min_value=5000, value=85000, step=5000)
+            nombre_territorio = f"{com_sel} - {punto_custom_nombre}"
+            texto_estrategico_default = f"Punto comercial y vial de alta afluencia con un flujo estimado de {universo_calculo:,.0f} personas al día.".replace(",", ".")
         else:
             universo_calculo = com_data["puntos"][pto_sel]["flujo"]
             nombre_territorio = f"{com_sel} - {pto_sel}"
@@ -916,7 +920,7 @@ if st.sidebar.button("🗑️ Limpiar Plan de Medios", use_container_width=True)
     st.session_state.plan_items = []
     st.rerun()
 
-# --- 8. RENDERIZADOR PIL CON LOGO MADCOM ROBUSTO ---
+# --- 8. RENDERIZADOR PIL CON LOGO MADCOM LIMPIO ---
 def render_lamina_jpg():
     W, H = 1920, 1080
     im = Image.new("RGB", (W, H), c_bg)
@@ -1066,16 +1070,11 @@ def render_lamina_jpg():
         line_y += 32
 
     # 7. Pie de Página y Branding MADCOM
-    agencia_txt = f" | Elaborado por: {nombre_agencia}" if nombre_agencia else ""
-    draw.text((60, 1005), f"Inversión mensual total: ${inversion_total:,.0f} CLP · Flota: {cant_unidades} unidades · Valores en CLP neto{agencia_txt}.".replace(",", "."), fill=c_text_muted, font=f_footer)
+    draw.text((60, 1005), f"Inversión mensual total: ${inversion_total:,.0f} CLP · Flota: {cant_unidades} unidades · Valores en CLP neto | Elaborado por MADCOM.".replace(",", "."), fill=c_text_muted, font=f_footer)
 
-    # Estampar el logo abajo a la derecha
+    # Estampar el logo MADCOM abajo a la derecha de la lámina
     try:
-        if logo_custom_file is not None:
-            logo_to_stamp = Image.open(logo_custom_file).convert("RGBA")
-        else:
-            logo_to_stamp = generar_logo_madcom(fondo_oscuro=(modo_fondo == "Fondo Oscuro"))
-            
+        logo_to_stamp = generar_logo_madcom(fondo_oscuro=(modo_fondo == "Fondo Oscuro"))
         logo_to_stamp.thumbnail((190, 48), Image.Resampling.LANCZOS)
         im.paste(logo_to_stamp, (W - 60 - logo_to_stamp.width, 995), logo_to_stamp)
     except Exception:
@@ -1172,7 +1171,7 @@ with tab2:
             lineas_resumen += f"  {idx}. **{item['Soporte']}** en {item['Ubicación']} | {item['Días']} días | Inversión: \({item['Inversión Neta']:,.0f} | Impactos: {item['Impactos Medio']:,} | CPM:\){int(round(item['CPM Medio'])):,}\n".replace(",", ".")
             
         texto_resumen = f"""**PROPUESTA DE MEDIOS INTEGRADA (MIX OOH & METRO)**
-**Agencia Responsable:** {nombre_agencia}
+**Agencia Responsable:** MADCOM
 **Inversión Total Neta:** ${total_inversion:,.0f} CLP
 **Impactos Brutos Totales (Escenario Medio):** {total_imp_m:,.0f} impactos
 **CPM Ponderado Global:** ${int(round(cpm_global_m)):,}.00 CLP
