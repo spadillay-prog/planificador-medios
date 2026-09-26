@@ -334,6 +334,7 @@ DATA_JERARQUICA = {
                     "contexto": "Polo corporativo y financiero de máxima afluencia flotante de la capital, ideal para campañas de cobertura y frecuencia masiva.",
                     "puntos": {
                         "Toda la comuna (General)": None,
+                        "Av. Presidente Kennedy / Parque Arauco (Eje Autopista)": {"flujo": 170000},
                         "Apoquindo con Manquehue (Apumanque)": {"flujo": 140000},
                         "El Golf / Sanhattan (Apoquindo con El Bosque)": {"flujo": 160000},
                         "Rotonda Atenas": {"flujo": 70000}
@@ -753,7 +754,7 @@ FORMATOS_OOH = {
     "Building Wrap (Edificio)": {
         "base": 1, "c": 0.25, "m": 0.30, "o": 0.35, "tipo": "Gran impacto edificio", "unidad": "edificios",
         "es_wrap": True,
-        "contexto": "Gigantografía de escala monumental sobre fachada de edificio (>400-500 m²), con visualización a larga distancia y cono visual abierto sobre avenidas estructurantes."
+        "contexto": "Gigantografía monumental de gran escala sobre fachada de edificio (>400-500 m²), con visibilidad a más de 400 metros de distancia y alta retención vehicular."
     },
     "Pantalla Digital (DOOH)": {"base": 1, "c": 0.20, "m": 0.25, "o": 0.30, "tipo": "Gran impacto LED", "unidad": "pantallas", "es_wrap": False},
     "Lunetas Buses": {"base": 30, "c": 0.20, "m": 0.25, "o": 0.30, "tipo": "Cobertura móvil", "unidad": "lunetas", "es_wrap": False},
@@ -874,13 +875,18 @@ else:
             texto_estrategico_default = com_data.get("contexto", "Cobertura continua sobre residentes y población flotante.")
         elif pto_sel == "➕ Otro punto específico (Personalizado)":
             punto_custom_nombre = st.sidebar.text_input("Nombre del Punto / Intersección:", "Ej: Vicuña Mackenna con Departamental")
-            universo_calculo = st.sidebar.number_input("Flujo Activo Diario Estimado (Vehículos + Peatones):", min_value=5000, value=85000, step=5000)
+            flujo_sugerido_comuna = int(round(((com_data["res"] + com_data["flot"]) * 0.30) / 5000) * 5000)
+            flujo_sugerido_comuna = max(10000, flujo_sugerido_comuna)
+            universo_calculo = st.sidebar.number_input("Flujo Activo Diario Estimado (Vehículos + Peatones):", min_value=5000, value=flujo_sugerido_comuna, step=5000)
             nombre_territorio = f"{com_sel} - {punto_custom_nombre}"
             texto_estrategico_default = f"Punto comercial y vial de alta afluencia con un flujo estimado de {universo_calculo:,.0f} personas al día.".replace(",", ".")
         else:
             universo_calculo = com_data["puntos"][pto_sel]["flujo"]
             nombre_territorio = f"{com_sel} - {pto_sel}"
-            texto_estrategico_default = f"Punto de alta concentración vial y comercial con un flujo auditado de {universo_calculo:,.0f} personas diarias.".replace(",", ".")
+            if "Kennedy" in pto_sel:
+                texto_estrategico_default = "Polo neurálgico de máxima plusvalía con cono visual despejado sobre Autopista Kennedy, alta fricción vehicular y flujo cautivo de Parque Arauco y Nueva Las Condes."
+            else:
+                texto_estrategico_default = f"Punto de alta concentración vial y comercial con un flujo auditado de {universo_calculo:,.0f} personas diarias.".replace(",", ".")
 
     formato_dict = FORMATOS_OOH
     formato_sel = st.sidebar.selectbox("Formato Publicitario:", list(formato_dict.keys()))
@@ -894,7 +900,10 @@ else:
         alto_wrap = col_h.number_input("Alto (metros):", min_value=5.0, max_value=80.0, value=25.0, step=1.0)
         superficie_wrap = ancho_wrap * alto_wrap
         st.sidebar.success(f"Superficie total: **{superficie_wrap:,.0f} m²** ({ancho_wrap:.0f}×{alto_wrap:.0f} m)")
-        texto_estrategico_default = f"Elemento monumental de {superficie_wrap:,.0f} m² sobre edificio ({ancho_wrap:.0f}×{alto_wrap:.0f}m), con cono de visibilidad a más de 400 metros de distancia sobre arteria principal."
+        if "Kennedy" in nombre_territorio:
+            texto_estrategico_default = f"Building Wrap monumental de {superficie_wrap:,.0f} m² ({ancho_wrap:.0f}×{alto_wrap:.0f}m) en Autopista Kennedy frente a Parque Arauco, con visibilidad a más de 500 metros y alta retención en horas punta."
+        else:
+            texto_estrategico_default = f"Elemento monumental de {superficie_wrap:,.0f} m² sobre edificio ({ancho_wrap:.0f}×{alto_wrap:.0f}m), con cono de visibilidad a más de 400 metros de distancia sobre arteria principal."
 
 cant_unidades = st.sidebar.number_input(f"Cantidad de {info_f['unidad']}:", min_value=1, value=info_f["base"], step=1)
 dias_campana = st.sidebar.number_input("Días de Campaña:", min_value=1, value=30, step=1)
@@ -1119,7 +1128,7 @@ def render_lamina_jpg():
     try:
         logo_to_stamp = generar_logo_madcom(fondo_oscuro=(modo_fondo == "Fondo Oscuro"))
         logo_to_stamp.thumbnail((190, 48), Image.Resampling.LANCZOS)
-        im.paste(logo_to_stamp, (W - 60 - logo_to_stamp.width, 995), logo_to_stamp)
+        im.paste(logo_to_stamp, (W - 60 - logo_to_stamp.width, 1000), logo_to_stamp)
     except Exception:
         pass
 
@@ -1275,7 +1284,7 @@ def render_lamina_consolidada_jpg():
     try:
         logo_to_stamp = generar_logo_madcom(fondo_oscuro=(modo_fondo == "Fondo Oscuro"))
         logo_to_stamp.thumbnail((190, 48), Image.Resampling.LANCZOS)
-        im.paste(logo_to_stamp, (W - 60 - logo_to_stamp.width, 995), logo_to_stamp)
+        im.paste(logo_to_stamp, (W - 60 - logo_to_stamp.width, 1000), logo_to_stamp)
     except Exception:
         pass
 
