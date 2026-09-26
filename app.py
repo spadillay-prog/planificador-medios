@@ -3,6 +3,7 @@ import pandas as pd
 from PIL import Image, ImageDraw, ImageFont
 import io
 import os
+import base64
 
 st.set_page_config(
     page_title="Planificador de Medios Chile & Exportador JPG",
@@ -13,6 +14,57 @@ st.set_page_config(
 # Inicializar sesión para el Plan de Medios Multi-Formato (Carrito)
 if "plan_items" not in st.session_state:
     st.session_state.plan_items = []
+
+# --- LOGO MADCOM INTEGRADO POR DEFECTO (FONDO TRANSPARENTE) ---
+LOGO_MADCOM_WHITE_B64 = """
+iVBORw0KGgoAAAANSUhEUgAAAK4AAAB6CAYAAACZfS1jAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAFT0lEQVR4nO3df2hVZRzH8fdN
+3XR3N5fd3VbbrE1tM7W2qT/W/Zk4d81wDcfW1p/2T6dtTddq01Zram1rrZfVlm1qbWutm9W21rr/1tqm1rbWejttY3r3d/eD
+Xq6hL3Ivd+65e8+X93qfP87Z83yee8+599x73nsUDAAAAAAAAMy0EAAAMEN8gD/v7+8vhEAhBAAAAAAAAADA/188f553AACA
+mUAAAAAgwAkAAAAEOAEAAIAAJwAAAISy0A4AAHA80tPTM9jZ2VmZlpaWHQqFChsGBgYeBAAA85Genp4RCIVCI11dXRXHjh0b
+DgQCYU9PDwAAzDYKCwvDY2Nj+ebm5qN2dXUV2tvbhwEAYB4kOzs7K7m4uDgMAAAAAAAAADA/AgAAAAFOAAAAIMAJAAAAIT4A
+AADA/784AAAAgAAnAAAAEOAEAAAAE+IDAAAAAMCE+AAAAIAAJwAAAID4AAAAAADA+AAAAIBwBAAAAAAAAADA/AjgBAAAgAAnAA
+AAEOAEAAAAE+IAAAAAAMAEAAAAEOAEAAAAApwAAABAgBMAAAACnAAAAECAEwAAAAjwAQAAAABggvgAAAAA/39xAAAAAAFOAAAA
+IEA4AgAAAAAAAPNfDAAAAAgBAAAAgPgAAAAAAMD4AAAAAOEIAAAAAADA/BcDAAAAAgAAAAEOAAAAIMAJAAAAIT4AAAAAAMAE
+AAAACHACAAAAAc4AAAAgAAAAmAQBf77Pnz+/EAAAAAAAAAAAAAAAAMD/HwAAAAghfgAAAMDM9/T05EdHR8Pj4+Ph8fHx/EQg
+EAh5BwAAAAAAAAAAAH9/AAAAAAAAAADA5Pj4uPvkyZNuIBAItLS0DK1ZsyZcXl5+uKKiojw9PT0rFArl5eXl5aWnp2fNnz//
+gdbW1vKysrKDLS0tQ21tbf3r168PrFixYjAQCIQHBgZKjx07NlReXn7Ue6Z/AAAAAJhxcnNz40ePHh2qqampqKurqx8bG3ND
+oVBBd3d3bXt7e0344MGD7h87dgzdqakpQ5lpaWnZ0dHRCm/A3b179/2LFi0aWb58eW8wGAz19vaOP/HEE+V1dXUVnZ2dld
+7jL3kHAAAAAAAAADDB3NzcuPPnz7ufOXvWzc7PdzOHh90bN264nZ2dY6mpqQWpqal/jI6O/jM6OvrP/Pnz/w4EAodHRkac
+QCg05l17bXR0dOzw4cPnmpqahjZs2PDIhg0b1i1ZsqQnLy9vTf78+Ws8H1tZWdmxUCiUf/bs2eHz58+fv3jx4rnHjh0bbWpq
+Otzd3V1x+fLl4YGBgdFZsBgAAAAAzF/6e3vrx4eG3IHBQXfs2jV3w2uvjS/dsKF4eHT0b1/PnpH0f/65Nz0z87e0lJS/x8bG
+/p6ampqalp5+fGR4+M+c7du35W/atG/p/fevy8jIWJuWlrbW8/l1KSkpqz1v52WkpaWlpaWlZT1YVJT79K5d+0NDQ797z/3d
+e71+7/H47Ozs/w0BAAAA4MRZsGDBmKenh8vLy0ee37Bhf//x4/94u3u/799ffrFw06bd/1RXX1pQU1N7sqKi4u81a9a8v2PH
+jnWpqamrPB9bUV5e/kBGRsbylStX3nf33Xev9n7u3uLi4qGVK1eO1NXV1Z85c2b48OHDw+fOnRs+d+7c8ePHjw979w0AAACA
+8+fPn/vHwMDA4Lp16w48+OCD4aGhoX9OnTr198G33y4vKyv7Y6q/v7/00KFDf7W1tQ3t3r17X1lZ2Vv5+fmvPfTQQ2sLCgre
+ycvLe2vJkiVrNm7ceL+39w/HjBl9/z/2/r18939kAAAAAPj/4wQAAIAR4AQAAAA/AQAAwAgBAAAAA/D4AAAAAH4CAACAgAAA
+AACfAAIAAAAnAAAAAMAEAAAACOEEAAAAgPj/f2n5/Pnzf/IOAPx3eW9/3gEAAAAAAPwHAAD//wMAq/R/e2B5vD0AAAAASUVO
+RK5CYII=
+"""
+
+LOGO_MADCOM_BLACK_B64 = """
+iVBORw0KGgoAAAANSUhEUgAAAK4AAAB6CAYAAACZfS1jAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAD2ElEQVR4nO3dy2tUVxjG8ffN
+3Jk7c3On8TGd1CSmTW1TW/9YV/6YXbhz1QxXbtxquvCv0k03tV217aK6i7jQTV3V/Vtb29RWG7emMW3M3Hfuj2uG9gI3uYec
+5/y+m7M4Zz7ec26nCQAAAAAAAJjxIQAA4A94g/fv37/gQ4QQAAAAAAAAYP7H8eFzBwAAOD0CAAAAfoADAAAAARwAAAAIcAIA
+AAAE76APAADwcWRkZKRvYGCgY2pqanxkZGR8cnJycmp6enoyEAhEQqFQeGpqasqL6e97EAAAGI3P/v7+4Nq1a4e6u7vP79u3
+7+zMzMwVz/O6PY+b6enp/XNzc6vT09OTIyMjE94T/AMAAAAAE2bZsmWh9vb2KxcuXPj0+vXrD7q7u8/t2bPnUjAY7A8EAvs8
+z1u1f//+V7Zt23bK87yV3lNs27ZtddeuXet27dq13ou3bNlS09LSsnvTpk0rGhoa9vrvP/z+u+9W7ty581B7e/v1V1555frZ
+s2fPnz179nzP7dvnu7u7r126dOmrvv7+K48dDAAAAADg+759+0IbN268t3fv3vW7du1at2PHjrVr1qxZ19jYuK6hoWHVvn37
+1nnPZ9asWbPaez1v/fr1q3fs2LGmra2t/syZM1+eP3/+6+fPn3/T2dnZ1dbW1nPhwoXv29vbr3eOjV3p6+sb/3t8PAMA8G3z
+8/NuOBwODAwM/DozM3M1Fovdn56e/u3u3bvvJ5PJqampqanJycl/xsbG/vFf/1soFJoMBAL/RCKRE+/+e7FY7OHDhw/v3bt3
+787Q0NB/IyMjf507d+7rmZmZ32ZnZ/9IpVLRqampv5aWlqaePHnyz+PHj6enpqbuj4+PT3ie5/HZAwAAAAAHgUAgsHnz5qG2
+trZLDx48uHX79u2bhw8fPvf06dPLQ0NDl4eHhy8NDQ1dunfv3vXx8fFvI5HIhceOHftmYmLiq4GBgSvDw8NXvcfXR0ZGvnvy
+5MmdJ0+e3IlEIl8/ePDg5sOHD295b3/78OHD248ePbrz+PHjXycnJ79pbGxct3///lWtra1XlyxZcmXz5s2XWltbr7e1td1Y
+t27dtVWrVl3dtGnTlebm5m82b958rbGxcX1TU1PDqlWr1jY1NX1r27ZtV4LBYCQej5+9fPnyd52dnT0ePwEAAAAA+DEBAABA
+gAMAAIAAJwAAAJgQAAAACHACAAAAAc4AAAAgwAkAAAAmhAAAAIAAJwAAAPD5AAAAgBHiAwAAAP7fH8cHAACAMeEAAAAgwAkA
+AAAEOAEAAIAAJwAAAJgQAAAACHACAAAAAc4AAAAgwAkAAABGfAAAAMBMCAAAAAAAADA/AgAAAAFOAAAAIMAJAAAAIT4AAAAA
+AMAEAAAACHACAAAAAc4AAAAgAAAAEAAAAAhwAgAAgAAnAAAAEOAEAAAAE+IAAAAAAMAEAAAACHACAAAAAc4AAAAgAAAAEAAA
+AAhwAgAAgAAnAAAA/v99AAAAIAQAAAAA/gMAAP//4p05iY5P2pEAAAAASUVORK5CYII=
+"""
+
+def cargar_logo_agencia(fondo_oscuro=True):
+    b64_str = LOGO_MADCOM_WHITE_B64 if fondo_oscuro else LOGO_MADCOM_BLACK_B64
+    raw_bytes = base64.b64decode(b64_str.strip())
+    return Image.open(io.BytesIO(raw_bytes)).convert("RGBA")
 
 # --- 1. GESTIÓN DE FUENTES UNICODE ---
 def obtener_fuente(size=24, bold=False):
@@ -35,12 +87,12 @@ def obtener_fuente(size=24, bold=False):
 
 # --- 2. COLORES CORPORATIVOS ---
 COLORES_BASE = {
+    "Naranjo Enérgico": "#FF5630",
     "Amarillo (Smart Fit)": "#FFB800",
     "Negro Corporativo": "#1A1A1A",
     "Azul Intenso": "#0052CC",
     "Rojo Retail": "#D9383A",
     "Verde Esmeralda": "#00875A",
-    "Naranjo Enérgico": "#FF5630",
     "Azul Marino": "#091E42"
 }
 
@@ -760,7 +812,16 @@ FORMATOS_METRO = {
     }
 }
 
-# --- 6. BARRA LATERAL ---
+# --- 6. BARRA LATERAL: BRANDING MADCOM Y CONFIGURACIÓN ---
+# Encabezado con Logo MADCOM por defecto
+st.sidebar.markdown("### 🏢 Agencia")
+logo_madcom_ui = cargar_logo_agencia(fondo_oscuro=True)
+st.sidebar.image(logo_madcom_ui, width=170)
+
+nombre_agencia = st.sidebar.text_input("Nombre de la Agencia:", value="MADCOM")
+logo_custom_file = st.sidebar.file_uploader("Reemplazar Logo (opcional):", type=["png", "jpg", "jpeg"])
+
+st.sidebar.markdown("---")
 st.sidebar.header("🎨 Diseño de la Lámina")
 modo_fondo = st.sidebar.radio("Estilo de Fondo:", ["Fondo Claro (Blanco)", "Fondo Oscuro"])
 color_acento_nombre = st.sidebar.selectbox("Color de Acento / Cliente:", list(COLORES_BASE.keys()))
@@ -874,7 +935,7 @@ tabla_esc = [
     {"esc": "Optimista", "rate": info_f["o"], "dia": imp_diarios_o, "tot": imp_totales_o}
 ]
 
-# Botones de agregar al plan / limpiar en sidebar
+# Botones de plan consolidado
 st.sidebar.markdown("---")
 if st.sidebar.button("➕ Agregar este elemento al Plan de Medios", use_container_width=True, type="primary"):
     st.session_state.plan_items.append({
@@ -893,7 +954,7 @@ if st.sidebar.button("🗑️ Limpiar Plan de Medios", use_container_width=True)
     st.session_state.plan_items = []
     st.rerun()
 
-# --- 7. RENDERIZADOR PIL CON TÍTULO ADAPTABLE ANTI-COLISIÓN ---
+# --- 7. RENDERIZADOR PIL CON LOGO MADCOM ADAPTABLE ---
 def render_lamina_jpg():
     W, H = 1920, 1080
     im = Image.new("RGB", (W, H), c_bg)
@@ -908,16 +969,14 @@ def render_lamina_jpg():
     f_comment_body = obtener_fuente(20, bold=False)
     f_footer = obtener_fuente(18, bold=False)
 
-    # 1. Cabecera (Título conciso y con auto-escalado anti-solapamiento)
+    # 1. Cabecera (Título conciso con auto-escalado anti-solapamiento)
     title_text = f"{nombre_titulo_lamina} - {formato_sel.upper()}"
     subtitle_text = f"{cant_unidades} {info_f['unidad']} · {dias_campana} días"
     
-    # Ancho disponible antes de tocar el texto de la derecha
     max_title_w = W - 520
     t_size = 42
     f_title = obtener_fuente(t_size, bold=True)
     
-    # Ajuste dinámico de tamaño si el título es largo
     while t_size > 22:
         bbox_t = draw.textbbox((0, 0), title_text, font=f_title)
         if (bbox_t[2] - bbox_t[0]) <= max_title_w:
@@ -956,7 +1015,7 @@ def render_lamina_jpg():
     draw.text((x_offset + card_w + 55, 165), f"Costo por {info_f['unidad'][:-1]} / mes", fill=c_text_muted, font=f_label)
     draw.text((x_offset + card_w + 55, 202), f"${costo_unitario:,.0f}".replace(",", "."), fill=c_text_primary, font=f_num_big)
 
-    # Impactos Totales (Destacada)
+    # Impactos Totales
     draw.rounded_rectangle([(x_offset + card_w*2 + 60, 145), (x_offset + card_w*3 + 60, 145 + card_h)], radius=12, fill=c_card_highlight_bg)
     draw.text((x_offset + card_w*2 + 85, 165), f"Impactos {dias_campana} días (caso medio)", fill=c_card_highlight_text, font=f_label)
     draw.text((x_offset + card_w*2 + 85, 202), f"{imp_totales_m:,.0f}".replace(",", "."), fill=c_card_highlight_text, font=f_num_big)
@@ -1044,8 +1103,21 @@ def render_lamina_jpg():
         draw.text((x_offset + 30, line_y), l, fill=c_text_muted, font=f_comment_body)
         line_y += 32
 
-    # 7. Pie de Página
-    draw.text((60, 1005), f"Inversión mensual total: ${inversion_total:,.0f} CLP · Flota: {cant_unidades} unidades · Valores en CLP neto.".replace(",", "."), fill=c_text_muted, font=f_footer)
+    # 7. Pie de Página y Branding MADCOM
+    agencia_txt = f" | Elaborado por: {nombre_agencia}" if nombre_agencia else ""
+    draw.text((60, 1005), f"Inversión mensual total: ${inversion_total:,.0f} CLP · Flota: {cant_unidades} unidades · Valores en CLP neto{agencia_txt}.".replace(",", "."), fill=c_text_muted, font=f_footer)
+
+    # Estampar el logo de MADCOM abajo a la derecha de la lámina
+    try:
+        if logo_custom_file is not None:
+            logo_to_stamp = Image.open(logo_custom_file).convert("RGBA")
+        else:
+            logo_to_stamp = cargar_logo_agencia(fondo_oscuro=(modo_fondo == "Fondo Oscuro"))
+            
+        logo_to_stamp.thumbnail((190, 48), Image.Resampling.LANCZOS)
+        im.paste(logo_to_stamp, (W - 60 - logo_to_stamp.width, 995), logo_to_stamp)
+    except Exception:
+        pass
 
     buf = io.BytesIO()
     im.save(buf, format="JPEG", quality=95)
@@ -1055,7 +1127,6 @@ def render_lamina_jpg():
 st.title("🎯 Planificador de Medios & Exportador de Propuestas")
 st.markdown("Calcula el rendimiento por soporte, diseña la lámina ejecutiva y consolida el mix total de la campaña.")
 
-# PESTAÑAS PRINCIPALES: LÁMINA ACTUAL VS PLAN CONSOLIDADO
 tab1, tab2 = st.tabs(["🖼️ Lámina Ejecutiva (Soporte Actual)", "📊 Plan de Medios Consolidado (Mix Completo)"])
 
 with tab1:
@@ -1139,6 +1210,7 @@ with tab2:
             lineas_resumen += f"  {idx}. **{item['Soporte']}** en {item['Ubicación']} | {item['Días']} días | Inversión: \({item['Inversión Neta']:,.0f} | Impactos: {item['Impactos Medio']:,} | CPM:\){int(round(item['CPM Medio'])):,}\n".replace(",", ".")
             
         texto_resumen = f"""**PROPUESTA DE MEDIOS INTEGRADA (MIX OOH & METRO)**
+**Agencia Responsable:** {nombre_agencia}
 **Inversión Total Neta:** ${total_inversion:,.0f} CLP
 **Impactos Brutos Totales (Escenario Medio):** {total_imp_m:,.0f} impactos
 **CPM Ponderado Global:** ${int(round(cpm_global_m)):,}.00 CLP
