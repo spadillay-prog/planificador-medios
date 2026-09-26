@@ -1078,7 +1078,7 @@ def render_lamina_jpg():
     try:
         logo_to_stamp = generar_logo_madcom(fondo_oscuro=(modo_fondo == "Fondo Oscuro"))
         logo_to_stamp.thumbnail((190, 48), Image.Resampling.LANCZOS)
-        im.paste(logo_to_stamp, (W - 60 - logo_to_stamp.width, 1000), logo_to_stamp)
+        im.paste(logo_to_stamp, (W - 60 - logo_to_stamp.width, 995), logo_to_stamp)
     except Exception:
         pass
 
@@ -1095,7 +1095,6 @@ def render_lamina_consolidada_jpg():
 
     f_title = obtener_fuente(42, bold=True)
     f_sub = obtener_fuente(24, bold=False)
-    f_num_big = obtener_fuente(42, bold=True)
     f_label = obtener_fuente(22, bold=False)
     f_table_head = obtener_fuente(20, bold=True)
     f_table_row = obtener_fuente(20, bold=False)
@@ -1111,7 +1110,7 @@ def render_lamina_consolidada_jpg():
     cpm_global_c = (total_inversion / total_imp_c * 1000) if total_imp_c > 0 else 0
     cpm_global_o = (total_inversion / total_imp_o * 1000) if total_imp_o > 0 else 0
 
-    # Determinar texto de fuentes técnicas presentes en el plan
+    # Fuentes técnicas presentes en el plan
     tiene_metro = any(item.get("Entorno") == "Metro de Santiago (Estaciones y Trenes)" for item in st.session_state.plan_items)
     tiene_ooh = any(item.get("Entorno") != "Metro de Santiago (Estaciones y Trenes)" for item in st.session_state.plan_items)
     if tiene_metro and tiene_ooh:
@@ -1132,28 +1131,38 @@ def render_lamina_consolidada_jpg():
     gap = (1800 - (card_w * 4)) // 3
     x_pos = 60
 
-    # Tarjeta 1: Total Soportes
+    # Tarjeta 1: Total Soportes en Mix (Ajuste conciso y auto-escalado anti-desborde)
     draw.rounded_rectangle([(x_pos, 145), (x_pos + card_w, 145 + card_h)], radius=12, fill=c_card, outline=c_border, width=1)
     draw.text((x_pos + 25, 165), "Total Soportes en Mix", fill=c_text_muted, font=f_label)
-    draw.text((x_pos + 25, 202), f"{num_items} líneas contratadas", fill=c_text_primary, font=f_num_big)
+    
+    txt_soportes = f"{num_items} soportes" if num_items != 1 else "1 soporte"
+    t1_size = 42
+    f_t1 = obtener_fuente(t1_size, bold=True)
+    while t1_size > 26:
+        bbox_t1 = draw.textbbox((0, 0), txt_soportes, font=f_t1)
+        if (bbox_t1[2] - bbox_t1[0]) <= (card_w - 50):
+            break
+        t1_size -= 2
+        f_t1 = obtener_fuente(t1_size, bold=True)
+    draw.text((x_pos + 25, 202), txt_soportes, fill=c_text_primary, font=f_t1)
 
     # Tarjeta 2: Inversión Total Neta
     x_pos += card_w + gap
     draw.rounded_rectangle([(x_pos, 145), (x_pos + card_w, 145 + card_h)], radius=12, fill=c_card, outline=c_border, width=1)
     draw.text((x_pos + 25, 165), "Inversión Total Neta", fill=c_text_muted, font=f_label)
-    draw.text((x_pos + 25, 202), f"${total_inversion:,.0f}".replace(",", "."), fill=c_text_primary, font=f_num_big)
+    draw.text((x_pos + 25, 202), f"${total_inversion:,.0f}".replace(",", "."), fill=c_text_primary, font=obtener_fuente(42, bold=True))
 
     # Tarjeta 3: Impactos Totales (Destacada)
     x_pos += card_w + gap
     draw.rounded_rectangle([(x_pos, 145), (x_pos + card_w, 145 + card_h)], radius=12, fill=c_card_highlight_bg)
     draw.text((x_pos + 25, 165), "Impactos Brutos (Caso Medio)", fill=c_card_highlight_text, font=f_label)
-    draw.text((x_pos + 25, 202), f"{total_imp_m:,.0f}".replace(",", "."), fill=c_card_highlight_text, font=f_num_big)
+    draw.text((x_pos + 25, 202), f"{total_imp_m:,.0f}".replace(",", "."), fill=c_card_highlight_text, font=obtener_fuente(42, bold=True))
 
     # Tarjeta 4: CPM Ponderado Global
     x_pos += card_w + gap
     draw.rounded_rectangle([(x_pos, 145), (x_pos + card_w, 145 + card_h)], radius=12, fill=c_card, outline=c_border, width=1)
     draw.text((x_pos + 25, 165), "CPM Ponderado Global", fill=c_text_muted, font=f_label)
-    draw.text((x_pos + 25, 202), f"${int(round(cpm_global_m)):,}".replace(",", "."), fill=c_accent, font=f_num_big)
+    draw.text((x_pos + 25, 202), f"${int(round(cpm_global_m)):,}".replace(",", "."), fill=c_accent, font=obtener_fuente(42, bold=True))
 
     # 3. Contenedor Tabla Desglose del Mix
     t_box_y = 305
@@ -1170,7 +1179,7 @@ def render_lamina_consolidada_jpg():
     draw.text((1700, th_y), "CPM Efectivo", fill=c_text_muted, font=f_table_head)
     draw.line([(85, th_y + 32), (W - 85, th_y + 32)], fill=c_border, width=1)
 
-    # Filas de la tabla de desglose (máximo 6 para ajuste perfecto)
+    # Filas de la tabla de desglose
     row_y = th_y + 45
     for item in st.session_state.plan_items[:6]:
         soporte_txt = item["Soporte"][:32] + "..." if len(item["Soporte"]) > 32 else item["Soporte"]
@@ -1225,7 +1234,7 @@ def render_lamina_consolidada_jpg():
     try:
         logo_to_stamp = generar_logo_madcom(fondo_oscuro=(modo_fondo == "Fondo Oscuro"))
         logo_to_stamp.thumbnail((190, 48), Image.Resampling.LANCZOS)
-        im.paste(logo_to_stamp, (W - 60 - logo_to_stamp.width, 1000), logo_to_stamp)
+        im.paste(logo_to_stamp, (W - 60 - logo_to_stamp.width, 995), logo_to_stamp)
     except Exception:
         pass
 
@@ -1261,7 +1270,6 @@ with tab2:
     else:
         st.subheader("🖼️ Vista Previa de la Lámina Resumen Consolidada (Mix Completo)")
         
-        # Renderizado de la lámina panorámica consolidada en JPG
         img_consolidada_bytes = render_lamina_consolidada_jpg()
         st.image(img_consolidada_bytes, caption=f"Lámina Consolidada — Campaña Multi-Soporte ({len(st.session_state.plan_items)} elementos)", use_container_width=True)
         
@@ -1289,7 +1297,6 @@ with tab2:
         
         st.dataframe(df_display[["Soporte", "Ubicación", "Días", "Inversión Neta", "Impactos Medio", "CPM Medio"]], use_container_width=True)
         
-        # Consolidado Total
         total_inversion = sum(item["Inversión Neta"] for item in st.session_state.plan_items)
         total_imp_c = sum(item["Impactos Conservador"] for item in st.session_state.plan_items)
         total_imp_m = sum(item["Impactos Medio"] for item in st.session_state.plan_items)
@@ -1330,7 +1337,6 @@ with tab2:
         ]
         st.table(pd.DataFrame(tabla_consolidada))
         
-        # Resumen Propuesta Comercial
         st.markdown("---")
         st.subheader("📋 3. Resumen Ejecutivo Integrado para Propuesta")
         
