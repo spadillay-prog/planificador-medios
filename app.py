@@ -10,15 +10,15 @@ st.set_page_config(
     layout="wide"
 )
 
-# Carga directa de la fuente DejaVuSans instalada por packages.txt
+# --- 1. GESTIÓN DE FUENTES UNICODE ---
 def obtener_fuente(size=24, bold=False):
-    rutas_fuentes = [
+    rutas = [
         "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf" if bold else "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
         "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf" if bold else "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",
         "/usr/share/fonts/truetype/freefont/FreeSansBold.ttf" if bold else "/usr/share/fonts/truetype/freefont/FreeSans.ttf",
         "arialbd.ttf" if bold else "arial.ttf"
     ]
-    for ruta in rutas_fuentes:
+    for ruta in rutas:
         if os.path.exists(ruta):
             try:
                 return ImageFont.truetype(ruta, size)
@@ -29,6 +29,7 @@ def obtener_fuente(size=24, bold=False):
     except Exception:
         return ImageFont.load_default()
 
+# --- 2. COLORES CORPORATIVOS ---
 COLORES_BASE = {
     "Amarillo (Smart Fit)": "#FFB800",
     "Negro Corporativo": "#1A1A1A",
@@ -39,22 +40,263 @@ COLORES_BASE = {
     "Azul Marino": "#091E42"
 }
 
-DATA_TERRITORIAL = {
-    "Coquimbo": {"res": 240000, "flot": 40000, "contexto": "Coquimbo concentra su movimiento en pocos ejes que todas las rutas terminan cruzando, por lo que 30 unidades alcanzan para que la gráfica aparezca varias veces en el día de una misma persona. Con el mismo presupuesto, un soporte fijo cubre una esquina; la flota cubre el recorrido completo entre el puerto, el centro y los barrios altos."},
-    "La Serena": {"res": 240000, "flot": 40000, "contexto": "Ejes Balmaceda y Ruta 5 conectan el flujo intercomunal con alta retención en semáforos y centros comerciales."},
-    "Antofagasta": {"res": 440000, "flot": 50000, "contexto": "Ciudad lineal encajonada entre cerro y mar; la concentración vehicular en Av. Costanera y Pedro Aguirre Cerda eleva los OTS diarios."},
-    "Santiago Oriente": {"res": 1060000, "flot": 800000, "contexto": "Polo corporativo y financiero de máxima afluencia flotante de la capital, ideal para campañas de cobertura y frecuencia masiva."},
-    "San Joaquín (Vespucio / Departamental)": {"res": 103000, "flot": 65000, "contexto": "Nudo estratégico con alta densidad comercial (Mall Florida Center) y conectividad con Metro Línea 5."},
+# --- 3. BASE DE DATOS METRO DE SANTIAGO (OFICIAL IPSOS) ---
+METRO_DATA = {
+    "Línea 1": {
+        "Alberto Hurtado": {"flujo_mes": 5146950, "alcance_dia": 171565},
+        "Alcantara": {"flujo_mes": 4125420, "alcance_dia": 137514},
+        "Baquedano": {"flujo_mes": 11084610, "alcance_dia": 369487},
+        "Central": {"flujo_mes": 6083070, "alcance_dia": 202769},
+        "Ecuador": {"flujo_mes": 5290230, "alcance_dia": 176341},
+        "El Golf": {"flujo_mes": 4568130, "alcance_dia": 152271},
+        "Escuela Militar": {"flujo_mes": 3730200, "alcance_dia": 124340},
+        "Hernando De Magallanes": {"flujo_mes": 2252940, "alcance_dia": 75098},
+        "La Moneda": {"flujo_mes": 6435480, "alcance_dia": 214516},
+        "Las Rejas": {"flujo_mes": 4796760, "alcance_dia": 159892},
+        "Los Dominicos": {"flujo_mes": 1840920, "alcance_dia": 61364},
+        "Los Heroes": {"flujo_mes": 9190050, "alcance_dia": 306335},
+        "Los Leones": {"flujo_mes": 8199240, "alcance_dia": 273308},
+        "Manquehue": {"flujo_mes": 3751140, "alcance_dia": 125038},
+        "Manuel Montt": {"flujo_mes": 4545000, "alcance_dia": 151500},
+        "Neptuno": {"flujo_mes": 4353210, "alcance_dia": 145107},
+        "Pajaritos": {"flujo_mes": 4272180, "alcance_dia": 142406},
+        "Pedro De Valdivia": {"flujo_mes": 4181790, "alcance_dia": 139393},
+        "Republica": {"flujo_mes": 5831550, "alcance_dia": 194385},
+        "Salvador": {"flujo_mes": 4141680, "alcance_dia": 138056},
+        "San Alberto Hurtado": {"flujo_mes": 5146950, "alcance_dia": 171565},
+        "San Pablo": {"flujo_mes": 5306610, "alcance_dia": 176887},
+        "Santa Lucia": {"flujo_mes": 5918340, "alcance_dia": 197278},
+        "Tobalaba": {"flujo_mes": 8866500, "alcance_dia": 295550},
+        "U.L.A.": {"flujo_mes": 5797350, "alcance_dia": 193245},
+        "Universidad Catolica": {"flujo_mes": 5462820, "alcance_dia": 182094},
+        "Universidad De Chile": {"flujo_mes": 8058030, "alcance_dia": 268601}
+    },
+    "Línea 2": {
+        "Cementerios": {"flujo_mes": 1696200, "alcance_dia": 56540},
+        "Cerro Blanco": {"flujo_mes": 2221650, "alcance_dia": 74055},
+        "Ciudad Del Niño": {"flujo_mes": 2235960, "alcance_dia": 74532},
+        "Departamental": {"flujo_mes": 2740380, "alcance_dia": 91346},
+        "Dorsal": {"flujo_mes": 2420070, "alcance_dia": 80669},
+        "Einstein": {"flujo_mes": 2188440, "alcance_dia": 72948},
+        "El Llano": {"flujo_mes": 2977530, "alcance_dia": 99251},
+        "El Parrón": {"flujo_mes": 2049000, "alcance_dia": 68300},
+        "Franklin": {"flujo_mes": 6393960, "alcance_dia": 213132},
+        "La Cisterna": {"flujo_mes": 4272180, "alcance_dia": 142406},
+        "Lo Ovalle": {"flujo_mes": 2235960, "alcance_dia": 74532},
+        "Lo Vial": {"flujo_mes": 2687550, "alcance_dia": 89585},
+        "Los Heroes": {"flujo_mes": 9190050, "alcance_dia": 306335},
+        "Parque O'Higgins": {"flujo_mes": 2664090, "alcance_dia": 88803},
+        "Patronato": {"flujo_mes": 3290610, "alcance_dia": 109687},
+        "Puente Cal Y Canto": {"flujo_mes": 8058030, "alcance_dia": 268601},
+        "Rondizzoni": {"flujo_mes": 2348550, "alcance_dia": 78285},
+        "San Miguel": {"flujo_mes": 2740380, "alcance_dia": 91346},
+        "Santa Ana": {"flujo_mes": 7378950, "alcance_dia": 245965},
+        "Toesca": {"flujo_mes": 2664090, "alcance_dia": 88803},
+        "Vespucio Norte": {"flujo_mes": 3816750, "alcance_dia": 127225},
+        "Zapadores": {"flujo_mes": 2951160, "alcance_dia": 98372}
+    },
+    "Línea 3": {
+        "Chile España": {"flujo_mes": 2378880, "alcance_dia": 79296},
+        "Conchali": {"flujo_mes": 2446830, "alcance_dia": 81561},
+        "Hospitales": {"flujo_mes": 3816750, "alcance_dia": 127225},
+        "Irarrazaval": {"flujo_mes": 5290230, "alcance_dia": 176341},
+        "Ñuñoa": {"flujo_mes": 4545000, "alcance_dia": 151500},
+        "Plaza De Armas": {"flujo_mes": 8058030, "alcance_dia": 268601},
+        "Plaza Egaña": {"flujo_mes": 5462820, "alcance_dia": 182094},
+        "Universidad De Chile": {"flujo_mes": 8058030, "alcance_dia": 268601}
+    },
+    "Línea 4": {
+        "Cristobal Colon": {"flujo_mes": 2235960, "alcance_dia": 74532},
+        "Francisco Bilbao": {"flujo_mes": 2687550, "alcance_dia": 89585},
+        "Macul": {"flujo_mes": 2977530, "alcance_dia": 99251},
+        "Plaza De Puente Alto": {"flujo_mes": 3816750, "alcance_dia": 127225},
+        "Plaza Egaña": {"flujo_mes": 5462820, "alcance_dia": 182094},
+        "Principe De Gales": {"flujo_mes": 2687550, "alcance_dia": 89585},
+        "Quilin": {"flujo_mes": 4192650, "alcance_dia": 139755},
+        "Tobalaba": {"flujo_mes": 8866500, "alcance_dia": 295550},
+        "Vicente Valdes": {"flujo_mes": 6393960, "alcance_dia": 213132}
+    },
+    "Línea 5": {
+        "Baquedano": {"flujo_mes": 11084610, "alcance_dia": 369487},
+        "Bellas Artes": {"flujo_mes": 3816750, "alcance_dia": 127225},
+        "Bellavista De La Florida": {"flujo_mes": 5462820, "alcance_dia": 182094},
+        "Carlos Valdovinos": {"flujo_mes": 2446830, "alcance_dia": 81561},
+        "Irarrazaval": {"flujo_mes": 5290230, "alcance_dia": 176341},
+        "Ñuble": {"flujo_mes": 4272180, "alcance_dia": 142406},
+        "Pedrero": {"flujo_mes": 2446830, "alcance_dia": 81561},
+        "Plaza De Armas": {"flujo_mes": 8058030, "alcance_dia": 268601},
+        "Plaza De Maipu": {"flujo_mes": 4796760, "alcance_dia": 159892},
+        "San Joaquin": {"flujo_mes": 2736360, "alcance_dia": 91212},
+        "Santa Ana": {"flujo_mes": 7378950, "alcance_dia": 245965}
+    },
+    "Línea 6": {
+        "Cerrillos": {"flujo_mes": 2378880, "alcance_dia": 79296},
+        "Estadio Nacional": {"flujo_mes": 2687550, "alcance_dia": 89585},
+        "Franklin": {"flujo_mes": 6393960, "alcance_dia": 213132},
+        "Inés De Suárez": {"flujo_mes": 2687550, "alcance_dia": 89585},
+        "Los Leones": {"flujo_mes": 8199240, "alcance_dia": 273308},
+        "Ñuñoa": {"flujo_mes": 4545000, "alcance_dia": 151500}
+    }
 }
 
-FORMATOS = {
+# --- 4. BASE VÍA PÚBLICA TRADICIONAL Y NODOS ---
+DATA_JERARQUICA = {
+    "Región Metropolitana": {
+        "Sector Sur": {
+            "res_sector": 1400000, "flot_sector": 300000,
+            "comunas": {
+                "San Joaquín": {
+                    "res": 103000, "flot": 65000,
+                    "contexto": "Nudo estratégico con alta densidad comercial (Mall Florida Center) y conectividad con Metro Línea 5.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Vicuña Mackenna con Departamental (Eje Metro Pedrero / Mall Florida Center)": {"flujo": 95000},
+                        "Santa Rosa con Departamental": {"flujo": 75000},
+                        "Vicuña Mackenna con Carlos Valdovinos": {"flujo": 60000}
+                    }
+                },
+                "San Miguel": {
+                    "res": 140000, "flot": 70000,
+                    "contexto": "Eje comercial estructurante de Gran Avenida con alto tráfico vehicular, hospitales y comercio comunal.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Gran Avenida con Departamental": {"flujo": 85000},
+                        "Gran Avenida con Salesianos": {"flujo": 65000}
+                    }
+                },
+                "La Cisterna": {
+                    "res": 100000, "flot": 120000,
+                    "contexto": "Principal polo de trasbordo del sector sur que conecta Gran Avenida con Américo Vespucio.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Intermodal La Cisterna (Américo Vespucio con Gran Avenida)": {"flujo": 140000}
+                    }
+                }
+            }
+        },
+        "Sector Oriente": {
+            "res_sector": 1060000, "flot_sector": 800000,
+            "comunas": {
+                "Las Condes": {
+                    "res": 330000, "flot": 450000,
+                    "contexto": "Polo corporativo y financiero de máxima afluencia flotante de la capital, ideal para campañas de cobertura y frecuencia masiva.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Apoquindo con Manquehue (Apumanque)": {"flujo": 140000},
+                        "El Golf / Sanhattan (Apoquindo con El Bosque)": {"flujo": 160000},
+                        "Rotonda Atenas": {"flujo": 70000}
+                    }
+                },
+                "Providencia": {
+                    "res": 155000, "flot": 350000,
+                    "contexto": "Eje comercial y de oficinas de mayor flujo peatonal continuo y conectividad oriente-centro.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Providencia con Tobalaba (Costanera Center)": {"flujo": 180000},
+                        "Plaza Baquedano": {"flujo": 150000}
+                    }
+                },
+                "Ñuñoa": {
+                    "res": 255000, "flot": 80000,
+                    "contexto": "Sector residencial y de servicios con importantes nudos de detención vehicular y gastronómicos.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Plaza Egaña (Larraín con Av. Ossa)": {"flujo": 120000},
+                        "Irarrázaval con Pedro de Valdivia": {"flujo": 85000}
+                    }
+                }
+            }
+        },
+        "Sector Sur-Oriente": {
+            "res_sector": 1420000, "flot_sector": 250000,
+            "comunas": {
+                "Peñalolén / Macul (Eje Quilín)": {
+                    "res": 280000, "flot": 90000,
+                    "contexto": "Punto neurálgico de Vespucio Sur con gran afluencia hacia centros médicos y Mall Paseo Quilín.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Rotonda Quilín / Américo Vespucio (Mall Paseo Quilín)": {"flujo": 130000}
+                    }
+                },
+                "La Florida": {
+                    "res": 400000, "flot": 110000,
+                    "contexto": "Gran polo comercial del suroriente con concurrencia masiva en torno a malls y estaciones de metro.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Vicuña Mackenna con Américo Vespucio (Mall Plaza Vespucio)": {"flujo": 170000}
+                    }
+                }
+            }
+        }
+    },
+    "Región de Coquimbo": {
+        "Conurbación La Serena - Coquimbo": {
+            "res_sector": 530000, "flot_sector": 60000,
+            "comunas": {
+                "Coquimbo": {
+                    "res": 240000, "flot": 40000,
+                    "contexto": "Coquimbo concentra su movimiento en pocos ejes que todas las rutas cruzan, generando repetición diaria de alto impacto sobre el puerto, el centro y los barrios altos.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Ruta 5 con La Cantera": {"flujo": 75000}
+                    }
+                },
+                "La Serena": {
+                    "res": 240000, "flot": 40000,
+                    "contexto": "Ejes Balmaceda y Ruta 5 conectan el flujo intercomunal con alta retención en semáforos y centros comerciales.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Ruta 5 con Francisco de Aguirre": {"flujo": 80000}
+                    }
+                }
+            }
+        }
+    },
+    "Región de Antofagasta": {
+        "Gran Antofagasta": {
+            "res_sector": 440000, "flot_sector": 50000,
+            "comunas": {
+                "Antofagasta": {
+                    "res": 440000, "flot": 50000,
+                    "contexto": "Ciudad lineal encajonada entre cerro y mar; la concentración vehicular en Av. Costanera y Pedro Aguirre Cerda eleva los OTS diarios.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Av. Costanera con Balmaceda (Mall Plaza)": {"flujo": 110000}
+                    }
+                }
+            }
+        }
+    }
+}
+
+# --- 5. FORMATOS COMERCIALES ---
+FORMATOS_OOH = {
     "Lunetas Buses": {"base": 30, "c": 0.20, "m": 0.25, "o": 0.30, "tipo": "Cobertura móvil", "unidad": "lunetas"},
     "Pantalla Digital (DOOH)": {"base": 1, "c": 0.20, "m": 0.25, "o": 0.30, "tipo": "Gran impacto LED", "unidad": "pantallas"},
     "Buses Troncales": {"base": 70, "c": 0.30, "m": 0.35, "o": 0.40, "tipo": "Troncal móvil", "unidad": "buses"},
     "Valla Estática": {"base": 1, "c": 0.15, "m": 0.20, "o": 0.25, "tipo": "Soporte fijo", "unidad": "soportes"}
 }
 
-# --- CONFIGURACIÓN DE INTERFAZ ---
+FORMATOS_METRO = {
+    "Brandeo Tren Integral (Línea 1 - 27 Estaciones)": {
+        "base": 1, "c": 0.22, "m": 0.27, "o": 0.32, "tipo": "Tren completo", "unidad": "trenes", "es_tren": True, "flujo_red_dia": 850000,
+        "contexto": "Tren completo en circulación continua de San Pablo a Los Dominicos impactando andenes de 27 estaciones más usuarios en viaje."
+    },
+    "Circuito Pantallas Digitales Andén (DOOH)": {
+        "base": 1, "c": 0.30, "m": 0.40, "o": 0.50, "tipo": "DOOH Andén", "unidad": "circuitos", "es_tren": False,
+        "contexto": "Pantallas frente a los usuarios en tiempo de espera cautiva en andén, con alto recuerdo de marca."
+    },
+    "Valla / Panel Andén Estático": {
+        "base": 1, "c": 0.25, "m": 0.35, "o": 0.45, "tipo": "Panel Andén", "unidad": "paneles", "es_tren": False,
+        "contexto": "Panel publicitario de gran formato ubicado frente a las vías de abordaje."
+    },
+    "Panel Acceso / Torniquetes": {
+        "base": 1, "c": 0.35, "m": 0.45, "o": 0.55, "tipo": "Panel Mesanina", "unidad": "paneles", "es_tren": False,
+        "contexto": "Impacto forzado al paso en torniquetes y accesos principales a la estación."
+    }
+}
+
+# --- 6. BARRA LATERAL ---
 st.sidebar.header("🎨 Diseño de la Lámina")
 modo_fondo = st.sidebar.radio("Estilo de Fondo:", ["Fondo Oscuro", "Fondo Claro (Blanco)"])
 color_acento_nombre = st.sidebar.selectbox("Color de Acento / Cliente:", list(COLORES_BASE.keys()))
@@ -80,12 +322,52 @@ else:
     c_card_highlight_text = "#000000" if color_acento_nombre in ["Amarillo (Smart Fit)", "Naranjo Enérgico"] else "#FFFFFF"
 
 st.sidebar.markdown("---")
-st.sidebar.header("⚙️ Datos de la Campaña")
-plaza_sel = st.sidebar.selectbox("Plaza / Territorio:", list(DATA_TERRITORIAL.keys()))
-formato_sel = st.sidebar.selectbox("Formato Publicitario:", list(FORMATOS.keys()))
+st.sidebar.header("⚙️ Configuración Territorial & Medios")
+medio_tipo = st.sidebar.radio("Selecciona Entorno:", ["Vía Pública Tradicional (Calles)", "Metro de Santiago (Estaciones y Trenes)"])
 
-info_p = DATA_TERRITORIAL[plaza_sel]
-info_f = FORMATOS[formato_sel]
+if medio_tipo == "Metro de Santiago (Estaciones y Trenes)":
+    formato_dict = FORMATOS_METRO
+    formato_sel = st.sidebar.selectbox("Formato en Metro:", list(formato_dict.keys()))
+    info_f = formato_dict[formato_sel]
+    
+    if info_f.get("es_tren", False):
+        universo_calculo = info_f["flujo_red_dia"]
+        nombre_territorio = "Línea 1 Completa"
+        texto_estrategico_default = info_f["contexto"]
+    else:
+        linea_sel = st.sidebar.selectbox("Línea de Metro:", list(METRO_DATA.keys()))
+        estacion_sel = st.sidebar.selectbox("Estación:", list(METRO_DATA[linea_sel].keys()))
+        datos_estacion = METRO_DATA[linea_sel][estacion_sel]
+        universo_calculo = datos_estacion["alcance_dia"]
+        nombre_territorio = f"Metro {linea_sel} - {estacion_sel}"
+        texto_estrategico_default = f"Estación {estacion_sel} registra {datos_estacion['flujo_mes']:,.0f} pasajeros mensuales (Ipsos), con tiempo de espera cautivo de alta exposición.".replace(",", ".")
+else:
+    reg_sel = st.sidebar.selectbox("1. Región:", list(DATA_JERARQUICA.keys()))
+    sec_sel = st.sidebar.selectbox("2. Sector / Zona:", list(DATA_JERARQUICA[reg_sel].keys()))
+    datos_sec = DATA_JERARQUICA[reg_sel][sec_sel]
+    
+    opciones_comuna = ["Todo el Sector en conjunto"] + list(datos_sec["comunas"].keys())
+    com_sel = st.sidebar.selectbox("3. Comuna:", opciones_comuna)
+    
+    if com_sel == "Todo el Sector en conjunto":
+        universo_calculo = datos_sec["res_sector"] + datos_sec["flot_sector"]
+        nombre_territorio = f"{sec_sel}"
+        texto_estrategico_default = f"Macrozona con un flujo activo superior a {universo_calculo:,.0f} personas al día.".replace(",", ".")
+    else:
+        com_data = datos_sec["comunas"][com_sel]
+        pto_sel = st.sidebar.selectbox("4. Georreferencia / Punto:", list(com_data["puntos"].keys()))
+        if pto_sel == "Toda la comuna (General)":
+            universo_calculo = com_data["res"] + com_data["flot"]
+            nombre_territorio = com_sel
+            texto_estrategico_default = com_data["contexto"]
+        else:
+            universo_calculo = com_data["puntos"][pto_sel]["flujo"]
+            nombre_territorio = f"{com_sel} - {pto_sel}"
+            texto_estrategico_default = f"Punto de alta concentración vial y comercial con un flujo auditado de {universo_calculo:,.0f} personas diarias.".replace(",", ".")
+
+    formato_dict = FORMATOS_OOH
+    formato_sel = st.sidebar.selectbox("Formato Publicitario:", list(formato_dict.keys()))
+    info_f = formato_dict[formato_sel]
 
 cant_unidades = st.sidebar.number_input(f"Cantidad de {info_f['unidad']}:", min_value=1, value=info_f["base"], step=1)
 dias_campana = st.sidebar.number_input("Días de Campaña:", min_value=1, value=30, step=1)
@@ -95,32 +377,30 @@ foto_soporte = st.sidebar.file_uploader("Subir foto del soporte (opcional):", ty
 
 comentario_custom = st.sidebar.text_area(
     "Ventaja Estratégica / Comentarios:",
-    value=info_p["contexto"],
-    height=120
+    value=texto_estrategico_default,
+    height=110
 )
 
-# Cálculos
-universo = info_p["res"] + info_p["flot"]
+# --- 7. CÁLCULOS TÉCNICOS ---
 factor_escala = cant_unidades / info_f["base"]
-
 costo_unitario = inversion_total / cant_unidades if cant_unidades > 0 else 0
-imp_diarios_m = universo * info_f["m"] * factor_escala
+imp_diarios_m = universo_calculo * info_f["m"] * factor_escala
 imp_totales_m = imp_diarios_m * dias_campana
 costo_impacto_m = inversion_total / imp_totales_m if imp_totales_m > 0 else 0
 
 tabla_esc = [
-    {"esc": "Conservador", "rate": info_f["c"], "dia": universo * info_f["c"] * factor_escala, "tot": universo * info_f["c"] * factor_escala * dias_campana},
+    {"esc": "Conservador", "rate": info_f["c"], "dia": universo_calculo * info_f["c"] * factor_escala, "tot": universo_calculo * info_f["c"] * factor_escala * dias_campana},
     {"esc": "Medio", "rate": info_f["m"], "dia": imp_diarios_m, "tot": imp_totales_m},
-    {"esc": "Optimista", "rate": info_f["o"], "dia": universo * info_f["o"] * factor_escala, "tot": universo * info_f["o"] * factor_escala * dias_campana}
+    {"esc": "Optimista", "rate": info_f["o"], "dia": universo_calculo * info_f["o"] * factor_escala, "tot": universo_calculo * info_f["o"] * factor_escala * dias_campana}
 ]
 
-# --- RENDERIZADOR PIL EN ALTA RESOLUCIÓN ---
+# --- 8. RENDERIZADOR PIL (LÁMINA 1920x1080) ---
 def render_lamina_jpg():
     W, H = 1920, 1080
     im = Image.new("RGB", (W, H), c_bg)
     draw = ImageDraw.Draw(im)
 
-    f_title = obtener_fuente(46, bold=True)
+    f_title = obtener_fuente(42, bold=True)
     f_sub = obtener_fuente(24, bold=False)
     f_num_big = obtener_fuente(42, bold=True)
     f_label = obtener_fuente(22, bold=False)
@@ -130,15 +410,15 @@ def render_lamina_jpg():
     f_comment_body = obtener_fuente(20, bold=False)
     f_footer = obtener_fuente(18, bold=False)
 
-    # 1. Cabecera (guion ASCII estándar)
-    title_text = f"{plaza_sel.upper()} - {formato_sel.upper()}"
+    # Cabecera
+    title_text = f"{nombre_territorio.upper()} - {formato_sel.upper()}"
     subtitle_text = f"{cant_unidades} {info_f['unidad']} · {dias_campana} días"
     
     draw.text((60, 45), title_text, fill=c_accent, font=f_title)
     draw.text((W - 420, 58), subtitle_text, fill=c_text_muted, font=f_sub)
     draw.line([(60, 115), (W - 60, 115)], fill=c_accent, width=3)
 
-    # 2. Recuadro Foto Soporte
+    # Foto soporte
     foto_box = [(60, 145), (710, 960)]
     if foto_soporte is not None:
         try:
@@ -151,7 +431,7 @@ def render_lamina_jpg():
         draw.rectangle(foto_box, fill=c_card, outline=c_border, width=2)
         draw.text((230, 530), "[ FOTO SOPORTE ]", fill=c_text_muted, font=f_sub)
 
-    # 3. Tarjetas Superiores
+    # Tarjetas Superiores
     card_w, card_h = 360, 130
     x_offset = 750
     
@@ -170,7 +450,7 @@ def render_lamina_jpg():
     draw.text((x_offset + card_w*2 + 85, 165), f"Impactos {dias_campana} días (caso medio)", fill=c_card_highlight_text, font=f_label)
     draw.text((x_offset + card_w*2 + 85, 202), f"{imp_totales_m:,.0f}".replace(",", "."), fill=c_card_highlight_text, font=f_num_big)
 
-    # 4. Tabla de Escenarios
+    # Tabla de Escenarios
     t_y = 315
     draw.text((x_offset + 20, t_y), "Escenario", fill=c_text_muted, font=f_table_head)
     draw.text((x_offset + 270, t_y), "% Exposición diaria", fill=c_text_muted, font=f_table_head)
@@ -192,26 +472,47 @@ def render_lamina_jpg():
         draw.text((x_offset + 980, row_y), f"${int(round(cpm_val)):,}".replace(",", "."), fill=c_text_primary, font=f_table_row)
         row_y += 45
 
-    # 5. Tarjetas Inferiores
+    # Tarjetas Inferiores
     b_y = 505
     draw.rounded_rectangle([(x_offset, b_y), (x_offset + card_w, b_y + card_h)], radius=12, fill=c_card, outline=c_border, width=1)
     draw.text((x_offset + 25, b_y + 20), "Universo activo diario", fill=c_text_muted, font=f_label)
-    draw.text((x_offset + 25, b_y + 55), f"{universo:,.0f}".replace(",", "."), fill=c_accent, font=f_num_big)
+    draw.text((x_offset + 25, b_y + 55), f"{universo_calculo:,.0f}".replace(",", "."), fill=c_accent, font=f_num_big)
 
     draw.rounded_rectangle([(x_offset + card_w + 30, b_y), (x_offset + card_w*2 + 30, b_y + card_h)], radius=12, fill=c_card, outline=c_border, width=1)
     draw.text((x_offset + card_w + 55, b_y + 20), "Costo x impacto (medio)", fill=c_text_muted, font=f_label)
     draw.text((x_offset + card_w + 55, b_y + 55), f"${costo_impacto_m:.1f} CLP", fill=c_accent, font=f_num_big)
 
-    draw.rounded_rectangle([(x_offset + card_w*2 + 60, b_y), (x_offset + card_w*3 + 60, b_y + card_h)], radius=12, fill=c_card, outline=c_border, width=1)
-    draw.text((x_offset + card_w*2 + 85, b_y + 20), "Naturaleza del formato", fill=c_text_muted, font=f_label)
-    draw.text((x_offset + card_w*2 + 85, b_y + 55), info_f["tipo"], fill=c_accent, font=f_num_big)
+    # Tarjeta Naturaleza del formato con ajuste en dos líneas
+    card3_x = x_offset + card_w*2 + 60
+    draw.rounded_rectangle([(card3_x, b_y), (card3_x + card_w, b_y + card_h)], radius=12, fill=c_card, outline=c_border, width=1)
+    draw.text((card3_x + 25, b_y + 20), "Naturaleza del formato", fill=c_text_muted, font=f_label)
+    
+    texto_naturaleza = info_f["tipo"]
+    f_nat_test = obtener_fuente(32, bold=True)
+    bbox_nat = draw.textbbox((0, 0), texto_naturaleza, font=f_nat_test)
+    ancho_nat = bbox_nat[2] - bbox_nat[0]
+    
+    if ancho_nat <= 300:
+        draw.text((card3_x + 25, b_y + 55), texto_naturaleza, fill=c_accent, font=f_nat_test)
+    else:
+        partes = texto_naturaleza.split()
+        if len(partes) >= 2:
+            linea1 = partes[0]
+            linea2 = " ".join(partes[1:])
+        else:
+            linea1 = texto_naturaleza
+            linea2 = ""
+        f_nat_dos_lineas = obtener_fuente(26, bold=True)
+        draw.text((card3_x + 25, b_y + 50), linea1, fill=c_accent, font=f_nat_dos_lineas)
+        if linea2:
+            draw.text((card3_x + 25, b_y + 82), linea2, fill=c_accent, font=f_nat_dos_lineas)
 
-    # 6. Comentarios Estratégicos
+    # Comentarios Estratégicos
     com_y = 675
     draw.rounded_rectangle([(x_offset, com_y), (W - 60, 960)], radius=12, fill=c_card, outline=c_border, width=1)
     draw.line([(x_offset, com_y), (x_offset, 960)], fill=c_accent, width=6)
     
-    draw.text((x_offset + 30, com_y + 22), f"Universo activo diario: {info_p['res']:,} habitantes + {info_p['flot']:,} población flotante = {universo:,}".replace(",", "."), fill=c_text_primary, font=f_label)
+    draw.text((x_offset + 30, com_y + 22), f"Universo / Flujo diario base: {universo_calculo:,.0f} personas activas".replace(",", "."), fill=c_text_primary, font=f_label)
     draw.text((x_offset + 30, com_y + 65), "VENTAJA ESTRATÉGICA DEL FORMATO", fill=c_accent, font=f_comment_title)
     
     words = comentario_custom.split()
@@ -230,25 +531,25 @@ def render_lamina_jpg():
         draw.text((x_offset + 30, line_y), l, fill=c_text_muted, font=f_comment_body)
         line_y += 32
 
-    # 7. Pie de Página
+    # Pie de Página
     draw.text((60, 1005), f"Inversión mensual total: ${inversion_total:,.0f} CLP · Flota: {cant_unidades} unidades · Valores en CLP neto.".replace(",", "."), fill=c_text_muted, font=f_footer)
 
     buf = io.BytesIO()
     im.save(buf, format="JPEG", quality=95)
     return buf.getvalue()
 
-# --- VISTA PRINCIPAL ---
-st.title("🎯 Generador de Láminas de Propuesta OOH")
-st.markdown("Visualiza la lámina ejecutiva con proporciones de texto grandes y legibles, y descárgala en JPG.")
+# --- 9. VISTA PRINCIPAL ---
+st.title("🎯 Generador de Láminas de Propuesta OOH & Metro")
+st.markdown("Genera la lámina ejecutiva en alta calidad con el territorio, estación o punto vial seleccionado.")
 
 img_bytes = render_lamina_jpg()
 
-st.image(img_bytes, caption=f"Vista previa — {plaza_sel} ({modo_fondo} / {color_acento_nombre})", use_container_width=True)
+st.image(img_bytes, caption=f"Vista previa — {nombre_territorio} ({modo_fondo} / {color_acento_nombre})", use_container_width=True)
 
 st.download_button(
     label="📥 Descargar Lámina en JPG (Alta Calidad)",
     data=img_bytes,
-    file_name=f"propuesta_{plaza_sel.lower().replace(' ', '_')}_{formato_sel.lower().replace(' ', '_')}.jpg",
+    file_name=f"propuesta_{nombre_territorio.lower().replace(' ', '_')}_{formato_sel.lower().replace(' ', '_')}.jpg",
     mime="image/jpeg",
     type="primary"
 )
