@@ -5,7 +5,7 @@ import io
 import os
 
 st.set_page_config(
-    page_title="Planificador de Medios & Exportador JPG",
+    page_title="Planificador de Medios Chile & Exportador JPG",
     page_icon="🎯",
     layout="wide"
 )
@@ -139,41 +139,167 @@ METRO_DATA = {
     }
 }
 
-# --- 4. BASE VÍA PÚBLICA TRADICIONAL Y NODOS ---
+# --- 4. BASE DE DATOS NACIONAL COMPLETA (16 REGIONES DE CHILE) ---
 DATA_JERARQUICA = {
-    "Región Metropolitana": {
-        "Sector Sur": {
-            "res_sector": 1400000, "flot_sector": 300000,
+    "Región de Arica y Parinacota": {
+        "Arica Urbano": {
+            "res_sector": 250000, "flot_sector": 35000,
             "comunas": {
-                "San Joaquín": {
-                    "res": 103000, "flot": 65000,
-                    "contexto": "Nudo estratégico con alta densidad comercial (Mall Florida Center) y conectividad con Metro Línea 5.",
+                "Arica": {
+                    "res": 245000, "flot": 35000,
+                    "contexto": "Eje fronterizo y comercial costero, con flujo constante en torno a Av. Diego Portales y el puerto.",
                     "puntos": {
                         "Toda la comuna (General)": None,
-                        "Vicuña Mackenna con Departamental (Eje Metro Pedrero / Mall Florida Center)": {"flujo": 95000},
-                        "Santa Rosa con Departamental": {"flujo": 75000},
-                        "Vicuña Mackenna con Carlos Valdovinos": {"flujo": 60000}
-                    }
-                },
-                "San Miguel": {
-                    "res": 140000, "flot": 70000,
-                    "contexto": "Eje comercial estructurante de Gran Avenida con alto tráfico vehicular, hospitales y comercio comunal.",
-                    "puntos": {
-                        "Toda la comuna (General)": None,
-                        "Gran Avenida con Departamental": {"flujo": 85000},
-                        "Gran Avenida con Salesianos": {"flujo": 65000}
-                    }
-                },
-                "La Cisterna": {
-                    "res": 100000, "flot": 120000,
-                    "contexto": "Principal polo de trasbordo del sector sur que conecta Gran Avenida con Américo Vespucio.",
-                    "puntos": {
-                        "Toda la comuna (General)": None,
-                        "Intermodal La Cisterna (Américo Vespucio con Gran Avenida)": {"flujo": 140000}
+                        "Av. Diego Portales con Santa María": {"flujo": 65000},
+                        "Av. 21 de Mayo (Centro Peatonal)": {"flujo": 50000}
                     }
                 }
             }
-        },
+        }
+    },
+    "Región de Tarapacá": {
+        "Conurbación Iquique - Alto Hospicio": {
+            "res_sector": 360000, "flot_sector": 65000,
+            "comunas": {
+                "Iquique": {
+                    "res": 225000, "flot": 50000,
+                    "contexto": "Alta concentración vehicular entre el puerto, el polo comercial ZOFRI y la costanera de Cavancha.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Rotonda El Pampino (Acceso Iquique)": {"flujo": 85000},
+                        "Av. Arturo Prat frente a Cavancha": {"flujo": 70000}
+                    }
+                },
+                "Alto Hospicio": {
+                    "res": 135000, "flot": 15000,
+                    "contexto": "Conexión obligada por Ruta A-16 con tráfico pendular diario hacia Iquique.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Av. Ramón Pérez Opazo (Eje Central)": {"flujo": 45000}
+                    }
+                }
+            }
+        }
+    },
+    "Región de Antofagasta": {
+        "Gran Antofagasta": {
+            "res_sector": 440000, "flot_sector": 50000,
+            "comunas": {
+                "Antofagasta": {
+                    "res": 440000, "flot": 50000,
+                    "contexto": "Ciudad lineal encajonada entre cerro y mar; la concentración vehicular en Av. Costanera y Pedro Aguirre Cerda eleva los OTS diarios.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Av. Costanera con Balmaceda (Mall Plaza)": {"flujo": 110000},
+                        "Pedro Aguirre Cerda con Av. Pérez Zujovic": {"flujo": 90000}
+                    }
+                },
+                "Calama": {
+                    "res": 190000, "flot": 35000,
+                    "contexto": "Centro neurálgico de la minería con gran flujo corporativo y de transporte de turnos por Av. Balmaceda.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Av. Balmaceda con Mall Plaza Calama": {"flujo": 65000}
+                    }
+                }
+            }
+        }
+    },
+    "Región de Atacama": {
+        "Copiapó - Vallenar": {
+            "res_sector": 290000, "flot_sector": 35000,
+            "comunas": {
+                "Copiapó": {
+                    "res": 175000, "flot": 25000,
+                    "contexto": "Eje minero y comercial centrado en Av. Copayapu y el centro cívico de la plaza de armas.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Av. Copayapu con Los Carrera": {"flujo": 60000}
+                    }
+                },
+                "Vallenar": {
+                    "res": 60000, "flot": 10000,
+                    "contexto": "Paso obligado del Valle del Huasco con tránsito por Ruta 5 Norte.",
+                    "puntos": {
+                        "Toda la comuna (General)": None
+                    }
+                }
+            }
+        }
+    },
+    "Región de Coquimbo": {
+        "Conurbación La Serena - Coquimbo": {
+            "res_sector": 530000, "flot_sector": 60000,
+            "comunas": {
+                "Coquimbo": {
+                    "res": 240000, "flot": 40000,
+                    "contexto": "Coquimbo concentra su movimiento en pocos ejes que todas las rutas cruzan, generando repetición diaria de alto impacto sobre el puerto, el centro y los barrios altos.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Ruta 5 con La Cantera": {"flujo": 75000},
+                        "Av. Videla con Hospital": {"flujo": 55000}
+                    }
+                },
+                "La Serena": {
+                    "res": 240000, "flot": 40000,
+                    "contexto": "Ejes Balmaceda y Ruta 5 conectan el flujo intercomunal con alta retención en semáforos y centros comerciales.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Ruta 5 con Francisco de Aguirre": {"flujo": 80000},
+                        "Av. Balmaceda con Cuatro Esquinas": {"flujo": 65000}
+                    }
+                },
+                "Ovalle": {
+                    "res": 125000, "flot": 15000,
+                    "contexto": "Cabecera del Limarí con fuerte circulación comercial en torno a la Alameda de Ovalle.",
+                    "puntos": {
+                        "Toda la comuna (General)": None
+                    }
+                }
+            }
+        }
+    },
+    "Región de Valparaíso": {
+        "Gran Valparaíso": {
+            "res_sector": 1000000, "flot_sector": 180000,
+            "comunas": {
+                "Viña del Mar": {
+                    "res": 360000, "flot": 120000,
+                    "contexto": "Alta densidad turística, comercial y gastronómica concentrada en ejes 1 Norte, Libertad y borde costero.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "1 Norte con Libertad / Mall Marina": {"flujo": 130000},
+                        "Av. Benidorm (15 Norte) con San Martín": {"flujo": 85000}
+                    }
+                },
+                "Valparaíso": {
+                    "res": 315000, "flot": 90000,
+                    "contexto": "Centro administrativo y universitario regional con flujo masivo en torno a Av. Argentina y Pedro Montt.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Av. Argentina con Pedro Montt (Congreso / Terminal)": {"flujo": 110000}
+                    }
+                },
+                "Quilpué / Villa Alemana": {
+                    "res": 280000, "flot": 40000,
+                    "contexto": "Polo residencial del Marga Marga con fuerte tránsito diario hacia Viña del Mar y Valparaíso.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Av. Los Carrera (Troncal Urbano)": {"flujo": 65000}
+                    }
+                },
+                "Concón": {
+                    "res": 65000, "flot": 35000,
+                    "contexto": "Zona gastronómica y residencial de alta plusvalía en el eje costero de Borgoño.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Rotonda de Concón": {"flujo": 50000}
+                    }
+                }
+            }
+        }
+    },
+    "Región Metropolitana": {
         "Sector Oriente": {
             "res_sector": 1060000, "flot_sector": 800000,
             "comunas": {
@@ -204,6 +330,54 @@ DATA_JERARQUICA = {
                         "Plaza Egaña (Larraín con Av. Ossa)": {"flujo": 120000},
                         "Irarrázaval con Pedro de Valdivia": {"flujo": 85000}
                     }
+                },
+                "Vitacura": {
+                    "res": 95000, "flot": 110000,
+                    "contexto": "Polo de alta renta con vitrina premium en Av. Vitacura y Américo Vespucio.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Av. Vitacura con Américo Vespucio": {"flujo": 95000}
+                    }
+                }
+            }
+        },
+        "Sector Sur": {
+            "res_sector": 1400000, "flot_sector": 300000,
+            "comunas": {
+                "San Joaquín": {
+                    "res": 103000, "flot": 65000,
+                    "contexto": "Nudo estratégico con alta densidad comercial (Mall Florida Center) y conectividad con Metro Línea 5.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Vicuña Mackenna con Departamental (Eje Metro Pedrero / Mall Florida Center)": {"flujo": 95000},
+                        "Santa Rosa con Departamental": {"flujo": 75000},
+                        "Vicuña Mackenna con Carlos Valdovinos": {"flujo": 60000}
+                    }
+                },
+                "San Miguel": {
+                    "res": 140000, "flot": 70000,
+                    "contexto": "Eje comercial estructurante de Gran Avenida con alto tráfico vehicular, hospitales y comercio comunal.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Gran Avenida con Departamental": {"flujo": 85000},
+                        "Gran Avenida con Salesianos": {"flujo": 65000}
+                    }
+                },
+                "La Cisterna": {
+                    "res": 100000, "flot": 120000,
+                    "contexto": "Principal polo de trasbordo del sector sur que conecta Gran Avenida con Américo Vespucio.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Intermodal La Cisterna (Américo Vespucio con Gran Avenida)": {"flujo": 140000}
+                    }
+                },
+                "San Bernardo": {
+                    "res": 335000, "flot": 50000,
+                    "contexto": "Polo sur de gran tamaño con alto tráfico en torno a la Plaza de Armas y estación Tren Central.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Plaza de Armas / Estación Tren Central": {"flujo": 55000}
+                    }
                 }
             }
         },
@@ -225,43 +399,322 @@ DATA_JERARQUICA = {
                         "Toda la comuna (General)": None,
                         "Vicuña Mackenna con Américo Vespucio (Mall Plaza Vespucio)": {"flujo": 170000}
                     }
-                }
-            }
-        }
-    },
-    "Región de Coquimbo": {
-        "Conurbación La Serena - Coquimbo": {
-            "res_sector": 530000, "flot_sector": 60000,
-            "comunas": {
-                "Coquimbo": {
-                    "res": 240000, "flot": 40000,
-                    "contexto": "Coquimbo concentra su movimiento en pocos ejes que todas las rutas cruzan, generando repetición diaria de alto impacto sobre el puerto, el centro y los barrios altos.",
+                },
+                "Puente Alto": {
+                    "res": 650000, "flot": 60000,
+                    "contexto": "La comuna más poblada del país con flujo masivo diario por el eje Concha y Toro.",
                     "puntos": {
                         "Toda la comuna (General)": None,
-                        "Ruta 5 con La Cantera": {"flujo": 75000}
+                        "Plaza de Puente Alto (Concha y Toro)": {"flujo": 85000}
+                    }
+                }
+            }
+        },
+        "Sector Centro": {
+            "res_sector": 500000, "flot_sector": 1000000,
+            "comunas": {
+                "Santiago Centro": {
+                    "res": 500000, "flot": 1000000,
+                    "contexto": "El epicentro financiero, comercial y de servicios del país, con la mayor concentración flotante diaria de Chile.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Alameda con Paseo Ahumada / Metro U. de Chile": {"flujo": 220000},
+                        "Alameda con Santa Rosa": {"flujo": 140000}
+                    }
+                }
+            }
+        },
+        "Sector Poniente": {
+            "res_sector": 1600000, "flot_sector": 550000,
+            "comunas": {
+                "Maipú": {
+                    "res": 580000, "flot": 80000,
+                    "contexto": "Gran polo del poniente con concentración en Plaza de Maipú y el eje comercial Pajaritos.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Plaza de Maipú (Pajaritos con 5 de Abril)": {"flujo": 130000},
+                        "Pajaritos con Américo Vespucio (Mall Arauco Maipú)": {"flujo": 120000}
                     }
                 },
-                "La Serena": {
-                    "res": 240000, "flot": 40000,
-                    "contexto": "Ejes Balmaceda y Ruta 5 conectan el flujo intercomunal con alta retención en semáforos y centros comerciales.",
+                "Estación Central": {
+                    "res": 210000, "flot": 350000,
+                    "contexto": "Nodo de transporte interurbano con terminales de buses y estación de trenes sobre eje Alameda.",
                     "puntos": {
                         "Toda la comuna (General)": None,
-                        "Ruta 5 con Francisco de Aguirre": {"flujo": 80000}
+                        "Alameda frente a Terminales de Buses": {"flujo": 180000}
+                    }
+                },
+                "Pudahuel": {
+                    "res": 255000, "flot": 120000,
+                    "contexto": "Puerta de entrada logística e internacional por conectividad con el Aeropuerto de Santiago.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "San Pablo con Teniente Cruz": {"flujo": 70000}
+                    }
+                }
+            }
+        },
+        "Sector Norte": {
+            "res_sector": 1250000, "flot_sector": 450000,
+            "comunas": {
+                "Huechuraba": {
+                    "res": 110000, "flot": 130000,
+                    "contexto": "Polo empresarial y tecnológico con alto tráfico corporativo en Ciudad Empresarial.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Ciudad Empresarial (Av. del Parque)": {"flujo": 110000}
+                    }
+                },
+                "Quilicura": {
+                    "res": 260000, "flot": 90000,
+                    "contexto": "Gran polo industrial y logístico con conexión hacia Panamericana Norte.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Américo Vespucio Norte con Panamericana": {"flujo": 115000}
+                    }
+                },
+                "Independencia / Recoleta": {
+                    "res": 310000, "flot": 180000,
+                    "contexto": "Sector de alta concurrencia por el polo hospitalario, Vega Central y Patronato.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Av. Independencia con Santos Dumont": {"flujo": 95000},
+                        "Av. Recoleta con Av. La Paz (La Vega)": {"flujo": 130000}
                     }
                 }
             }
         }
     },
-    "Región de Antofagasta": {
-        "Gran Antofagasta": {
-            "res_sector": 440000, "flot_sector": 50000,
+    "Región de O'Higgins": {
+        "Rancagua y Alrededores": {
+            "res_sector": 400000, "flot_sector": 70000,
             "comunas": {
-                "Antofagasta": {
-                    "res": 440000, "flot": 50000,
-                    "contexto": "Ciudad lineal encajonada entre cerro y mar; la concentración vehicular en Av. Costanera y Pedro Aguirre Cerda eleva los OTS diarios.",
+                "Rancagua": {
+                    "res": 260000, "flot": 50000,
+                    "contexto": "Capital regional con intensa actividad minera, agrícola y comercial en torno al eje Alameda.",
                     "puntos": {
                         "Toda la comuna (General)": None,
-                        "Av. Costanera con Balmaceda (Mall Plaza)": {"flujo": 110000}
+                        "Av. Bernardo O'Higgins (Alameda) con Freire": {"flujo": 75000}
+                    }
+                },
+                "Machalí": {
+                    "res": 60000, "flot": 15000,
+                    "contexto": "Zona residencial de alto crecimiento con flujo pendular diario por Av. San Juan hacia Rancagua.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Av. San Juan": {"flujo": 40000}
+                    }
+                },
+                "San Fernando": {
+                    "res": 80000, "flot": 15000,
+                    "contexto": "Centro comercial y de distribución del Valle de Colchagua.",
+                    "puntos": {
+                        "Toda la comuna (General)": None
+                    }
+                }
+            }
+        }
+    },
+    "Región del Maule": {
+        "Talca - Curicó - Linares": {
+            "res_sector": 650000, "flot_sector": 90000,
+            "comunas": {
+                "Talca": {
+                    "res": 235000, "flot": 45000,
+                    "contexto": "Capital regional y universitaria con alto flujo comercial por 1 Sur y Av. San Miguel.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Av. San Miguel con Mall Plaza Maule": {"flujo": 70000},
+                        "1 Sur con 5 Oriente (Paseo Peatonal)": {"flujo": 55000}
+                    }
+                },
+                "Curicó": {
+                    "res": 165000, "flot": 25000,
+                    "contexto": "Polo agroindustrial con alta concurrencia en eje Camilo Henríquez.",
+                    "puntos": {
+                        "Toda la comuna (General)": None
+                    }
+                },
+                "Linares": {
+                    "res": 100000, "flot": 15000,
+                    "contexto": "Centro de servicios agrícolas de la cuenca sur del Maule.",
+                    "puntos": {
+                        "Toda la comuna (General)": None
+                    }
+                }
+            }
+        }
+    },
+    "Región de Ñuble": {
+        "Chillán Urbano": {
+            "res_sector": 250000, "flot_sector": 40000,
+            "comunas": {
+                "Chillán": {
+                    "res": 195000, "flot": 35000,
+                    "contexto": "Capital regional con flujo continuo en torno a la plaza de armas, mercado y Av. O'Higgins.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Av. O'Higgins con Av. Ecuador": {"flujo": 60000}
+                    }
+                },
+                "Chillán Viejo": {
+                    "res": 35000, "flot": 8000,
+                    "contexto": "Acceso sur de la conurbación con fuerte movimiento vehicular e histórico.",
+                    "puntos": {
+                        "Toda la comuna (General)": None
+                    }
+                }
+            }
+        }
+    },
+    "Región del Biobío": {
+        "Gran Concepción": {
+            "res_sector": 1050000, "flot_sector": 220000,
+            "comunas": {
+                "Concepción": {
+                    "res": 240000, "flot": 160000,
+                    "contexto": "Segundo polo económico y universitario del país, con flujo intenso en el eje O'Higgins, Carrera y Mall del Centro.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Av. O'Higgins con Aníbal Pinto (Plaza Independencia)": {"flujo": 120000},
+                        "Av. Los Carrera con Paicaví": {"flujo": 95000}
+                    }
+                },
+                "Talcahuano": {
+                    "res": 160000, "flot": 50000,
+                    "contexto": "Polo portuario e industrial con tránsito masivo en torno a Mall Plaza Trébol y autopista.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Autopista Concepción-Talcahuano frente a Mall Plaza": {"flujo": 110000}
+                    }
+                },
+                "San Pedro de la Paz": {
+                    "res": 145000, "flot": 30000,
+                    "contexto": "Paso obligado del tránsito hacia la costa sur y ruta de la madera.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Ruta 160 con Puente Llacolén": {"flujo": 80000}
+                    }
+                },
+                "Los Ángeles": {
+                    "res": 220000, "flot": 40000,
+                    "contexto": "Capital del sector forestal e industrial de la provincia con alta actividad en el centro.",
+                    "puntos": {
+                        "Toda la comuna (General)": None
+                    }
+                }
+            }
+        }
+    },
+    "Región de La Araucanía": {
+        "Gran Temuco": {
+            "res_sector": 450000, "flot_sector": 75000,
+            "comunas": {
+                "Temuco": {
+                    "res": 310000, "flot": 65000,
+                    "contexto": "Principal polo comercial, de salud y universitario del sur con alta densidad en Av. Alemania y Caupolicán.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Av. Alemania con Mall Portal Temuco": {"flujo": 90000},
+                        "Av. Caupolicán con Manuel Montt": {"flujo": 75000}
+                    }
+                },
+                "Padre Las Casas": {
+                    "res": 90000, "flot": 15000,
+                    "contexto": "Conurbación conectada por los puentes Cautín y Treng Treng Kay Kay.",
+                    "puntos": {
+                        "Toda la comuna (General)": None
+                    }
+                },
+                "Villarrica / Pucón": {
+                    "res": 105000, "flot": 50000,
+                    "contexto": "Polo turístico lacustre con altísima saturación y tráfico vehicular durante temporada alta.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Camino Villarrica - Pucón": {"flujo": 45000}
+                    }
+                }
+            }
+        }
+    },
+    "Región de Los Ríos": {
+        "Valdivia Urbano": {
+            "res_sector": 210000, "flot_sector": 40000,
+            "comunas": {
+                "Valdivia": {
+                    "res": 180000, "flot": 35000,
+                    "contexto": "Polo turístico, fluvial y cervecero con paso obligado por los puentes Pedro de Valdivia y Calle-Calle.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Av. Ramón Picarte con Plaza de la República": {"flujo": 60000},
+                        "Acceso Puente Pedro de Valdivia (Isla Teja)": {"flujo": 45000}
+                    }
+                }
+            }
+        }
+    },
+    "Región de Los Lagos": {
+        "Puerto Montt - Osorno": {
+            "res_sector": 550000, "flot_sector": 85000,
+            "comunas": {
+                "Puerto Montt": {
+                    "res": 260000, "flot": 50000,
+                    "contexto": "Capital de la industria acuícola y punto neurálgico de conexión hacia la Carretera Austral.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Av. Diego Portales (Costanera frente al Mall)": {"flujo": 80000}
+                    }
+                },
+                "Puerto Varas": {
+                    "res": 55000, "flot": 25000,
+                    "contexto": "Zona residencial y de turismo premium con alta afluencia por costanera Vicente Pérez Rosales.",
+                    "puntos": {
+                        "Toda la comuna (General)": None
+                    }
+                },
+                "Osorno": {
+                    "res": 175000, "flot": 30000,
+                    "contexto": "Polo lechero y ganadero con alta actividad en el eje Mackenna y Plaza de Armas.",
+                    "puntos": {
+                        "Toda la comuna (General)": None
+                    }
+                },
+                "Castro (Chiloé)": {
+                    "res": 55000, "flot": 20000,
+                    "contexto": "Cabecera del archipiélago con circulación en torno a la plaza y el bypass.",
+                    "puntos": {
+                        "Toda la comuna (General)": None
+                    }
+                }
+            }
+        }
+    },
+    "Región de Aysén": {
+        "Coyhaique Urbano": {
+            "res_sector": 80000, "flot_sector": 15000,
+            "comunas": {
+                "Coyhaique": {
+                    "res": 65000, "flot": 15000,
+                    "contexto": "Centro de servicios de la Patagonia chilena centrado en torno a su plaza pentagonal y Av. Baquedano.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Av. Baquedano con Plaza de Armas": {"flujo": 30000}
+                    }
+                }
+            }
+        }
+    },
+    "Región de Magallanes y de la Antártica Chilena": {
+        "Punta Arenas Urbano": {
+            "res_sector": 150000, "flot_sector": 25000,
+            "comunas": {
+                "Punta Arenas": {
+                    "res": 140000, "flot": 25000,
+                    "contexto": "Polo austral del país con tráfico comercial en torno a la Costanera del Estrecho y Zona Franca.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Av. Costanera con Av. Colón": {"flujo": 45000},
+                        "Acceso Zona Franca": {"flujo": 40000}
                     }
                 }
             }
@@ -355,11 +808,15 @@ else:
         texto_estrategico_default = f"Macrozona con un flujo activo superior a {universo_calculo:,.0f} personas al día.".replace(",", ".")
     else:
         com_data = datos_sec["comunas"][com_sel]
-        pto_sel = st.sidebar.selectbox("4. Georreferencia / Punto:", list(com_data["puntos"].keys()))
+        puntos_comuna = list(com_data.get("puntos", {}).keys())
+        if not puntos_comuna:
+            puntos_comuna = ["Toda la comuna (General)"]
+            
+        pto_sel = st.sidebar.selectbox("4. Georreferencia / Punto:", puntos_comuna)
         if pto_sel == "Toda la comuna (General)":
             universo_calculo = com_data["res"] + com_data["flot"]
             nombre_territorio = com_sel
-            texto_estrategico_default = com_data["contexto"]
+            texto_estrategico_default = com_data.get("contexto", "Cobertura continua sobre residentes y población flotante.")
         else:
             universo_calculo = com_data["puntos"][pto_sel]["flujo"]
             nombre_territorio = f"{com_sel} - {pto_sel}"
@@ -482,7 +939,7 @@ def render_lamina_jpg():
     draw.text((x_offset + card_w + 55, b_y + 20), "Costo x impacto (medio)", fill=c_text_muted, font=f_label)
     draw.text((x_offset + card_w + 55, b_y + 55), f"${costo_impacto_m:.1f} CLP", fill=c_accent, font=f_num_big)
 
-    # Tarjeta Naturaleza del formato con ajuste en dos líneas
+    # Tarjeta Naturaleza del formato con ajuste dinámico de texto
     card3_x = x_offset + card_w*2 + 60
     draw.rounded_rectangle([(card3_x, b_y), (card3_x + card_w, b_y + card_h)], radius=12, fill=c_card, outline=c_border, width=1)
     draw.text((card3_x + 25, b_y + 20), "Naturaleza del formato", fill=c_text_muted, font=f_label)
