@@ -748,15 +748,24 @@ DATA_JERARQUICA = {
     }
 }
 
-# --- 6. FORMATOS COMERCIALES ---
+# --- 6. FORMATOS COMERCIALES (OOH & METRO) ---
 FORMATOS_OOH = {
-    "Lunetas Buses": {"base": 30, "c": 0.20, "m": 0.25, "o": 0.30, "tipo": "Cobertura móvil", "unidad": "lunetas"},
-    "Pantalla Digital (DOOH)": {"base": 1, "c": 0.20, "m": 0.25, "o": 0.30, "tipo": "Gran impacto LED", "unidad": "pantallas"},
-    "Buses Troncales": {"base": 70, "c": 0.30, "m": 0.35, "o": 0.40, "tipo": "Troncal móvil", "unidad": "buses"},
-    "Valla Estática": {"base": 1, "c": 0.15, "m": 0.20, "o": 0.25, "tipo": "Soporte fijo", "unidad": "soportes"}
+    "Building Wrap (Edificio)": {
+        "base": 1, "c": 0.25, "m": 0.30, "o": 0.35, "tipo": "Gran impacto edificio", "unidad": "edificios",
+        "es_wrap": True,
+        "contexto": "Gigantografía de escala monumental sobre fachada de edificio (>400-500 m²), con visualización a larga distancia y cono visual abierto sobre avenidas estructurantes."
+    },
+    "Pantalla Digital (DOOH)": {"base": 1, "c": 0.20, "m": 0.25, "o": 0.30, "tipo": "Gran impacto LED", "unidad": "pantallas", "es_wrap": False},
+    "Lunetas Buses": {"base": 30, "c": 0.20, "m": 0.25, "o": 0.30, "tipo": "Cobertura móvil", "unidad": "lunetas", "es_wrap": False},
+    "Buses Troncales": {"base": 70, "c": 0.30, "m": 0.35, "o": 0.40, "tipo": "Troncal móvil", "unidad": "buses", "es_wrap": False},
+    "Valla Estática": {"base": 1, "c": 0.15, "m": 0.20, "o": 0.25, "tipo": "Soporte fijo", "unidad": "soportes", "es_wrap": False}
 }
 
 FORMATOS_METRO = {
+    "Muro Estación (Gran Formato)": {
+        "base": 1, "c": 0.35, "m": 0.45, "o": 0.55, "tipo": "Dominación muro", "unidad": "muros", "es_tren": False,
+        "contexto": "Brandeo de muro completo en andén o pasillo de trasbordo con cobertura total de superficie, alto impacto visual y máxima permanencia en espera."
+    },
     "Brandeo Tren Integral (Línea 1 - 27 Estaciones)": {
         "base": 1, "c": 0.22, "m": 0.27, "o": 0.32, "tipo": "Tren completo", "unidad": "trenes", "es_tren": True, "flujo_red_dia": 850000,
         "contexto": "Tren completo en circulación continua de San Pablo a Los Dominicos impactando andenes de 27 estaciones más usuarios en viaje."
@@ -809,6 +818,10 @@ st.sidebar.markdown("---")
 st.sidebar.header("⚙️ Configuración Territorial & Medios")
 medio_tipo = st.sidebar.radio("Selecciona Entorno:", ["Vía Pública Tradicional (Calles)", "Metro de Santiago (Estaciones y Trenes)"])
 
+ancho_wrap = 0
+alto_wrap = 0
+superficie_wrap = 0
+
 if medio_tipo == "Metro de Santiago (Estaciones y Trenes)":
     formato_dict = FORMATOS_METRO
     formato_sel = st.sidebar.selectbox("Formato en Metro:", list(formato_dict.keys()))
@@ -827,7 +840,10 @@ if medio_tipo == "Metro de Santiago (Estaciones y Trenes)":
         universo_calculo = datos_estacion["alcance_dia"]
         nombre_territorio = f"Metro {linea_sel} - {estacion_sel}"
         nombre_titulo_lamina = f"ESTACIÓN {estacion_sel.upper()}"
-        texto_estrategico_default = f"Estación {estacion_sel} registra {datos_estacion['flujo_mes']:,.0f} pasajeros mensuales (Ipsos), con tiempo de espera cautivo de alta exposición.".replace(",", ".")
+        if "Muro" in formato_sel:
+            texto_estrategico_default = f"Muro completo en Estación {estacion_sel} ({datos_estacion['flujo_mes']:,.0f} pasajeros mensuales Ipsos), entregando máxima superficie y dominación de andén.".replace(",", ".")
+        else:
+            texto_estrategico_default = f"Estación {estacion_sel} registra {datos_estacion['flujo_mes']:,.0f} pasajeros mensuales (Ipsos), con tiempo de espera cautivo de alta exposición.".replace(",", ".")
 else:
     fuente_medicion_pie = "Medición Oficial de Audiencias: INE Chile · EOD / SECTRA / MTT · UOCT / MOP."
     reg_sel = st.sidebar.selectbox("1. Región:", list(DATA_JERARQUICA.keys()))
@@ -870,9 +886,19 @@ else:
     formato_sel = st.sidebar.selectbox("Formato Publicitario:", list(formato_dict.keys()))
     info_f = formato_dict[formato_sel]
 
+    # Cuadros de dimensiones para Building Wrap
+    if info_f.get("es_wrap", False):
+        st.sidebar.markdown("📐 **Dimensiones de la Gigantografía:**")
+        col_w, col_h = st.sidebar.columns(2)
+        ancho_wrap = col_w.number_input("Ancho (metros):", min_value=5.0, max_value=60.0, value=20.0, step=1.0)
+        alto_wrap = col_h.number_input("Alto (metros):", min_value=5.0, max_value=80.0, value=25.0, step=1.0)
+        superficie_wrap = ancho_wrap * alto_wrap
+        st.sidebar.success(f"Superficie total: **{superficie_wrap:,.0f} m²** ({ancho_wrap:.0f}×{alto_wrap:.0f} m)")
+        texto_estrategico_default = f"Elemento monumental de {superficie_wrap:,.0f} m² sobre edificio ({ancho_wrap:.0f}×{alto_wrap:.0f}m), con cono de visibilidad a más de 400 metros de distancia sobre arteria principal."
+
 cant_unidades = st.sidebar.number_input(f"Cantidad de {info_f['unidad']}:", min_value=1, value=info_f["base"], step=1)
 dias_campana = st.sidebar.number_input("Días de Campaña:", min_value=1, value=30, step=1)
-inversion_total = st.sidebar.number_input("Inversión Total ($ CLP):", min_value=100000, value=2500000, step=250000)
+inversion_total = st.sidebar.number_input("Inversión Total ($ CLP):", min_value=100000, value=3500000 if info_f.get("es_wrap", False) else 2500000, step=250000)
 
 foto_soporte = st.sidebar.file_uploader("Subir foto del soporte (opcional):", type=["jpg", "png", "jpeg"])
 
@@ -902,11 +928,17 @@ tabla_esc = [
     {"esc": "Optimista", "rate": info_f["o"], "dia": imp_diarios_o, "tot": imp_totales_o}
 ]
 
+# Etiqueta para el mix
+if info_f.get("es_wrap", False):
+    soporte_mix_nombre = f"Building Wrap ({superficie_wrap:,.0f} m²)"
+else:
+    soporte_mix_nombre = f"{formato_sel} ({cant_unidades} {info_f['unidad']})"
+
 # Botones de agregar al plan
 st.sidebar.markdown("---")
 if st.sidebar.button("➕ Agregar este elemento al Plan de Medios", use_container_width=True, type="primary"):
     st.session_state.plan_items.append({
-        "Soporte": f"{formato_sel} ({cant_unidades} {info_f['unidad']})",
+        "Soporte": soporte_mix_nombre,
         "Ubicación": nombre_territorio,
         "Días": dias_campana,
         "Inversión Neta": inversion_total,
@@ -939,7 +971,11 @@ def render_lamina_jpg():
 
     # 1. Cabecera (Título conciso con auto-escalado anti-solapamiento)
     title_text = f"{nombre_titulo_lamina} - {formato_sel.upper()}"
-    subtitle_text = f"{cant_unidades} {info_f['unidad']} · {dias_campana} días"
+    
+    if info_f.get("es_wrap", False):
+        subtitle_text = f"{superficie_wrap:,.0f} m² ({ancho_wrap:.0f}×{alto_wrap:.0f}m) · {dias_campana} días"
+    else:
+        subtitle_text = f"{cant_unidades} {info_f['unidad']} · {dias_campana} días"
     
     max_title_w = W - 520
     t_size = 42
@@ -953,7 +989,7 @@ def render_lamina_jpg():
         f_title = obtener_fuente(t_size, bold=True)
 
     draw.text((60, 48), title_text, fill=c_accent, font=f_title)
-    draw.text((W - 420, 58), subtitle_text, fill=c_text_muted, font=f_sub)
+    draw.text((W - 440, 58), subtitle_text, fill=c_text_muted, font=f_sub)
     draw.line([(60, 115), (W - 60, 115)], fill=c_accent, width=3)
 
     # 2. Recuadro Foto Soporte
@@ -978,10 +1014,15 @@ def render_lamina_jpg():
     draw.text((x_offset + 25, 165), "Inversión mensual", fill=c_text_muted, font=f_label)
     draw.text((x_offset + 25, 202), f"${inversion_total:,.0f}".replace(",", "."), fill=c_text_primary, font=f_num_big)
 
-    # Costo Unitario
+    # Costo Unitario / m2
     draw.rounded_rectangle([(x_offset + card_w + 30, 145), (x_offset + card_w*2 + 30, 145 + card_h)], radius=12, fill=c_card, outline=c_border, width=1)
-    draw.text((x_offset + card_w + 55, 165), f"Costo por {info_f['unidad'][:-1]} / mes", fill=c_text_muted, font=f_label)
-    draw.text((x_offset + card_w + 55, 202), f"${costo_unitario:,.0f}".replace(",", "."), fill=c_text_primary, font=f_num_big)
+    if info_f.get("es_wrap", False):
+        costo_m2 = inversion_total / superficie_wrap if superficie_wrap > 0 else 0
+        draw.text((x_offset + card_w + 55, 165), "Costo por m² / mes", fill=c_text_muted, font=f_label)
+        draw.text((x_offset + card_w + 55, 202), f"${costo_m2:,.0f}".replace(",", "."), fill=c_text_primary, font=f_num_big)
+    else:
+        draw.text((x_offset + card_w + 55, 165), f"Costo por {info_f['unidad'][:-1]} / mes", fill=c_text_muted, font=f_label)
+        draw.text((x_offset + card_w + 55, 202), f"${costo_unitario:,.0f}".replace(",", "."), fill=c_text_primary, font=f_num_big)
 
     # Impactos Totales
     draw.rounded_rectangle([(x_offset + card_w*2 + 60, 145), (x_offset + card_w*3 + 60, 145 + card_h)], radius=12, fill=c_card_highlight_bg)
@@ -1131,7 +1172,7 @@ def render_lamina_consolidada_jpg():
     gap = (1800 - (card_w * 4)) // 3
     x_pos = 60
 
-    # Tarjeta 1: Total Soportes en Mix (Ajuste conciso y auto-escalado anti-desborde)
+    # Tarjeta 1: Total Soportes en Mix (Ajuste conciso y auto-escalado)
     draw.rounded_rectangle([(x_pos, 145), (x_pos + card_w, 145 + card_h)], radius=12, fill=c_card, outline=c_border, width=1)
     draw.text((x_pos + 25, 165), "Total Soportes en Mix", fill=c_text_muted, font=f_label)
     
