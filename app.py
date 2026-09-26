@@ -3,9 +3,6 @@ import pandas as pd
 from PIL import Image, ImageDraw, ImageFont
 import io
 import os
-import urllib.request
-import urllib.parse
-import json
 
 st.set_page_config(
     page_title="Planificador de medios / Vía pública",
@@ -13,12 +10,9 @@ st.set_page_config(
     layout="wide"
 )
 
-# Inicializar sesiones de estado
+# Inicializar sesión para el Plan de Medios Multi-Formato (Carrito)
 if "plan_items" not in st.session_state:
     st.session_state.plan_items = []
-
-if "geo_resultado" not in st.session_state:
-    st.session_state.geo_resultado = None
 
 # --- 1. GESTIÓN DE FUENTES UNICODE ---
 def obtener_fuente(size=24, bold=False):
@@ -54,50 +48,7 @@ def generar_logo_madcom(fondo_oscuro=True):
     d.text((68, 16), "MADCOM", fill=color_trazo, font=f_logo)
     return im
 
-# --- 3. GEOCODIFICADOR CARTOGRÁFICO NATIVO ---
-def consultar_direccion_osm(direccion_texto):
-    query_clean = f"{direccion_texto}, Chile"
-    url = f"https://nominatim.openstreetmap.org/search?q={urllib.parse.quote(query_clean)}&format=json&addressdetails=1&limit=1"
-    req = urllib.request.Request(url, headers={'User-Agent': 'MADCOM_PlanificadorMedios_Chile/1.0'})
-    try:
-        with urllib.request.urlopen(req, timeout=5) as response:
-            datos = json.loads(response.read().decode())
-            if datos and len(datos) > 0:
-                res = datos[0]
-                addr = res.get('address', {})
-                tipo_via = res.get('type', 'road')
-                comuna = addr.get('city') or addr.get('town') or addr.get('suburb') or addr.get('municipality') or addr.get('county') or 'Santiago'
-                
-                # Clasificación técnica de flujos según estándar vial
-                if tipo_via in ['motorway', 'motorway_link', 'trunk', 'trunk_link']:
-                    flujo_est = 145000
-                    desc_via = "Autopista Urbana / Vía Expresa (Alto flujo continuo)"
-                elif tipo_via in ['primary', 'primary_link']:
-                    flujo_est = 100000
-                    desc_via = "Arteria Troncal Principal (Densidad vehicular + comercial)"
-                elif tipo_via in ['secondary', 'secondary_link']:
-                    flujo_est = 65000
-                    desc_via = "Avenida Colectora / Intercomunal"
-                elif tipo_via in ['tertiary', 'tertiary_link']:
-                    flujo_est = 40000
-                    desc_via = "Vía de distribución comunal media"
-                else:
-                    flujo_est = 25000
-                    desc_via = "Vía local / barrial de proximidad"
-                
-                return {
-                    "ok": True,
-                    "comuna": comuna.upper(),
-                    "tipo_via": tipo_via,
-                    "desc_via": desc_via,
-                    "flujo_sugerido": flujo_est,
-                    "nombre_completo": res.get('display_name', '')
-                }
-    except Exception as e:
-        return {"ok": False, "error": str(e)}
-    return {"ok": False, "error": "No se encontraron coincidencias cartográficas"}
-
-# --- 4. COLORES CORPORATIVOS ---
+# --- 3. COLORES CORPORATIVOS ---
 COLORES_BASE = {
     "Naranjo Enérgico": "#FF5630",
     "Amarillo (Smart Fit)": "#FFB800",
@@ -108,7 +59,7 @@ COLORES_BASE = {
     "Azul Marino": "#091E42"
 }
 
-# --- 5. BASE DE DATOS METRO DE SANTIAGO (OFICIAL IPSOS) ---
+# --- 4. BASE DE DATOS METRO DE SANTIAGO (OFICIAL IPSOS) ---
 METRO_DATA = {
     "Línea 1": {
         "Alberto Hurtado": {"flujo_mes": 5146950, "alcance_dia": 171565},
@@ -207,7 +158,7 @@ METRO_DATA = {
     }
 }
 
-# --- 6. BASE DE DATOS NACIONAL (16 REGIONES DE CHILE) ---
+# --- 5. BASE DE DATOS NACIONAL (16 REGIONES DE CHILE) ---
 DATA_JERARQUICA = {
     "Región de Arica y Parinacota": {
         "Arica Urbano": {
@@ -798,7 +749,7 @@ DATA_JERARQUICA = {
     }
 }
 
-# --- 7. FORMATOS COMERCIALES (OOH & METRO) ---
+# --- 6. FORMATOS COMERCIALES (OOH & METRO) ---
 FORMATOS_OOH = {
     "Building Wrap (Edificio)": {
         "base": 1, "c": 0.25, "m": 0.30, "o": 0.35, "tipo": "Gran impacto edificio", "unidad": "edificios",
@@ -834,7 +785,7 @@ FORMATOS_METRO = {
     }
 }
 
-# --- 8. BARRA LATERAL: LOGO MADCOM Y CONFIGURACIÓN ---
+# --- 7. BARRA LATERAL: LOGO MADCOM Y CONFIGURACIÓN ---
 st.sidebar.markdown("### 🏢 Agencia")
 logo_preview = generar_logo_madcom(fondo_oscuro=True)
 st.sidebar.image(logo_preview, width=170)
@@ -866,14 +817,7 @@ else:
 
 st.sidebar.markdown("---")
 st.sidebar.header("⚙️ Configuración Territorial & Medios")
-medio_tipo = st.sidebar.radio(
-    "Selecciona Modalidad de Búsqueda:",
-    [
-        "Vía Pública Tradicional (Calles)",
-        "🔍 Búsqueda Automática por Dirección Exacta (Geocodificador OSM)",
-        "Metro de Santiago (Estaciones y Trenes)"
-    ]
-)
+medio_tipo = st.sidebar.radio("Selecciona Entorno:", ["Vía Pública Tradicional (Calles)", "Metro de Santiago (Estaciones y Trenes)"])
 
 ancho_wrap = 0
 alto_wrap = 0
@@ -901,50 +845,7 @@ if medio_tipo == "Metro de Santiago (Estaciones y Trenes)":
             texto_estrategico_default = f"Muro completo en Estación {estacion_sel} ({datos_estacion['flujo_mes']:,.0f} pasajeros mensuales Ipsos), entregando máxima superficie y dominación de andén.".replace(",", ".")
         else:
             texto_estrategico_default = f"Estación {estacion_sel} registra {datos_estacion['flujo_mes']:,.0f} pasajeros mensuales (Ipsos), con tiempo de espera cautivo de alta exposición.".replace(",", ".")
-
-elif medio_tipo == "🔍 Búsqueda Automática por Dirección Exacta (Geocodificador OSM)":
-    fuente_medicion_pie = "Medición Oficial de Audiencias: OpenStreetMap Cartography · INE Chile · SECTRA/UOCT."
-    st.sidebar.markdown("📍 **Ingresa la Dirección o Esquina:**")
-    dir_input = st.sidebar.text_input("Dirección en Chile:", value="Av. Kennedy con Alonso de Córdova")
-    
-    if st.sidebar.button("🔎 Georreferenciar y Calcular Flujo", use_container_width=True):
-        with st.spinner("Analizando jerarquía vial y cono de flujo satelital..."):
-            st.session_state.geo_resultado = consultar_direccion_osm(dir_input)
-    
-    res_geo = st.session_state.geo_resultado
-    if res_geo and res_geo.get("ok", False):
-        st.sidebar.success(f"📍 Detectado: **{res_geo['comuna']}**\n\n*{res_geo['desc_via']}*")
-        flujo_base_geo = res_geo['flujo_sugerido']
-        nombre_titulo_lamina = res_geo['comuna'].split()[0].upper()
-    else:
-        flujo_base_geo = 120000
-        nombre_titulo_lamina = "SANTIAGO"
-        if res_geo and not res_geo.get("ok", False):
-            st.sidebar.warning(f"No se pudo autocalibrar ({res_geo.get('error')}). Ingresa el flujo estimado:")
-            
-    universo_calculo = st.sidebar.number_input(
-        "Flujo Activo Diario Estimado (Vehículos + Peatones):",
-        min_value=5000,
-        value=flujo_base_geo,
-        step=5000
-    )
-    nombre_territorio = dir_input.strip()
-    texto_estrategico_default = f"Punto georreferenciado en {dir_input} con aforo vial y peatonal estimado de {universo_calculo:,.0f} personas al día.".replace(",", ".")
-
-    formato_dict = FORMATOS_OOH
-    formato_sel = st.sidebar.selectbox("Formato Publicitario:", list(formato_dict.keys()))
-    info_f = formato_dict[formato_sel]
-
-    if info_f.get("es_wrap", False):
-        st.sidebar.markdown("📐 **Dimensiones de la Gigantografía:**")
-        col_w, col_h = st.sidebar.columns(2)
-        ancho_wrap = col_w.number_input("Ancho (metros):", min_value=5.0, max_value=60.0, value=20.0, step=1.0)
-        alto_wrap = col_h.number_input("Alto (metros):", min_value=5.0, max_value=80.0, value=25.0, step=1.0)
-        superficie_wrap = ancho_wrap * alto_wrap
-        st.sidebar.success(f"Superficie total: **{superficie_wrap:,.0f} m²** ({ancho_wrap:.0f}×{alto_wrap:.0f} m)")
-        texto_estrategico_default = f"Building Wrap de {superficie_wrap:,.0f} m² en {dir_input}, con cono de visibilidad a larga distancia y flujo auditado de {universo_calculo:,.0f} personas/día."
-
-else: # Vía Pública Tradicional
+else:
     fuente_medicion_pie = "Medición Oficial de Audiencias: INE Chile · EOD / SECTRA / MTT · UOCT / MOP."
     reg_sel = st.sidebar.selectbox("1. Región:", list(DATA_JERARQUICA.keys()))
     sec_sel = st.sidebar.selectbox("2. Sector / Zona:", list(DATA_JERARQUICA[reg_sel].keys()))
@@ -991,6 +892,7 @@ else: # Vía Pública Tradicional
     formato_sel = st.sidebar.selectbox("Formato Publicitario:", list(formato_dict.keys()))
     info_f = formato_dict[formato_sel]
 
+    # Cuadros de dimensiones para Building Wrap
     if info_f.get("es_wrap", False):
         st.sidebar.markdown("📐 **Dimensiones de la Gigantografía:**")
         col_w, col_h = st.sidebar.columns(2)
@@ -1061,7 +963,7 @@ if st.sidebar.button("🗑️ Limpiar Plan de Medios", use_container_width=True)
     st.session_state.plan_items = []
     st.rerun()
 
-# --- 9. RENDERIZADOR PIL: LÁMINA INDIVIDUAL (CON FOTO) ---
+# --- 8. RENDERIZADOR PIL: LÁMINA INDIVIDUAL (CON FOTO) ---
 def render_lamina_jpg():
     W, H = 1920, 1080
     im = Image.new("RGB", (W, H), c_bg)
@@ -1235,7 +1137,7 @@ def render_lamina_jpg():
     return buf.getvalue()
 
 
-# --- 10. RENDERIZADOR PIL: LÁMINA CONSOLIDADA (MIX COMPLETO - PANORÁMICA SIN FOTO) ---
+# --- 9. RENDERIZADOR PIL: LÁMINA CONSOLIDADA (MIX COMPLETO - PANORÁMICA SIN FOTO) ---
 def render_lamina_consolidada_jpg():
     W, H = 1920, 1080
     im = Image.new("RGB", (W, H), c_bg)
@@ -1258,6 +1160,7 @@ def render_lamina_consolidada_jpg():
     cpm_global_c = (total_inversion / total_imp_c * 1000) if total_imp_c > 0 else 0
     cpm_global_o = (total_inversion / total_imp_o * 1000) if total_imp_o > 0 else 0
 
+    # Fuentes técnicas presentes en el plan
     tiene_metro = any(item.get("Entorno") == "Metro de Santiago (Estaciones y Trenes)" for item in st.session_state.plan_items)
     tiene_ooh = any(item.get("Entorno") != "Metro de Santiago (Estaciones y Trenes)" for item in st.session_state.plan_items)
     if tiene_metro and tiene_ooh:
@@ -1390,7 +1293,7 @@ def render_lamina_consolidada_jpg():
     return buf.getvalue()
 
 
-# --- 11. VISTA PRINCIPAL ---
+# --- 10. VISTA PRINCIPAL ---
 st.title("🎯 Planificador de medios / Vía pública")
 st.markdown("Calcula el rendimiento por soporte, diseña la lámina ejecutiva y consolida el mix total de la campaña.")
 
