@@ -2,12 +2,154 @@ import streamlit as st
 import pandas as pd
 
 st.set_page_config(
-    page_title="Simulador de Medios Vía Pública & DOOH",
+    page_title="Simulador de Medios Vía Pública & Metro",
     page_icon="🎯",
     layout="wide"
 )
 
-# Estructura Jerárquica: Región -> Sector -> Comunas y Puntos Específicos
+# --- BASE DE DATOS METRO DE SANTIAGO (OFICIAL IPSOS) ---
+METRO_DATA = {
+    "Línea 1": {
+        "Alberto Hurtado": {"flujo_mes": 5146950, "alcance_dia": 171565},
+        "Alcantara": {"flujo_mes": 4125420, "alcance_dia": 137514},
+        "Baquedano": {"flujo_mes": 11084610, "alcance_dia": 369487},
+        "Central": {"flujo_mes": 6083070, "alcance_dia": 202769},
+        "Ecuador": {"flujo_mes": 5290230, "alcance_dia": 176341},
+        "El Golf": {"flujo_mes": 4568130, "alcance_dia": 152271},
+        "Escuela Militar": {"flujo_mes": 3730200, "alcance_dia": 124340},
+        "Hernando De Magallanes": {"flujo_mes": 2252940, "alcance_dia": 75098},
+        "La Moneda": {"flujo_mes": 6435480, "alcance_dia": 214516},
+        "Las Rejas": {"flujo_mes": 4796760, "alcance_dia": 159892},
+        "Los Dominicos": {"flujo_mes": 1840920, "alcance_dia": 61364},
+        "Los Heroes": {"flujo_mes": 9190050, "alcance_dia": 306335},
+        "Los Leones": {"flujo_mes": 8199240, "alcance_dia": 273308},
+        "Manquehue": {"flujo_mes": 3751140, "alcance_dia": 125038},
+        "Manuel Montt": {"flujo_mes": 4545000, "alcance_dia": 151500},
+        "Neptuno": {"flujo_mes": 4353210, "alcance_dia": 145107},
+        "Pajaritos": {"flujo_mes": 4272180, "alcance_dia": 142406},
+        "Pedro De Valdivia": {"flujo_mes": 4181790, "alcance_dia": 139393},
+        "Republica": {"flujo_mes": 5831550, "alcance_dia": 194385},
+        "Salvador": {"flujo_mes": 4141680, "alcance_dia": 138056},
+        "San Alberto Hurtado": {"flujo_mes": 5146950, "alcance_dia": 171565},
+        "San Pablo": {"flujo_mes": 5306610, "alcance_dia": 176887},
+        "Santa Lucia": {"flujo_mes": 5918340, "alcance_dia": 197278},
+        "Tobalaba": {"flujo_mes": 8866500, "alcance_dia": 295550},
+        "U.L.A.": {"flujo_mes": 5797350, "alcance_dia": 193245},
+        "Universidad Catolica": {"flujo_mes": 5462820, "alcance_dia": 182094},
+        "Universidad De Chile": {"flujo_mes": 8058030, "alcance_dia": 268601}
+    },
+    "Línea 2": {
+        "Cementerios": {"flujo_mes": 1696200, "alcance_dia": 56540},
+        "Cerro Blanco": {"flujo_mes": 2221650, "alcance_dia": 74055},
+        "Ciudad Del Niño": {"flujo_mes": 2235960, "alcance_dia": 74532},
+        "Departamental": {"flujo_mes": 2740380, "alcance_dia": 91346},
+        "Dorsal": {"flujo_mes": 2420070, "alcance_dia": 80669},
+        "Einstein": {"flujo_mes": 2188440, "alcance_dia": 72948},
+        "El Llano": {"flujo_mes": 2977530, "alcance_dia": 99251},
+        "El Parrón": {"flujo_mes": 2049000, "alcance_dia": 68300},
+        "Franklin": {"flujo_mes": 6393960, "alcance_dia": 213132},
+        "La Cisterna": {"flujo_mes": 4272180, "alcance_dia": 142406},
+        "Lo Ovalle": {"flujo_mes": 2235960, "alcance_dia": 74532},
+        "Lo Vial": {"flujo_mes": 2687550, "alcance_dia": 89585},
+        "Los Heroes": {"flujo_mes": 9190050, "alcance_dia": 306335},
+        "Parque O'Higgins": {"flujo_mes": 2664090, "alcance_dia": 88803},
+        "Patronato": {"flujo_mes": 3290610, "alcance_dia": 109687},
+        "Puente Cal Y Canto": {"flujo_mes": 8058030, "alcance_dia": 268601},
+        "Rondizzoni": {"flujo_mes": 2348550, "alcance_dia": 78285},
+        "San Miguel": {"flujo_mes": 2740380, "alcance_dia": 91346},
+        "Santa Ana": {"flujo_mes": 7378950, "alcance_dia": 245965},
+        "Toesca": {"flujo_mes": 2664090, "alcance_dia": 88803},
+        "Vespucio Norte": {"flujo_mes": 3816750, "alcance_dia": 127225},
+        "Zapadores": {"flujo_mes": 2951160, "alcance_dia": 98372}
+    },
+    "Línea 3": {
+        "Chile España": {"flujo_mes": 2378880, "alcance_dia": 79296},
+        "Conchali": {"flujo_mes": 2446830, "alcance_dia": 81561},
+        "Cardenal Caro": {"flujo_mes": 2188440, "alcance_dia": 72948},
+        "Fernando Castillo Velasco": {"flujo_mes": 2049000, "alcance_dia": 68300},
+        "Hospitales": {"flujo_mes": 3816750, "alcance_dia": 127225},
+        "Irarrazaval": {"flujo_mes": 5290230, "alcance_dia": 176341},
+        "Los Libertadores": {"flujo_mes": 2977530, "alcance_dia": 99251},
+        "Matta": {"flujo_mes": 3140550, "alcance_dia": 104685},
+        "Monseñor Eyzaguirre": {"flujo_mes": 2188440, "alcance_dia": 72948},
+        "Ñuble": {"flujo_mes": 4272180, "alcance_dia": 142406},
+        "Ñuñoa": {"flujo_mes": 4545000, "alcance_dia": 151500},
+        "Parque Almagro": {"flujo_mes": 3433650, "alcance_dia": 114455},
+        "Plaza Chacabuco": {"flujo_mes": 3290610, "alcance_dia": 109687},
+        "Plaza De Armas": {"flujo_mes": 8058030, "alcance_dia": 268601},
+        "Plaza Egaña": {"flujo_mes": 5462820, "alcance_dia": 182094},
+        "Puente Cal Y Canto": {"flujo_mes": 8058030, "alcance_dia": 268601},
+        "Universidad De Chile": {"flujo_mes": 8058030, "alcance_dia": 268601},
+        "Vivar": {"flujo_mes": 2420070, "alcance_dia": 80669}
+    },
+    "Línea 4": {
+        "Cristobal Colon": {"flujo_mes": 2235960, "alcance_dia": 74532},
+        "Elisa Correa": {"flujo_mes": 2049000, "alcance_dia": 68300},
+        "Francisco Bilbao": {"flujo_mes": 2687550, "alcance_dia": 89585},
+        "Hospital Sotero Del Rio": {"flujo_mes": 2664090, "alcance_dia": 88803},
+        "Las Torres": {"flujo_mes": 2348550, "alcance_dia": 78285},
+        "Los Presidentes": {"flujo_mes": 2221650, "alcance_dia": 74055},
+        "Los Quillayes": {"flujo_mes": 2049000, "alcance_dia": 68300},
+        "Macul": {"flujo_mes": 2977530, "alcance_dia": 99251},
+        "Mercedes": {"flujo_mes": 2188440, "alcance_dia": 72948},
+        "Plaza De Puente Alto": {"flujo_mes": 3816750, "alcance_dia": 127225},
+        "Plaza Egaña": {"flujo_mes": 5462820, "alcance_dia": 182094},
+        "Principe De Gales": {"flujo_mes": 2687550, "alcance_dia": 89585},
+        "Protectora De La Infancia": {"flujo_mes": 2049000, "alcance_dia": 68300},
+        "Quilin": {"flujo_mes": 4192650, "alcance_dia": 139755},
+        "Rojas Magallanes": {"flujo_mes": 2188440, "alcance_dia": 72948},
+        "San Jose De La Estrella": {"flujo_mes": 2049000, "alcance_dia": 68300},
+        "Simon Bolivar": {"flujo_mes": 2378880, "alcance_dia": 79296},
+        "Tobalaba": {"flujo_mes": 8866500, "alcance_dia": 295550},
+        "Trinidad": {"flujo_mes": 2188440, "alcance_dia": 72948},
+        "Vicente Valdes": {"flujo_mes": 6393960, "alcance_dia": 213132},
+        "Vicuña Mackenna": {"flujo_mes": 6083070, "alcance_dia": 202769}
+    },
+    "Línea 4A": {
+        "La Cisterna": {"flujo_mes": 4272180, "alcance_dia": 142406},
+        "San Ramon": {"flujo_mes": 1696200, "alcance_dia": 56540},
+        "Santa Julia": {"flujo_mes": 1696200, "alcance_dia": 56540},
+        "Santa Rosa": {"flujo_mes": 2977530, "alcance_dia": 99251},
+        "Vicuña Mackenna": {"flujo_mes": 6083070, "alcance_dia": 202769}
+    },
+    "Línea 5": {
+        "Baquedano": {"flujo_mes": 11084610, "alcance_dia": 369487},
+        "Bellas Artes": {"flujo_mes": 3816750, "alcance_dia": 127225},
+        "Bellavista De La Florida": {"flujo_mes": 5462820, "alcance_dia": 182094},
+        "Blinking / Del Sol": {"flujo_mes": 3290610, "alcance_dia": 109687},
+        "Carlos Valdovinos": {"flujo_mes": 2446830, "alcance_dia": 81561},
+        "Cumming": {"flujo_mes": 2740380, "alcance_dia": 91346},
+        "Gruta De Lourdes": {"flujo_mes": 2740380, "alcance_dia": 91346},
+        "Irarrazaval": {"flujo_mes": 5290230, "alcance_dia": 176341},
+        "Mirador": {"flujo_mes": 3816750, "alcance_dia": 127225},
+        "Monte Tabor": {"flujo_mes": 2188440, "alcance_dia": 72948},
+        "Ñuble": {"flujo_mes": 4272180, "alcance_dia": 142406},
+        "Parque Bustamante": {"flujo_mes": 2687550, "alcance_dia": 89585},
+        "Pedrero": {"flujo_mes": 2446830, "alcance_dia": 81561},
+        "Plaza De Armas": {"flujo_mes": 8058030, "alcance_dia": 268601},
+        "Plaza De Maipu": {"flujo_mes": 4796760, "alcance_dia": 159892},
+        "Rodrigo De Araya": {"flujo_mes": 2348550, "alcance_dia": 78285},
+        "San Joaquin": {"flujo_mes": 2736360, "alcance_dia": 91212},
+        "Santa Ana": {"flujo_mes": 7378950, "alcance_dia": 245965},
+        "Santa Isabel": {"flujo_mes": 3290610, "alcance_dia": 109687},
+        "Santiago Bueras": {"flujo_mes": 2235960, "alcance_dia": 74532},
+        "Vicente Valdes": {"flujo_mes": 6393960, "alcance_dia": 213132}
+    },
+    "Línea 6": {
+        "Bío Bío": {"flujo_mes": 2446830, "alcance_dia": 81561},
+        "Cerrillos": {"flujo_mes": 2378880, "alcance_dia": 79296},
+        "Estadio Nacional": {"flujo_mes": 2687550, "alcance_dia": 89585},
+        "Franklin": {"flujo_mes": 6393960, "alcance_dia": 213132},
+        "Inés De Suárez": {"flujo_mes": 2687550, "alcance_dia": 89585},
+        "Lo Valledor": {"flujo_mes": 3816750, "alcance_dia": 127225},
+        "Los Leones": {"flujo_mes": 8199240, "alcance_dia": 273308},
+        "Ñuble": {"flujo_mes": 4272180, "alcance_dia": 142406},
+        "Ñuñoa": {"flujo_mes": 4545000, "alcance_dia": 151500},
+        "Pedro Aguirre Cerda": {"flujo_mes": 2188440, "alcance_dia": 72948}
+    }
+}
+
+# --- BASE VÍA PÚBLICA TRADICIONAL ---
 DATA_JERARQUICA = {
     "Región Metropolitana": {
         "Sector Sur": {
@@ -19,15 +161,15 @@ DATA_JERARQUICA = {
                         "Toda la comuna (General)": None,
                         "Vicuña Mackenna con Departamental (Eje Metro Pedrero / Mall Florida Center)": {"flujo": 95000},
                         "Santa Rosa con Departamental": {"flujo": 75000},
-                        "Vicuña Mackenna con Carlos Valdovinos (Eje Universidades)": {"flujo": 60000}
+                        "Vicuña Mackenna con Carlos Valdovinos": {"flujo": 60000}
                     }
                 },
                 "San Miguel": {
                     "res": 140000, "flot": 70000,
                     "puntos": {
                         "Toda la comuna (General)": None,
-                        "Gran Avenida con Departamental (Nudo Comercial / Metro)": {"flujo": 85000},
-                        "Gran Avenida con Salesianos / San Nicolás": {"flujo": 65000}
+                        "Gran Avenida con Departamental": {"flujo": 85000},
+                        "Gran Avenida con Salesianos": {"flujo": 65000}
                     }
                 },
                 "La Cisterna": {
@@ -55,7 +197,7 @@ DATA_JERARQUICA = {
                         "Toda la comuna (General)": None,
                         "Apoquindo con Manquehue (Eje Apumanque)": {"flujo": 140000},
                         "El Golf / Sanhattan (Apoquindo con El Bosque)": {"flujo": 160000},
-                        "Rotonda Atenas (Av. Cristóbal Colón con Cuarto Centenario)": {"flujo": 70000}
+                        "Rotonda Atenas": {"flujo": 70000}
                     }
                 },
                 "Providencia": {
@@ -63,8 +205,7 @@ DATA_JERARQUICA = {
                     "puntos": {
                         "Toda la comuna (General)": None,
                         "Providencia con Tobalaba (Nudo Costanera Center)": {"flujo": 180000},
-                        "Providencia con Pedro de Valdivia": {"flujo": 110000},
-                        "Plaza Baquedano / Vicuña Mackenna": {"flujo": 150000}
+                        "Plaza Baquedano": {"flujo": 150000}
                     }
                 },
                 "Ñuñoa": {
@@ -72,14 +213,7 @@ DATA_JERARQUICA = {
                     "puntos": {
                         "Toda la comuna (General)": None,
                         "Plaza Egaña (Larraín con Av. Ossa)": {"flujo": 120000},
-                        "Irarrázaval con Pedro de Valdivia (Eje Metro)": {"flujo": 85000}
-                    }
-                },
-                "Vitacura": {
-                    "res": 95000, "flot": 110000,
-                    "puntos": {
-                        "Toda la comuna (General)": None,
-                        "Av. Vitacura con Américo Vespucio": {"flujo": 95000}
+                        "Irarrázaval con Pedro de Valdivia": {"flujo": 85000}
                     }
                 }
             }
@@ -91,91 +225,21 @@ DATA_JERARQUICA = {
                     "res": 280000, "flot": 90000,
                     "puntos": {
                         "Toda la comuna (General)": None,
-                        "Rotonda Quilín / Américo Vespucio (Mall Paseo Quilín)": {"flujo": 130000},
-                        "Av. Macul con Quilín": {"flujo": 60000}
+                        "Rotonda Quilín / Américo Vespucio (Mall Paseo Quilín)": {"flujo": 130000}
                     }
                 },
                 "La Florida": {
                     "res": 400000, "flot": 110000,
                     "puntos": {
                         "Toda la comuna (General)": None,
-                        "Vicuña Mackenna con Américo Vespucio (Mall Plaza Vespucio / Metro Bellavista)": {"flujo": 170000},
-                        "Vicuña Mackenna con Trinidad": {"flujo": 75000}
+                        "Vicuña Mackenna con Américo Vespucio (Mall Plaza Vespucio)": {"flujo": 170000}
                     }
                 },
                 "Puente Alto": {
                     "res": 650000, "flot": 60000,
                     "puntos": {
                         "Toda la comuna (General)": None,
-                        "Plaza de Puente Alto (Concha y Toro)": {"flujo": 85000}
-                    }
-                }
-            }
-        },
-        "Sector Centro": {
-            "res_sector": 500000, "flot_sector": 1000000,
-            "comunas": {
-                "Santiago Centro": {
-                    "res": 500000, "flot": 1000000,
-                    "puntos": {
-                        "Toda la comuna (General)": None,
-                        "Alameda con Paseo Ahumada / Metro U. de Chile": {"flujo": 220000},
-                        "Alameda con Santa Rosa": {"flujo": 140000},
-                        "Barrio Meiggs / Estación Central Alameda": {"flujo": 190000}
-                    }
-                }
-            }
-        },
-        "Sector Poniente": {
-            "res_sector": 1600000, "flot_sector": 550000,
-            "comunas": {
-                "Maipú": {
-                    "res": 580000, "flot": 80000,
-                    "puntos": {
-                        "Toda la comuna (General)": None,
-                        "Plaza de Maipú (Pajaritos con 5 de Abril)": {"flujo": 130000},
-                        "Pajaritos con Américo Vespucio (Mall Arauco Maipú)": {"flujo": 120000}
-                    }
-                },
-                "Estación Central": {
-                    "res": 210000, "flot": 350000,
-                    "puntos": {
-                        "Toda la comuna (General)": None,
-                        "Alameda frente a Terminales de Buses (Sur / San Borja)": {"flujo": 180000}
-                    }
-                },
-                "Pudahuel": {
-                    "res": 255000, "flot": 120000,
-                    "puntos": {
-                        "Toda la comuna (General)": None,
-                        "San Pablo con Teniente Cruz": {"flujo": 70000}
-                    }
-                }
-            }
-        },
-        "Sector Norte": {
-            "res_sector": 1250000, "flot_sector": 450000,
-            "comunas": {
-                "Huechuraba": {
-                    "res": 110000, "flot": 130000,
-                    "puntos": {
-                        "Toda la comuna (General)": None,
-                        "Ciudad Empresarial (Av. del Parque con Américo Vespucio)": {"flujo": 110000}
-                    }
-                },
-                "Quilicura": {
-                    "res": 260000, "flot": 90000,
-                    "puntos": {
-                        "Toda la comuna (General)": None,
-                        "Américo Vespucio Norte con Panamericana Norte": {"flujo": 115000}
-                    }
-                },
-                "Independencia / Recoleta": {
-                    "res": 310000, "flot": 180000,
-                    "puntos": {
-                        "Toda la comuna (General)": None,
-                        "Av. Independencia con Santos Dumont (Sector Hospitales)": {"flujo": 95000},
-                        "Av. Recoleta con Av. La Paz (La Vega Central / Tirso de Molina)": {"flujo": 130000}
+                        "Plaza de Puente Alto": {"flujo": 85000}
                     }
                 }
             }
@@ -189,16 +253,14 @@ DATA_JERARQUICA = {
                     "res": 260000, "flot": 40000,
                     "puntos": {
                         "Toda la comuna (General)": None,
-                        "Ruta 5 con Francisco de Aguirre": {"flujo": 80000},
-                        "Av. Balmaceda con Cuatro Esquinas": {"flujo": 65000}
+                        "Ruta 5 con Francisco de Aguirre": {"flujo": 80000}
                     }
                 },
                 "Coquimbo": {
                     "res": 270000, "flot": 35000,
                     "puntos": {
                         "Toda la comuna (General)": None,
-                        "Ruta 5 con La Cantera": {"flujo": 75000},
-                        "Av. Videla con Hospital de Coquimbo": {"flujo": 55000}
+                        "Ruta 5 con La Cantera": {"flujo": 75000}
                     }
                 }
             }
@@ -212,30 +274,7 @@ DATA_JERARQUICA = {
                     "res": 440000, "flot": 50000,
                     "puntos": {
                         "Toda la comuna (General)": None,
-                        "Av. Costanera con Balmaceda (Sector Mall Plaza)": {"flujo": 110000},
-                        "Pedro Aguirre Cerda con Av. Pérez Zujovic (Sector Norte)": {"flujo": 90000}
-                    }
-                }
-            }
-        }
-    },
-    "Región de Valparaíso": {
-        "Gran Valparaíso": {
-            "res_sector": 750000, "flot_sector": 150000,
-            "comunas": {
-                "Viña del Mar": {
-                    "res": 360000, "flot": 120000,
-                    "puntos": {
-                        "Toda la comuna (General)": None,
-                        "1 Norte con Libertad / Mall Marina": {"flujo": 130000},
-                        "Av. Benidorm (15 Norte) con San Martín": {"flujo": 85000}
-                    }
-                },
-                "Valparaíso": {
-                    "res": 315000, "flot": 90000,
-                    "puntos": {
-                        "Toda la comuna (General)": None,
-                        "Av. Argentina con Pedro Montt (Congreso / Terminal)": {"flujo": 110000}
+                        "Av. Costanera con Balmaceda (Mall Plaza)": {"flujo": 110000}
                     }
                 }
             }
@@ -243,138 +282,164 @@ DATA_JERARQUICA = {
     }
 }
 
-FORMATOS = {
-    "Pantalla Digital Gran Formato (DOOH)": {
-        "c": 0.20, "m": 0.25, "o": 0.30,
-        "base_unidades": 1,
-        "unidad_nombre": "pantallas",
-        "desc": "Impacto dinámico en nudos de tráfico y detención vehicular/peatonal."
+# Formatos Vía Pública tradicional
+FORMATOS_OOH = {
+    "Pantalla Digital Gran Formato (DOOH)": {"c": 0.20, "m": 0.25, "o": 0.30, "base": 1, "unidad": "pantallas"},
+    "Buses Troncales / Gran Impacto": {"c": 0.30, "m": 0.35, "o": 0.40, "base": 70, "unidad": "buses"},
+    "Lunetas en Microbuses": {"c": 0.25, "m": 0.30, "o": 0.35, "base": 40, "unidad": "lunetas"},
+    "Valla / Monoposte Estático": {"c": 0.15, "m": 0.20, "o": 0.25, "base": 1, "unidad": "soportes"}
+}
+
+# Formatos Metro de Santiago (incluyendo Brandeo Tren)
+FORMATOS_METRO = {
+    "Brandeo Tren Integral (Línea 1 - 27 Estaciones)": {
+        "c": 0.22, "m": 0.27, "o": 0.32,
+        "base": 1,
+        "unidad": "trenes",
+        "es_tren": True,
+        "flujo_red_dia": 850000, # Afluencia activa promedio de toda la Línea 1
+        "desc": "Tren completo brandeado en circulación continua entre San Pablo y Los Dominicos (27 estaciones)."
     },
-    "Buses Troncales / Gran Impacto": {
-        "c": 0.30, "m": 0.35, "o": 0.40,
-        "base_unidades": 70,
-        "unidad_nombre": "buses",
-        "desc": "Cobertura masiva en avenidas troncales y estructurantes."
+    "Circuito Pantallas Digitales Andén (DOOH)": {
+        "c": 0.30, "m": 0.40, "o": 0.50,
+        "base": 1,
+        "unidad": "circuitos",
+        "es_tren": False,
+        "desc": "Impacto visual dinámico frente a usuarios en espera de andén."
     },
-    "Lunetas en Microbuses": {
-        "c": 0.25, "m": 0.30, "o": 0.35,
-        "base_unidades": 40,
-        "unidad_nombre": "lunetas",
-        "desc": "Alta saturación visual vehicular, tacos y semáforos."
+    "Valla / Panel Andén Estático": {
+        "c": 0.25, "m": 0.35, "o": 0.45,
+        "base": 1,
+        "unidad": "paneles",
+        "es_tren": False,
+        "desc": "Panel publicitario fijo en vías de andén."
     },
-    "Valla / Monoposte Estático": {
-        "c": 0.15, "m": 0.20, "o": 0.25,
-        "base_unidades": 1,
-        "unidad_nombre": "soportes",
-        "desc": "Exposición continua en puntos estratégicos fijos."
+    "Panel Acceso / Torniquetes": {
+        "c": 0.35, "m": 0.45, "o": 0.55,
+        "base": 1,
+        "unidad": "paneles",
+        "es_tren": False,
+        "desc": "Impacto forzado al ingreso y salida de pasajeros en mesanina."
+    },
+    "Brandeo Integral de Estación / Muro": {
+        "c": 0.50, "m": 0.65, "o": 0.75,
+        "base": 1,
+        "unidad": "estaciones",
+        "es_tren": False,
+        "desc": "Dominación total de espacios publicitarios dentro de una estación."
     }
 }
 
-st.title("🎯 Planificador & Simulador de Medios OOH / DOOH")
-st.markdown("Herramienta para estimar impactos brutos, alcance y CPM por sector, comuna y georreferencia en Chile.")
+st.title("🎯 Planificador & Simulador: Vía Pública & Metro de Santiago")
+st.markdown("Herramienta para estimar impactos brutos, alcance y CPM con datos auditados de calles, estaciones y trenes.")
 
-st.sidebar.header("⚙️ Configuración Territorial")
+st.sidebar.header("⚙️ Modo de Planificación")
+medio_tipo = st.sidebar.radio("Selecciona Entorno:", ["Vía Pública Tradicional / Calles", "Metro de Santiago (Estaciones y Trenes)"])
 
-# 1. Región
-region_sel = st.sidebar.selectbox("1. Selecciona Región:", list(DATA_JERARQUICA.keys()))
-
-# 2. Sector / Macrozona
-sectores_dict = DATA_JERARQUICA[region_sel]
-sector_sel = st.sidebar.selectbox("2. Selecciona Sector / Zona:", list(sectores_dict.keys()))
-
-datos_sector = sectores_dict[sector_sel]
-comunas_disponibles = list(datos_sector["comunas"].keys())
-
-# 3. Comuna (con opción de evaluar todo el sector completo)
-opciones_comuna = ["Todo el Sector en conjunto"] + comunas_disponibles
-comuna_sel = st.sidebar.selectbox("3. Selecciona Comuna:", opciones_comuna)
-
-# 4. Georreferencia / Punto Específico
-if comuna_sel == "Todo el Sector en conjunto":
-    punto_sel = "Evaluación Macrozona Completa"
-    pop_res_default = datos_sector["res_sector"]
-    pop_flot_default = datos_sector["flot_sector"]
-    universo_default = pop_res_default + pop_flot_default
-    es_punto_fijo = False
-else:
-    datos_comuna = datos_sector["comunas"][comuna_sel]
-    puntos_disponibles = list(datos_comuna["puntos"].keys()) + ["Otro punto específico (Personalizado)"]
-    punto_sel = st.sidebar.selectbox("4. Georreferencia / Punto Específico:", puntos_disponibles)
+if medio_tipo == "Metro de Santiago (Estaciones y Trenes)":
+    st.sidebar.markdown("---")
+    st.sidebar.subheader("Soporte Publicitario en Metro")
+    formato_dict = FORMATOS_METRO
+    formato_sel = st.sidebar.selectbox("1. Formato Comercial en Metro:", list(formato_dict.keys()))
+    info_formato = formato_dict[formato_sel]
     
-    if punto_sel == "Toda la comuna (General)":
-        pop_res_default = datos_comuna["res"]
-        pop_flot_default = datos_comuna["flot"]
-        universo_default = pop_res_default + pop_flot_default
-        es_punto_fijo = False
-    elif punto_sel == "Otro punto específico (Personalizado)":
-        nombre_personalizado = st.sidebar.text_input("Ingresa nombre de la intersección / calle:", "Ej: Vicuña Mackenna con...")
-        universo_default = 80000
-        es_punto_fijo = True
+    if info_formato.get("es_tren", False):
+        # Brandeo Tren Línea 1
+        st.sidebar.info(
+            "🚆 **Brandeo Tren Integral:**\n\n"
+            "• **Recorrido:** Línea 1 completa (27 estaciones entre San Pablo y Los Dominicos).\n\n"
+            "• **Afluencia Diaria Total Línea 1:** ~850.000 pasajeros/día.\n\n"
+            "• **Exposición:** Doble sentido de circulación durante toda la jornada operativa."
+        )
+        universo_calculo = info_formato["flujo_red_dia"]
+        nombre_territorio = "Línea 1 Completa (27 Estaciones)"
     else:
-        universo_default = datos_comuna["puntos"][punto_sel]["flujo"]
-        es_punto_fijo = True
+        # Soportes en estación individual
+        st.sidebar.markdown("---")
+        st.sidebar.subheader("Selección de Estación (Datos Ipsos)")
+        linea_sel = st.sidebar.selectbox("2. Selecciona Línea de Metro:", list(METRO_DATA.keys()))
+        estaciones_linea = METRO_DATA[linea_sel]
+        estacion_sel = st.sidebar.selectbox("3. Selecciona Estación:", list(estaciones_linea.keys()))
+        
+        datos_estacion = estaciones_linea[estacion_sel]
+        flujo_mes_oficial = datos_estacion["flujo_mes"]
+        alcance_dia_oficial = datos_estacion["alcance_dia"]
+        
+        st.sidebar.info(
+            f"🚇 **Estación:** {estacion_sel} ({linea_sel})\n\n"
+            f"• **Alcance Día:** {alcance_dia_oficial:,.0f} pasajeros\n\n"
+            f"• **Flujo Mes:** {flujo_mes_oficial:,.0f} pasajeros\n\n"
+            f"*(Fuente oficial: Ipsos / Metro)*".replace(",", ".")
+        )
+        universo_calculo = alcance_dia_oficial
+        nombre_territorio = f"Metro {linea_sel} - Estación {estacion_sel}"
 
-# Panel de Audiencia
-st.sidebar.markdown("---")
-st.sidebar.subheader("Población y Flujo Diario")
-
-if es_punto_fijo:
-    universo_total = st.sidebar.number_input(
-        "Flujo Diario Estimado en el Punto (Vehículos + Peatones):",
-        value=universo_default,
-        step=5000
-    )
-    st.sidebar.info(f"📍 **Punto evaluado:** {punto_sel}\n\n**Flujo activo diario:** {universo_total:,.0f} personas".replace(",", "."))
 else:
-    pop_residente = st.sidebar.number_input("Población Residente:", value=pop_res_default, step=10000)
-    pop_flotante = st.sidebar.number_input("Población Flotante Estimada:", value=pop_flot_default, step=10000)
-    universo_total = pop_residente + pop_flotante
-    st.sidebar.info(f"**Universo Total Activo Diario:** {universo_total:,.0f} personas".replace(",", "."))
+    # Vía Pública tradicional
+    st.sidebar.markdown("---")
+    st.sidebar.subheader("Configuración Territorial")
+    reg_sel = st.sidebar.selectbox("1. Selecciona Región:", list(DATA_JERARQUICA.keys()))
+    sec_sel = st.sidebar.selectbox("2. Selecciona Sector / Zona:", list(DATA_JERARQUICA[reg_sel].keys()))
+    
+    datos_sec = DATA_JERARQUICA[reg_sel][sec_sel]
+    opciones_comuna = ["Todo el Sector en conjunto"] + list(datos_sec["comunas"].keys())
+    com_sel = st.sidebar.selectbox("3. Selecciona Comuna:", opciones_comuna)
+    
+    if com_sel == "Todo el Sector en conjunto":
+        universo_calculo = datos_sec["res_sector"] + datos_sec["flot_sector"]
+        nombre_territorio = f"{sec_sel} (Macrozona)"
+    else:
+        com_data = datos_sec["comunas"][com_sel]
+        pto_sel = st.sidebar.selectbox("4. Georreferencia / Punto:", list(com_data["puntos"].keys()))
+        if pto_sel == "Toda la comuna (General)":
+            universo_calculo = com_data["res"] + com_data["flot"]
+            nombre_territorio = com_sel
+        else:
+            universo_calculo = com_data["puntos"][pto_sel]["flujo"]
+            nombre_territorio = f"{com_sel} - {pto_sel}"
 
-# 5. Formato y Soportes
+    st.sidebar.info(f"📍 **Ubicación:** {nombre_territorio}\n\n**Flujo diario:** {universo_calculo:,.0f} personas".replace(",", "."))
+    formato_dict = FORMATOS_OOH
+    formato_sel = st.sidebar.selectbox("Formato Comercial:", list(formato_dict.keys()))
+    info_formato = formato_dict[formato_sel]
+
+# Cantidad, duración e inversión
 st.sidebar.markdown("---")
-st.sidebar.subheader("Soporte Publicitario")
-formato_sel = st.sidebar.selectbox("5. Formato de Vía Pública:", list(FORMATOS.keys()))
-info_formato = FORMATOS[formato_sel]
+st.sidebar.subheader("Parámetros de Compra")
 
 cant_elementos = st.sidebar.number_input(
-    f"Cantidad de {info_formato['unidad_nombre'].capitalize()} contratadas:",
+    f"Cantidad de {info_formato['unidad'].capitalize()} contratados:",
     min_value=1,
-    max_value=500,
-    value=info_formato["base_unidades"],
+    max_value=100,
+    value=info_formato["base"],
     step=1
 )
 
-dias_campana = st.sidebar.slider("Días de Campaña (Exhibición):", min_value=1, max_value=90, value=10 if "Pantalla" in formato_sel else 30)
-inversion_neta = st.sidebar.number_input("Inversión Neta ($ CLP):", value=500000 if "Pantalla" in formato_sel else 4500000, step=250000)
+dias_campana = st.sidebar.slider("Días de Campaña:", min_value=1, max_value=60, value=30)
+inversion_neta = st.sidebar.number_input("Inversión Neta ($ CLP):", value=12000000 if info_formato.get("es_tren", False) else 3500000, step=500000)
 
-factor_elementos = cant_elementos / info_formato["base_unidades"]
-
-castigo_pct = st.sidebar.slider("Castigo Técnico / Descuento Duplicidad (%):", min_value=0, max_value=25, value=0, step=5)
+castigo_pct = st.sidebar.slider("Castigo Técnico / Descuento Duplicidad (%):", min_value=0, max_value=25, value=10, step=5)
 factor_castigo = (100 - castigo_pct) / 100
+factor_elementos = cant_elementos / info_formato["base"]
 
-t_c, t_m, t_o = info_formato["c"], info_formato["m"], info_formato["o"]
-
-# --- CÁLCULOS ---
+# Tasas
 escenarios = [
-    {"nombre": "Conservador", "tasa": t_c},
-    {"nombre": "Medio (Base Recomendado)", "tasa": t_m},
-    {"nombre": "Optimista", "tasa": t_o}
+    {"nombre": "Conservador", "tasa": info_formato["c"]},
+    {"nombre": "Medio (Recomendado)", "tasa": info_formato["m"]},
+    {"nombre": "Optimista", "tasa": info_formato["o"]}
 ]
 
 resultados = []
 for esc in escenarios:
-    contactos_dia_base = universo_total * esc["tasa"]
-    contactos_dia_ajustados = contactos_dia_base * factor_elementos * factor_castigo
-    impactos_totales = contactos_dia_ajustados * dias_campana
-    
+    contactos_dia = universo_calculo * esc["tasa"] * factor_elementos * factor_castigo
+    impactos_totales = contactos_dia * dias_campana
     costo_impacto = (inversion_neta / impactos_totales) if impactos_totales > 0 else 0
     cpm = costo_impacto * 1000
     
     resultados.append({
         "Escenario": esc["nombre"],
-        "Tasa Base Diaria": f"{int(esc['tasa'] * 100)}%",
-        "Contactos Diarios": f"{int(contactos_dia_ajustados):,}".replace(",", "."),
+        "Tasa Contacto": f"{int(esc['tasa'] * 100)}%",
+        "Contactos Diarios": f"{int(contactos_dia):,}".replace(",", "."),
         f"Impactos Totales ({dias_campana} días)": f"{int(impactos_totales):,}".replace(",", "."),
         "Costo x Impacto": f"${costo_impacto:.2f}",
         "CPM ($ CLP)": f"${int(round(cpm)):,}".replace(",", ".")
@@ -383,33 +448,31 @@ for esc in escenarios:
 df_res = pd.DataFrame(resultados)
 
 # --- VISTA PRINCIPAL ---
-ubicacion_label = f"{comuna_sel} - {punto_sel}" if es_punto_fijo else comuna_sel
-
 col1, col2, col3, col4 = st.columns(4)
-col1.metric("Universo / Flujo Diario", f"{universo_total:,.0f}".replace(",", "."))
-col2.metric("Soportes Contratados", f"{cant_elementos} {info_formato['unidad_nombre']}")
-col3.metric("Duración Campaña", f"{dias_campana} días")
+col1.metric("Universo / Flujo Día", f"{universo_calculo:,.0f}".replace(",", "."))
+col2.metric("Soportes", f"{cant_elementos} {info_formato['unidad']}")
+col3.metric("Duración", f"{dias_campana} días")
 col4.metric("Inversión Neta", f"${inversion_neta:,.0f}".replace(",", "."))
 
 st.markdown("---")
-st.subheader(f"📊 Proyección: {cant_elementos} {info_formato['unidad_nombre'].capitalize()} en {ubicacion_label}")
-st.caption(f"{info_formato['desc']} | Sector: {sector_sel} ({region_sel})" + (f" | Castigo técnico: {castigo_pct}%" if castigo_pct > 0 else ""))
+st.subheader(f"📊 Proyección: {cant_elementos} {info_formato['unidad'].capitalize()} en {nombre_territorio}")
+st.caption(f"Soporte: {formato_sel} | {info_formato.get('desc', '')} | Descuento duplicidad: {castigo_pct}%")
 
 st.table(df_res)
 
-# Resumen tipo propuesta para copiar
+# Resumen propuesta
 st.markdown("---")
 st.subheader("📋 Resumen Ejecutivo para Propuesta")
 esc_medio = resultados[1]
-texto_propuesta = f"""**Resumen de Propuesta Comercial:**
-- **Territorio:** {region_sel} - {sector_sel}
-- **Comuna / Ubicación:** {ubicacion_label}
-- **Flujo Activo Diario:** {universo_total:,.0f} personas
-- **Soporte:** {formato_sel} ({cant_elementos} {info_formato['unidad_nombre']})
-- **Duración:** {dias_campana} días
-- **Inversión Neta:** ${inversion_neta:,.0f} CLP
+texto_propuesta = f"""**Resumen de Propuesta de Medios:**
+- **Entorno / Soporte:** {formato_sel}
+- **Ubicación / Recorrido:** {nombre_territorio}
+- **Afluencia Diaria Base:** {universo_calculo:,.0f} personas
+- **Flota Contratada:** {cant_elementos} {info_formato['unidad']}
+- **Duración de Campaña:** {dias_campana} días
+- **Inversión Neta Negociada:** ${inversion_neta:,.0f} CLP
 - **Contactos Diarios Estimados (Escenario Medio):** {esc_medio['Contactos Diarios']}
-- **Impactos Brutos Totales (OTS):** {esc_medio[f'Impactos Totales ({dias_campana} días)']}
+- **Impactos Brutos Totales (OTS a {dias_campana} días):** {esc_medio[f'Impactos Totales ({dias_campana} días)']}
 - **Costo por Impacto:** {esc_medio['Costo x Impacto']} CLP
 - **CPM Estimado:** {esc_medio['CPM ($ CLP)']} CLP
 """
