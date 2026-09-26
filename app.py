@@ -10,6 +10,10 @@ st.set_page_config(
     layout="wide"
 )
 
+# Inicializar sesión para el Plan de Medios Multi-Formato (Carrito)
+if "plan_items" not in st.session_state:
+    st.session_state.plan_items = []
+
 # --- 1. GESTIÓN DE FUENTES UNICODE ---
 def obtener_fuente(size=24, bold=False):
     rutas = [
@@ -139,7 +143,7 @@ METRO_DATA = {
     }
 }
 
-# --- 4. BASE DE DATOS NACIONAL COMPLETA (16 REGIONES DE CHILE) ---
+# --- 4. BASE DE DATOS NACIONAL (16 REGIONES DE CHILE) ---
 DATA_JERARQUICA = {
     "Región de Arica y Parinacota": {
         "Arica Urbano": {
@@ -280,12 +284,19 @@ DATA_JERARQUICA = {
                         "Av. Argentina con Pedro Montt (Congreso / Terminal)": {"flujo": 110000}
                     }
                 },
-                "Quilpué / Villa Alemana": {
-                    "res": 280000, "flot": 40000,
-                    "contexto": "Polo residencial del Marga Marga con fuerte tránsito diario hacia Viña del Mar y Valparaíso.",
+                "Quilpué": {
+                    "res": 160000, "flot": 30000,
+                    "contexto": "Polo residencial del Marga Marga con fuerte tránsito diario por el troncal urbano hacia Viña y Valparaíso.",
                     "puntos": {
                         "Toda la comuna (General)": None,
                         "Av. Los Carrera (Troncal Urbano)": {"flujo": 65000}
+                    }
+                },
+                "Villa Alemana": {
+                    "res": 130000, "flot": 20000,
+                    "contexto": "Acceso interior con alto tráfico residencial por el troncal y estación de tren.",
+                    "puntos": {
+                        "Toda la comuna (General)": None
                     }
                 },
                 "Concón": {
@@ -751,7 +762,7 @@ FORMATOS_METRO = {
 
 # --- 6. BARRA LATERAL ---
 st.sidebar.header("🎨 Diseño de la Lámina")
-modo_fondo = st.sidebar.radio("Estilo de Fondo:", ["Fondo Oscuro", "Fondo Claro (Blanco)"])
+modo_fondo = st.sidebar.radio("Estilo de Fondo:", ["Fondo Claro (Blanco)", "Fondo Oscuro"])
 color_acento_nombre = st.sidebar.selectbox("Color de Acento / Cliente:", list(COLORES_BASE.keys()))
 color_acento = COLORES_BASE[color_acento_nombre]
 
@@ -786,6 +797,7 @@ if medio_tipo == "Metro de Santiago (Estaciones y Trenes)":
     if info_f.get("es_tren", False):
         universo_calculo = info_f["flujo_red_dia"]
         nombre_territorio = "Línea 1 Completa"
+        nombre_titulo_lamina = "LÍNEA 1"
         texto_estrategico_default = info_f["contexto"]
     else:
         linea_sel = st.sidebar.selectbox("Línea de Metro:", list(METRO_DATA.keys()))
@@ -793,6 +805,7 @@ if medio_tipo == "Metro de Santiago (Estaciones y Trenes)":
         datos_estacion = METRO_DATA[linea_sel][estacion_sel]
         universo_calculo = datos_estacion["alcance_dia"]
         nombre_territorio = f"Metro {linea_sel} - {estacion_sel}"
+        nombre_titulo_lamina = f"ESTACIÓN {estacion_sel.upper()}"
         texto_estrategico_default = f"Estación {estacion_sel} registra {datos_estacion['flujo_mes']:,.0f} pasajeros mensuales (Ipsos), con tiempo de espera cautivo de alta exposición.".replace(",", ".")
 else:
     reg_sel = st.sidebar.selectbox("1. Región:", list(DATA_JERARQUICA.keys()))
@@ -805,6 +818,7 @@ else:
     if com_sel == "Todo el Sector en conjunto":
         universo_calculo = datos_sec["res_sector"] + datos_sec["flot_sector"]
         nombre_territorio = f"{sec_sel}"
+        nombre_titulo_lamina = sec_sel.split("(")[0].strip().upper()
         texto_estrategico_default = f"Macrozona con un flujo activo superior a {universo_calculo:,.0f} personas al día.".replace(",", ".")
     else:
         com_data = datos_sec["comunas"][com_sel]
@@ -813,6 +827,8 @@ else:
             puntos_comuna = ["Toda la comuna (General)"]
             
         pto_sel = st.sidebar.selectbox("4. Georreferencia / Punto:", puntos_comuna)
+        nombre_titulo_lamina = com_sel.split("/")[0].strip().upper()
+        
         if pto_sel == "Toda la comuna (General)":
             universo_calculo = com_data["res"] + com_data["flot"]
             nombre_territorio = com_sel
@@ -835,29 +851,54 @@ foto_soporte = st.sidebar.file_uploader("Subir foto del soporte (opcional):", ty
 comentario_custom = st.sidebar.text_area(
     "Ventaja Estratégica / Comentarios:",
     value=texto_estrategico_default,
-    height=110
+    height=100
 )
 
-# --- 7. CÁLCULOS TÉCNICOS ---
+# Cálculos del soporte actual
 factor_escala = cant_unidades / info_f["base"]
 costo_unitario = inversion_total / cant_unidades if cant_unidades > 0 else 0
+imp_diarios_c = universo_calculo * info_f["c"] * factor_escala
 imp_diarios_m = universo_calculo * info_f["m"] * factor_escala
+imp_diarios_o = universo_calculo * info_f["o"] * factor_escala
+
+imp_totales_c = imp_diarios_c * dias_campana
 imp_totales_m = imp_diarios_m * dias_campana
+imp_totales_o = imp_diarios_o * dias_campana
+
 costo_impacto_m = inversion_total / imp_totales_m if imp_totales_m > 0 else 0
+cpm_m = (inversion_total / imp_totales_m * 1000) if imp_totales_m > 0 else 0
 
 tabla_esc = [
-    {"esc": "Conservador", "rate": info_f["c"], "dia": universo_calculo * info_f["c"] * factor_escala, "tot": universo_calculo * info_f["c"] * factor_escala * dias_campana},
+    {"esc": "Conservador", "rate": info_f["c"], "dia": imp_diarios_c, "tot": imp_totales_c},
     {"esc": "Medio", "rate": info_f["m"], "dia": imp_diarios_m, "tot": imp_totales_m},
-    {"esc": "Optimista", "rate": info_f["o"], "dia": universo_calculo * info_f["o"] * factor_escala, "tot": universo_calculo * info_f["o"] * factor_escala * dias_campana}
+    {"esc": "Optimista", "rate": info_f["o"], "dia": imp_diarios_o, "tot": imp_totales_o}
 ]
 
-# --- 8. RENDERIZADOR PIL (LÁMINA 1920x1080) ---
+# Botones de agregar al plan / limpiar en sidebar
+st.sidebar.markdown("---")
+if st.sidebar.button("➕ Agregar este elemento al Plan de Medios", use_container_width=True, type="primary"):
+    st.session_state.plan_items.append({
+        "Soporte": f"{formato_sel} ({cant_unidades} {info_f['unidad']})",
+        "Ubicación": nombre_territorio,
+        "Días": dias_campana,
+        "Inversión Neta": inversion_total,
+        "Impactos Conservador": int(imp_totales_c),
+        "Impactos Medio": int(imp_totales_m),
+        "Impactos Optimista": int(imp_totales_o),
+        "CPM Medio": cpm_m
+    })
+    st.sidebar.success("¡Elemento agregado al Plan de Medios!")
+
+if st.sidebar.button("🗑️ Limpiar Plan de Medios", use_container_width=True):
+    st.session_state.plan_items = []
+    st.rerun()
+
+# --- 7. RENDERIZADOR PIL CON TÍTULO ADAPTABLE ANTI-COLISIÓN ---
 def render_lamina_jpg():
     W, H = 1920, 1080
     im = Image.new("RGB", (W, H), c_bg)
     draw = ImageDraw.Draw(im)
 
-    f_title = obtener_fuente(42, bold=True)
     f_sub = obtener_fuente(24, bold=False)
     f_num_big = obtener_fuente(42, bold=True)
     f_label = obtener_fuente(22, bold=False)
@@ -867,15 +908,28 @@ def render_lamina_jpg():
     f_comment_body = obtener_fuente(20, bold=False)
     f_footer = obtener_fuente(18, bold=False)
 
-    # Cabecera
-    title_text = f"{nombre_territorio.upper()} - {formato_sel.upper()}"
+    # 1. Cabecera (Título conciso y con auto-escalado anti-solapamiento)
+    title_text = f"{nombre_titulo_lamina} - {formato_sel.upper()}"
     subtitle_text = f"{cant_unidades} {info_f['unidad']} · {dias_campana} días"
     
-    draw.text((60, 45), title_text, fill=c_accent, font=f_title)
+    # Ancho disponible antes de tocar el texto de la derecha
+    max_title_w = W - 520
+    t_size = 42
+    f_title = obtener_fuente(t_size, bold=True)
+    
+    # Ajuste dinámico de tamaño si el título es largo
+    while t_size > 22:
+        bbox_t = draw.textbbox((0, 0), title_text, font=f_title)
+        if (bbox_t[2] - bbox_t[0]) <= max_title_w:
+            break
+        t_size -= 2
+        f_title = obtener_fuente(t_size, bold=True)
+
+    draw.text((60, 48), title_text, fill=c_accent, font=f_title)
     draw.text((W - 420, 58), subtitle_text, fill=c_text_muted, font=f_sub)
     draw.line([(60, 115), (W - 60, 115)], fill=c_accent, width=3)
 
-    # Foto soporte
+    # 2. Recuadro Foto Soporte
     foto_box = [(60, 145), (710, 960)]
     if foto_soporte is not None:
         try:
@@ -888,26 +942,26 @@ def render_lamina_jpg():
         draw.rectangle(foto_box, fill=c_card, outline=c_border, width=2)
         draw.text((230, 530), "[ FOTO SOPORTE ]", fill=c_text_muted, font=f_sub)
 
-    # Tarjetas Superiores
+    # 3. Tarjetas Superiores
     card_w, card_h = 360, 130
     x_offset = 750
     
-    # Tarjeta 1: Inversión
+    # Inversión
     draw.rounded_rectangle([(x_offset, 145), (x_offset + card_w, 145 + card_h)], radius=12, fill=c_card, outline=c_border, width=1)
     draw.text((x_offset + 25, 165), "Inversión mensual", fill=c_text_muted, font=f_label)
     draw.text((x_offset + 25, 202), f"${inversion_total:,.0f}".replace(",", "."), fill=c_text_primary, font=f_num_big)
 
-    # Tarjeta 2: Costo Unitario
+    # Costo Unitario
     draw.rounded_rectangle([(x_offset + card_w + 30, 145), (x_offset + card_w*2 + 30, 145 + card_h)], radius=12, fill=c_card, outline=c_border, width=1)
     draw.text((x_offset + card_w + 55, 165), f"Costo por {info_f['unidad'][:-1]} / mes", fill=c_text_muted, font=f_label)
     draw.text((x_offset + card_w + 55, 202), f"${costo_unitario:,.0f}".replace(",", "."), fill=c_text_primary, font=f_num_big)
 
-    # Tarjeta 3: Impactos Totales
+    # Impactos Totales (Destacada)
     draw.rounded_rectangle([(x_offset + card_w*2 + 60, 145), (x_offset + card_w*3 + 60, 145 + card_h)], radius=12, fill=c_card_highlight_bg)
     draw.text((x_offset + card_w*2 + 85, 165), f"Impactos {dias_campana} días (caso medio)", fill=c_card_highlight_text, font=f_label)
     draw.text((x_offset + card_w*2 + 85, 202), f"{imp_totales_m:,.0f}".replace(",", "."), fill=c_card_highlight_text, font=f_num_big)
 
-    # Tabla de Escenarios
+    # 4. Tabla de Escenarios
     t_y = 315
     draw.text((x_offset + 20, t_y), "Escenario", fill=c_text_muted, font=f_table_head)
     draw.text((x_offset + 270, t_y), "% Exposición diaria", fill=c_text_muted, font=f_table_head)
@@ -929,17 +983,19 @@ def render_lamina_jpg():
         draw.text((x_offset + 980, row_y), f"${int(round(cpm_val)):,}".replace(",", "."), fill=c_text_primary, font=f_table_row)
         row_y += 45
 
-    # Tarjetas Inferiores
+    # 5. Tarjetas Inferiores
     b_y = 505
+    # Universo activo
     draw.rounded_rectangle([(x_offset, b_y), (x_offset + card_w, b_y + card_h)], radius=12, fill=c_card, outline=c_border, width=1)
     draw.text((x_offset + 25, b_y + 20), "Universo activo diario", fill=c_text_muted, font=f_label)
     draw.text((x_offset + 25, b_y + 55), f"{universo_calculo:,.0f}".replace(",", "."), fill=c_accent, font=f_num_big)
 
+    # Costo x impacto
     draw.rounded_rectangle([(x_offset + card_w + 30, b_y), (x_offset + card_w*2 + 30, b_y + card_h)], radius=12, fill=c_card, outline=c_border, width=1)
     draw.text((x_offset + card_w + 55, b_y + 20), "Costo x impacto (medio)", fill=c_text_muted, font=f_label)
     draw.text((x_offset + card_w + 55, b_y + 55), f"${costo_impacto_m:.1f} CLP", fill=c_accent, font=f_num_big)
 
-    # Tarjeta Naturaleza del formato con ajuste dinámico de texto
+    # Naturaleza del formato con ajuste en dos líneas
     card3_x = x_offset + card_w*2 + 60
     draw.rounded_rectangle([(card3_x, b_y), (card3_x + card_w, b_y + card_h)], radius=12, fill=c_card, outline=c_border, width=1)
     draw.text((card3_x + 25, b_y + 20), "Naturaleza del formato", fill=c_text_muted, font=f_label)
@@ -964,7 +1020,7 @@ def render_lamina_jpg():
         if linea2:
             draw.text((card3_x + 25, b_y + 82), linea2, fill=c_accent, font=f_nat_dos_lineas)
 
-    # Comentarios Estratégicos
+    # 6. Comentarios Estratégicos
     com_y = 675
     draw.rounded_rectangle([(x_offset, com_y), (W - 60, 960)], radius=12, fill=c_card, outline=c_border, width=1)
     draw.line([(x_offset, com_y), (x_offset, 960)], fill=c_accent, width=6)
@@ -988,25 +1044,107 @@ def render_lamina_jpg():
         draw.text((x_offset + 30, line_y), l, fill=c_text_muted, font=f_comment_body)
         line_y += 32
 
-    # Pie de Página
+    # 7. Pie de Página
     draw.text((60, 1005), f"Inversión mensual total: ${inversion_total:,.0f} CLP · Flota: {cant_unidades} unidades · Valores en CLP neto.".replace(",", "."), fill=c_text_muted, font=f_footer)
 
     buf = io.BytesIO()
     im.save(buf, format="JPEG", quality=95)
     return buf.getvalue()
 
-# --- 9. VISTA PRINCIPAL ---
-st.title("🎯 Generador de Láminas de Propuesta OOH & Metro")
-st.markdown("Genera la lámina ejecutiva en alta calidad con el territorio, estación o punto vial seleccionado.")
+# --- 8. VISTA PRINCIPAL ---
+st.title("🎯 Planificador de Medios & Exportador de Propuestas")
+st.markdown("Calcula el rendimiento por soporte, diseña la lámina ejecutiva y consolida el mix total de la campaña.")
 
-img_bytes = render_lamina_jpg()
+# PESTAÑAS PRINCIPALES: LÁMINA ACTUAL VS PLAN CONSOLIDADO
+tab1, tab2 = st.tabs(["🖼️ Lámina Ejecutiva (Soporte Actual)", "📊 Plan de Medios Consolidado (Mix Completo)"])
 
-st.image(img_bytes, caption=f"Vista previa — {nombre_territorio} ({modo_fondo} / {color_acento_nombre})", use_container_width=True)
+with tab1:
+    img_bytes = render_lamina_jpg()
+    st.image(img_bytes, caption=f"Vista previa — {nombre_territorio} ({modo_fondo} / {color_acento_nombre})", use_container_width=True)
+    
+    col_d1, col_d2 = st.columns([1, 3])
+    with col_d1:
+        st.download_button(
+            label="📥 Descargar Lámina en JPG (Alta Calidad)",
+            data=img_bytes,
+            file_name=f"propuesta_{nombre_titulo_lamina.lower()}_{formato_sel.lower().replace(' ', '_')}.jpg",
+            mime="image/jpeg",
+            type="primary",
+            use_container_width=True
+        )
 
-st.download_button(
-    label="📥 Descargar Lámina en JPG (Alta Calidad)",
-    data=img_bytes,
-    file_name=f"propuesta_{nombre_territorio.lower().replace(' ', '_')}_{formato_sel.lower().replace(' ', '_')}.jpg",
-    mime="image/jpeg",
-    type="primary"
-)
+with tab2:
+    if len(st.session_state.plan_items) == 0:
+        st.info("👈 Configura los parámetros en el menú lateral y haz clic en **'➕ Agregar este elemento al Plan de Medios'** para sumar soportes a la campaña consolidada.")
+    else:
+        st.subheader(f"📋 1. Desglose del Mix ({len(st.session_state.plan_items)} soportes contratados)")
+        
+        df_items = pd.DataFrame(st.session_state.plan_items)
+        df_display = df_items.copy()
+        df_display["Inversión Neta"] = df_display["Inversión Neta"].apply(lambda x: f"${int(x):,}".replace(",", "."))
+        df_display["Impactos Conservador"] = df_display["Impactos Conservador"].apply(lambda x: f"{int(x):,}".replace(",", "."))
+        df_display["Impactos Medio"] = df_display["Impactos Medio"].apply(lambda x: f"{int(x):,}".replace(",", "."))
+        df_display["Impactos Optimista"] = df_display["Impactos Optimista"].apply(lambda x: f"{int(x):,}".replace(",", "."))
+        df_display["CPM Medio"] = df_display["CPM Medio"].apply(lambda x: f"${int(round(x)):,}".replace(",", "."))
+        
+        st.dataframe(df_display, use_container_width=True)
+        
+        # Consolidado Total
+        total_inversion = sum(item["Inversión Neta"] for item in st.session_state.plan_items)
+        total_imp_c = sum(item["Impactos Conservador"] for item in st.session_state.plan_items)
+        total_imp_m = sum(item["Impactos Medio"] for item in st.session_state.plan_items)
+        total_imp_o = sum(item["Impactos Optimista"] for item in st.session_state.plan_items)
+        
+        cpm_global_c = (total_inversion / total_imp_c * 1000) if total_imp_c > 0 else 0
+        cpm_global_m = (total_inversion / total_imp_m * 1000) if total_imp_m > 0 else 0
+        cpm_global_o = (total_inversion / total_imp_o * 1000) if total_imp_o > 0 else 0
+
+        st.markdown("---")
+        st.subheader("📊 2. Totales Acumulados de la Campaña")
+        
+        m1, m2, m3, m4 = st.columns(4)
+        m1.metric("Líneas en Mix", f"{len(st.session_state.plan_items)} soportes")
+        m2.metric("Inversión Total Neta", f"${total_inversion:,.0f}".replace(",", "."))
+        m3.metric("Impactos Totales (Medio)", f"{total_imp_m:,.0f}".replace(",", "."))
+        m4.metric("CPM Ponderado Global", f"${int(round(cpm_global_m)):,}".replace(",", "."))
+        
+        tabla_consolidada = [
+            {
+                "Escenario Global": "Conservador",
+                "Impactos Totales Campaña": f"{total_imp_c:,.0f}".replace(",", "."),
+                "Costo x Impacto Promedio": f"${(total_inversion / total_imp_c):.2f}" if total_imp_c > 0 else "$0",
+                "CPM Ponderado Global": f"${int(round(cpm_global_c)):,}".replace(",", ".")
+            },
+            {
+                "Escenario Global": "Medio (Recomendado)",
+                "Impactos Totales Campaña": f"{total_imp_m:,.0f}".replace(",", "."),
+                "Costo x Impacto Promedio": f"${(total_inversion / total_imp_m):.2f}" if total_imp_m > 0 else "$0",
+                "CPM Ponderado Global": f"${int(round(cpm_global_m)):,}".replace(",", ".")
+            },
+            {
+                "Escenario Global": "Optimista",
+                "Impactos Totales Campaña": f"{total_imp_o:,.0f}".replace(",", "."),
+                "Costo x Impacto Promedio": f"${(total_inversion / total_imp_o):.2f}" if total_imp_o > 0 else "$0",
+                "CPM Ponderado Global": f"${int(round(cpm_global_o)):,}".replace(",", ".")
+            }
+        ]
+        st.table(pd.DataFrame(tabla_consolidada))
+        
+        # Resumen Propuesta Comercial
+        st.markdown("---")
+        st.subheader("📋 3. Resumen Ejecutivo Integrado para Propuesta")
+        
+        lineas_resumen = ""
+        for idx, item in enumerate(st.session_state.plan_items, 1):
+            lineas_resumen += f"  {idx}. **{item['Soporte']}** en {item['Ubicación']} | {item['Días']} días | Inversión: \({item['Inversión Neta']:,.0f} | Impactos: {item['Impactos Medio']:,} | CPM:\){int(round(item['CPM Medio'])):,}\n".replace(",", ".")
+            
+        texto_resumen = f"""**PROPUESTA DE MEDIOS INTEGRADA (MIX OOH & METRO)**
+**Inversión Total Neta:** ${total_inversion:,.0f} CLP
+**Impactos Brutos Totales (Escenario Medio):** {total_imp_m:,.0f} impactos
+**CPM Ponderado Global:** ${int(round(cpm_global_m)):,}.00 CLP
+
+**Detalle de Soportes Contratados:**
+{lineas_resumen}
+*Valores netos calculados en pesos chilenos.*
+"""
+        st.code(texto_resumen, language="markdown")
