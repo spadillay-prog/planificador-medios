@@ -813,6 +813,7 @@ if medio_tipo == "Metro de Santiago (Estaciones y Trenes)":
     formato_dict = FORMATOS_METRO
     formato_sel = st.sidebar.selectbox("Formato en Metro:", list(formato_dict.keys()))
     info_f = formato_dict[formato_sel]
+    fuente_medicion_pie = "Medición Oficial de Audiencias: Metro de Santiago e Ipsos"
     
     if info_f.get("es_tren", False):
         universo_calculo = info_f["flujo_red_dia"]
@@ -828,6 +829,7 @@ if medio_tipo == "Metro de Santiago (Estaciones y Trenes)":
         nombre_titulo_lamina = f"ESTACIÓN {estacion_sel.upper()}"
         texto_estrategico_default = f"Estación {estacion_sel} registra {datos_estacion['flujo_mes']:,.0f} pasajeros mensuales (Ipsos), con tiempo de espera cautivo de alta exposición.".replace(",", ".")
 else:
+    fuente_medicion_pie = "Medición Oficial de Audiencias: INE Chile · EOD / SECTRA / MTT · UOCT / MOP"
     reg_sel = st.sidebar.selectbox("1. Región:", list(DATA_JERARQUICA.keys()))
     sec_sel = st.sidebar.selectbox("2. Sector / Zona:", list(DATA_JERARQUICA[reg_sel].keys()))
     datos_sec = DATA_JERARQUICA[reg_sel][sec_sel]
@@ -846,7 +848,6 @@ else:
         if not puntos_comuna:
             puntos_comuna = ["Toda la comuna (General)"]
             
-        # Incorporar la opción personalizada de georreferencia
         puntos_disponibles = puntos_comuna + ["➕ Otro punto específico (Personalizado)"]
         pto_sel = st.sidebar.selectbox("4. Georreferencia / Punto:", puntos_disponibles)
         nombre_titulo_lamina = com_sel.split("/")[0].strip().upper()
@@ -920,7 +921,7 @@ if st.sidebar.button("🗑️ Limpiar Plan de Medios", use_container_width=True)
     st.session_state.plan_items = []
     st.rerun()
 
-# --- 8. RENDERIZADOR PIL CON LOGO MADCOM LIMPIO ---
+# --- 8. RENDERIZADOR PIL CON RESPALDO DE FUENTES TÉCNICAS ---
 def render_lamina_jpg():
     W, H = 1920, 1080
     im = Image.new("RGB", (W, H), c_bg)
@@ -934,6 +935,7 @@ def render_lamina_jpg():
     f_comment_title = obtener_fuente(22, bold=True)
     f_comment_body = obtener_fuente(20, bold=False)
     f_footer = obtener_fuente(18, bold=False)
+    f_source = obtener_fuente(15, bold=False)
 
     # 1. Cabecera (Título conciso con auto-escalado anti-solapamiento)
     title_text = f"{nombre_titulo_lamina} - {formato_sel.upper()}"
@@ -1072,11 +1074,16 @@ def render_lamina_jpg():
     # 7. Pie de Página y Branding MADCOM
     draw.text((60, 1005), f"Inversión mensual total: ${inversion_total:,.0f} CLP · Flota: {cant_unidades} unidades · Valores en CLP neto | Elaborado por MADCOM.".replace(",", "."), fill=c_text_muted, font=f_footer)
 
+    # Texto de Medición Oficial de Audiencias (Esquina inferior derecha)
+    bbox_src = draw.textbbox((0, 0), fuente_medicion_pie, font=f_source)
+    w_src = bbox_src[2] - bbox_src[0]
+    draw.text((W - 60 - w_src, 975), fuente_medicion_pie, fill=c_text_muted, font=f_source)
+
     # Estampar el logo MADCOM abajo a la derecha de la lámina
     try:
         logo_to_stamp = generar_logo_madcom(fondo_oscuro=(modo_fondo == "Fondo Oscuro"))
         logo_to_stamp.thumbnail((190, 48), Image.Resampling.LANCZOS)
-        im.paste(logo_to_stamp, (W - 60 - logo_to_stamp.width, 995), logo_to_stamp)
+        im.paste(logo_to_stamp, (W - 60 - logo_to_stamp.width, 1000), logo_to_stamp)
     except Exception:
         pass
 
