@@ -5,7 +5,7 @@ import io
 import os
 
 st.set_page_config(
-    page_title="Planificador de Medios Chile / Vía pública",
+    page_title="Planificador de medios / Vía pública",
     page_icon="🎯",
     layout="wide"
 )
@@ -1285,7 +1285,7 @@ def render_lamina_consolidada_jpg():
 
 
 # --- 10. VISTA PRINCIPAL ---
-st.title("🎯 Planificador de Medios & Exportador de Propuestas")
+st.title("🎯 Planificador de medios / Vía pública")
 st.markdown("Calcula el rendimiento por soporte, diseña la lámina ejecutiva y consolida el mix total de la campaña.")
 
 tab1, tab2 = st.tabs(["🖼️ Lámina Ejecutiva (Soporte Actual)", "📊 Plan de Medios Consolidado (Mix Completo)"])
