@@ -775,7 +775,7 @@ FORMATOS_METRO = {
     }
 }
 
-# --- 7. BARRA LATERAL: LOGO MADCOM LIMPIO Y CONFIGURACIÓN ---
+# --- 7. BARRA LATERAL: LOGO MADCOM Y CONFIGURACIÓN ---
 st.sidebar.markdown("### 🏢 Agencia")
 logo_preview = generar_logo_madcom(fondo_oscuro=True)
 st.sidebar.image(logo_preview, width=170)
@@ -913,7 +913,8 @@ if st.sidebar.button("➕ Agregar este elemento al Plan de Medios", use_containe
         "Impactos Conservador": int(imp_totales_c),
         "Impactos Medio": int(imp_totales_m),
         "Impactos Optimista": int(imp_totales_o),
-        "CPM Medio": cpm_m
+        "CPM Medio": cpm_m,
+        "Entorno": medio_tipo
     })
     st.sidebar.success("¡Elemento agregado al Plan de Medios!")
 
@@ -921,7 +922,7 @@ if st.sidebar.button("🗑️ Limpiar Plan de Medios", use_container_width=True)
     st.session_state.plan_items = []
     st.rerun()
 
-# --- 8. RENDERIZADOR PIL CON RESPALDO DE FUENTES EN ESQUINA INFERIOR IZQUIERDA ---
+# --- 8. RENDERIZADOR PIL: LÁMINA INDIVIDUAL (CON FOTO) ---
 def render_lamina_jpg():
     W, H = 1920, 1080
     im = Image.new("RGB", (W, H), c_bg)
@@ -1077,7 +1078,7 @@ def render_lamina_jpg():
     try:
         logo_to_stamp = generar_logo_madcom(fondo_oscuro=(modo_fondo == "Fondo Oscuro"))
         logo_to_stamp.thumbnail((190, 48), Image.Resampling.LANCZOS)
-        im.paste(logo_to_stamp, (W - 60 - logo_to_stamp.width, 995), logo_to_stamp)
+        im.paste(logo_to_stamp, (W - 60 - logo_to_stamp.width, 1000), logo_to_stamp)
     except Exception:
         pass
 
@@ -1085,7 +1086,155 @@ def render_lamina_jpg():
     im.save(buf, format="JPEG", quality=95)
     return buf.getvalue()
 
-# --- 9. VISTA PRINCIPAL ---
+
+# --- 9. RENDERIZADOR PIL: LÁMINA CONSOLIDADA (MIX COMPLETO - PANORÁMICA SIN FOTO) ---
+def render_lamina_consolidada_jpg():
+    W, H = 1920, 1080
+    im = Image.new("RGB", (W, H), c_bg)
+    draw = ImageDraw.Draw(im)
+
+    f_title = obtener_fuente(42, bold=True)
+    f_sub = obtener_fuente(24, bold=False)
+    f_num_big = obtener_fuente(42, bold=True)
+    f_label = obtener_fuente(22, bold=False)
+    f_table_head = obtener_fuente(20, bold=True)
+    f_table_row = obtener_fuente(20, bold=False)
+    f_sec_title = obtener_fuente(24, bold=True)
+    f_footer = obtener_fuente(18, bold=False)
+
+    num_items = len(st.session_state.plan_items)
+    total_inversion = sum(item["Inversión Neta"] for item in st.session_state.plan_items)
+    total_imp_c = sum(item["Impactos Conservador"] for item in st.session_state.plan_items)
+    total_imp_m = sum(item["Impactos Medio"] for item in st.session_state.plan_items)
+    total_imp_o = sum(item["Impactos Optimista"] for item in st.session_state.plan_items)
+    cpm_global_m = (total_inversion / total_imp_m * 1000) if total_imp_m > 0 else 0
+    cpm_global_c = (total_inversion / total_imp_c * 1000) if total_imp_c > 0 else 0
+    cpm_global_o = (total_inversion / total_imp_o * 1000) if total_imp_o > 0 else 0
+
+    # Determinar texto de fuentes técnicas presentes en el plan
+    tiene_metro = any(item.get("Entorno") == "Metro de Santiago (Estaciones y Trenes)" for item in st.session_state.plan_items)
+    tiene_ooh = any(item.get("Entorno") != "Metro de Santiago (Estaciones y Trenes)" for item in st.session_state.plan_items)
+    if tiene_metro and tiene_ooh:
+        fuente_plan_pie = "Medición Oficial: Metro de Santiago e Ipsos · INE Chile · EOD / SECTRA / MTT · UOCT / MOP."
+    elif tiene_metro:
+        fuente_plan_pie = "Medición Oficial de Audiencias: Metro de Santiago e Ipsos."
+    else:
+        fuente_plan_pie = "Medición Oficial de Audiencias: INE Chile · EOD / SECTRA / MTT · UOCT / MOP."
+
+    # 1. Cabecera Panorámica
+    draw.text((60, 48), "PLAN DE MEDIOS - RESUMEN CONSOLIDADO", fill=c_accent, font=f_title)
+    draw.text((W - 520, 58), f"{num_items} soportes en el Mix · Campaña Integral", fill=c_text_muted, font=f_sub)
+    draw.line([(60, 115), (W - 60, 115)], fill=c_accent, width=3)
+
+    # 2. 4 Tarjetas Superiores Panorámicas (x=60 a 1860, ancho 1800 px)
+    card_w = 425
+    card_h = 130
+    gap = (1800 - (card_w * 4)) // 3
+    x_pos = 60
+
+    # Tarjeta 1: Total Soportes
+    draw.rounded_rectangle([(x_pos, 145), (x_pos + card_w, 145 + card_h)], radius=12, fill=c_card, outline=c_border, width=1)
+    draw.text((x_pos + 25, 165), "Total Soportes en Mix", fill=c_text_muted, font=f_label)
+    draw.text((x_pos + 25, 202), f"{num_items} líneas contratadas", fill=c_text_primary, font=f_num_big)
+
+    # Tarjeta 2: Inversión Total Neta
+    x_pos += card_w + gap
+    draw.rounded_rectangle([(x_pos, 145), (x_pos + card_w, 145 + card_h)], radius=12, fill=c_card, outline=c_border, width=1)
+    draw.text((x_pos + 25, 165), "Inversión Total Neta", fill=c_text_muted, font=f_label)
+    draw.text((x_pos + 25, 202), f"${total_inversion:,.0f}".replace(",", "."), fill=c_text_primary, font=f_num_big)
+
+    # Tarjeta 3: Impactos Totales (Destacada)
+    x_pos += card_w + gap
+    draw.rounded_rectangle([(x_pos, 145), (x_pos + card_w, 145 + card_h)], radius=12, fill=c_card_highlight_bg)
+    draw.text((x_pos + 25, 165), "Impactos Brutos (Caso Medio)", fill=c_card_highlight_text, font=f_label)
+    draw.text((x_pos + 25, 202), f"{total_imp_m:,.0f}".replace(",", "."), fill=c_card_highlight_text, font=f_num_big)
+
+    # Tarjeta 4: CPM Ponderado Global
+    x_pos += card_w + gap
+    draw.rounded_rectangle([(x_pos, 145), (x_pos + card_w, 145 + card_h)], radius=12, fill=c_card, outline=c_border, width=1)
+    draw.text((x_pos + 25, 165), "CPM Ponderado Global", fill=c_text_muted, font=f_label)
+    draw.text((x_pos + 25, 202), f"${int(round(cpm_global_m)):,}".replace(",", "."), fill=c_accent, font=f_num_big)
+
+    # 3. Contenedor Tabla Desglose del Mix
+    t_box_y = 305
+    draw.rounded_rectangle([(60, t_box_y), (W - 60, 680)], radius=12, fill=c_card, outline=c_border, width=1)
+    draw.text((85, t_box_y + 20), "DESGLOSE DE SOPORTES EN EL MIX", fill=c_accent, font=f_sec_title)
+
+    # Encabezados de la tabla de desglose
+    th_y = t_box_y + 65
+    draw.text((85, th_y), "Soporte", fill=c_text_muted, font=f_table_head)
+    draw.text((540, th_y), "Ubicación / Territorio", fill=c_text_muted, font=f_table_head)
+    draw.text((1060, th_y), "Días", fill=c_text_muted, font=f_table_head)
+    draw.text((1180, th_y), "Inversión Neta", fill=c_text_muted, font=f_table_head)
+    draw.text((1440, th_y), "Impactos (Medio)", fill=c_text_muted, font=f_table_head)
+    draw.text((1700, th_y), "CPM Efectivo", fill=c_text_muted, font=f_table_head)
+    draw.line([(85, th_y + 32), (W - 85, th_y + 32)], fill=c_border, width=1)
+
+    # Filas de la tabla de desglose (máximo 6 para ajuste perfecto)
+    row_y = th_y + 45
+    for item in st.session_state.plan_items[:6]:
+        soporte_txt = item["Soporte"][:32] + "..." if len(item["Soporte"]) > 32 else item["Soporte"]
+        ubica_txt = item["Ubicación"][:38] + "..." if len(item["Ubicación"]) > 38 else item["Ubicación"]
+        inv_txt = f"${int(item['Inversión Neta']):,}".replace(",", ".")
+        imp_txt = f"{int(item['Impactos Medio']):,}".replace(",", ".")
+        cpm_txt = f"${int(round(item['CPM Medio'])):,}".replace(",", ".")
+
+        draw.text((85, row_y), soporte_txt, fill=c_text_primary, font=f_table_row)
+        draw.text((540, row_y), ubica_txt, fill=c_text_muted, font=f_table_row)
+        draw.text((1060, row_y), f"{item['Días']}d", fill=c_text_primary, font=f_table_row)
+        draw.text((1180, row_y), inv_txt, fill=c_text_primary, font=f_table_row)
+        draw.text((1440, row_y), imp_txt, fill=c_text_primary, font=f_table_row)
+        draw.text((1700, row_y), cpm_txt, fill=c_accent, font=f_table_row)
+        row_y += 42
+
+    # 4. Contenedor Tabla Consolidada de Escenarios Totales
+    e_box_y = 705
+    draw.rounded_rectangle([(60, e_box_y), (W - 60, 960)], radius=12, fill=c_card, outline=c_border, width=1)
+    draw.text((85, e_box_y + 20), "CONSOLIDADO DE RENDIMIENTO GLOBAL (TODA LA CAMPAÑA)", fill=c_accent, font=f_sec_title)
+
+    eth_y = e_box_y + 65
+    draw.text((85, eth_y), "Escenario Global", fill=c_text_muted, font=f_table_head)
+    draw.text((540, eth_y), "Inversión Total", fill=c_text_muted, font=f_table_head)
+    draw.text((950, eth_y), "Impactos Brutos Totales", fill=c_text_muted, font=f_table_head)
+    draw.text((1350, eth_y), "Costo Promedio x Impacto", fill=c_text_muted, font=f_table_head)
+    draw.text((1680, eth_y), "CPM Global", fill=c_text_muted, font=f_table_head)
+    draw.line([(85, eth_y + 32), (W - 85, eth_y + 32)], fill=c_border, width=1)
+
+    esc_datos = [
+        {"esc": "Conservador", "imp": total_imp_c, "cpm": cpm_global_c},
+        {"esc": "Medio (Recomendado)", "imp": total_imp_m, "cpm": cpm_global_m},
+        {"esc": "Optimista", "imp": total_imp_o, "cpm": cpm_global_o}
+    ]
+
+    erow_y = eth_y + 45
+    for e in esc_datos:
+        is_m = "Medio" in e["esc"]
+        c_name = c_accent if is_m else c_text_primary
+        costo_unit = (total_inversion / e["imp"]) if e["imp"] > 0 else 0
+        
+        draw.text((85, erow_y), e["esc"], fill=c_name, font=obtener_fuente(20, bold=is_m))
+        draw.text((540, erow_y), f"${total_inversion:,.0f}".replace(",", "."), fill=c_text_primary, font=f_table_row)
+        draw.text((950, erow_y), f"{e['imp']:,.0f}".replace(",", "."), fill=c_name, font=f_table_row)
+        draw.text((1350, erow_y), f"${costo_unit:.2f}".replace(".", ","), fill=c_text_primary, font=f_table_row)
+        draw.text((1680, erow_y), f"${int(round(e['cpm'])):,}".replace(",", "."), fill=c_name, font=f_table_row)
+        erow_y += 42
+
+    # 5. Pie de Página: Acreditación de Fuentes Técnicas e Isotipo MADCOM
+    draw.text((60, 1005), fuente_plan_pie, fill=c_text_muted, font=f_footer)
+
+    try:
+        logo_to_stamp = generar_logo_madcom(fondo_oscuro=(modo_fondo == "Fondo Oscuro"))
+        logo_to_stamp.thumbnail((190, 48), Image.Resampling.LANCZOS)
+        im.paste(logo_to_stamp, (W - 60 - logo_to_stamp.width, 1000), logo_to_stamp)
+    except Exception:
+        pass
+
+    buf = io.BytesIO()
+    im.save(buf, format="JPEG", quality=95)
+    return buf.getvalue()
+
+
+# --- 10. VISTA PRINCIPAL ---
 st.title("🎯 Planificador de Medios & Exportador de Propuestas")
 st.markdown("Calcula el rendimiento por soporte, diseña la lámina ejecutiva y consolida el mix total de la campaña.")
 
@@ -1110,6 +1259,24 @@ with tab2:
     if len(st.session_state.plan_items) == 0:
         st.info("👈 Configura los parámetros en el menú lateral y haz clic en **'➕ Agregar este elemento al Plan de Medios'** para sumar soportes a la campaña consolidada.")
     else:
+        st.subheader("🖼️ Vista Previa de la Lámina Resumen Consolidada (Mix Completo)")
+        
+        # Renderizado de la lámina panorámica consolidada en JPG
+        img_consolidada_bytes = render_lamina_consolidada_jpg()
+        st.image(img_consolidada_bytes, caption=f"Lámina Consolidada — Campaña Multi-Soporte ({len(st.session_state.plan_items)} elementos)", use_container_width=True)
+        
+        col_c1, col_c2 = st.columns([1, 3])
+        with col_c1:
+            st.download_button(
+                label="📥 Descargar Lámina Consolidada en JPG",
+                data=img_consolidada_bytes,
+                file_name="propuesta_consolidada_plan_de_medios.jpg",
+                mime="image/jpeg",
+                type="primary",
+                use_container_width=True
+            )
+
+        st.markdown("---")
         st.subheader(f"📋 1. Desglose del Mix ({len(st.session_state.plan_items)} soportes contratados)")
         
         df_items = pd.DataFrame(st.session_state.plan_items)
@@ -1120,7 +1287,7 @@ with tab2:
         df_display["Impactos Optimista"] = df_display["Impactos Optimista"].apply(lambda x: f"{int(x):,}".replace(",", "."))
         df_display["CPM Medio"] = df_display["CPM Medio"].apply(lambda x: f"${int(round(x)):,}".replace(",", "."))
         
-        st.dataframe(df_display, use_container_width=True)
+        st.dataframe(df_display[["Soporte", "Ubicación", "Días", "Inversión Neta", "Impactos Medio", "CPM Medio"]], use_container_width=True)
         
         # Consolidado Total
         total_inversion = sum(item["Inversión Neta"] for item in st.session_state.plan_items)
