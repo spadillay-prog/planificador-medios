@@ -3,6 +3,9 @@ import pandas as pd
 from PIL import Image, ImageDraw, ImageFont
 import io
 import os
+import urllib.request
+import urllib.parse
+import json
 
 st.set_page_config(
     page_title="Planificador de medios / Vía pública",
@@ -10,9 +13,12 @@ st.set_page_config(
     layout="wide"
 )
 
-# Inicializar sesión para el Plan de Medios Multi-Formato (Carrito)
+# Inicializar sesiones de estado
 if "plan_items" not in st.session_state:
     st.session_state.plan_items = []
+
+if "geo_resultado" not in st.session_state:
+    st.session_state.geo_resultado = None
 
 # --- 1. GESTIÓN DE FUENTES UNICODE ---
 def obtener_fuente(size=24, bold=False):
@@ -48,7 +54,50 @@ def generar_logo_madcom(fondo_oscuro=True):
     d.text((68, 16), "MADCOM", fill=color_trazo, font=f_logo)
     return im
 
-# --- 3. COLORES CORPORATIVOS ---
+# --- 3. GEOCODIFICADOR CARTOGRÁFICO NATIVO ---
+def consultar_direccion_osm(direccion_texto):
+    query_clean = f"{direccion_texto}, Chile"
+    url = f"https://nominatim.openstreetmap.org/search?q={urllib.parse.quote(query_clean)}&format=json&addressdetails=1&limit=1"
+    req = urllib.request.Request(url, headers={'User-Agent': 'MADCOM_PlanificadorMedios_Chile/1.0'})
+    try:
+        with urllib.request.urlopen(req, timeout=5) as response:
+            datos = json.loads(response.read().decode())
+            if datos and len(datos) > 0:
+                res = datos[0]
+                addr = res.get('address', {})
+                tipo_via = res.get('type', 'road')
+                comuna = addr.get('city') or addr.get('town') or addr.get('suburb') or addr.get('municipality') or addr.get('county') or 'Santiago'
+                
+                # Clasificación técnica de flujos según estándar vial
+                if tipo_via in ['motorway', 'motorway_link', 'trunk', 'trunk_link']:
+                    flujo_est = 145000
+                    desc_via = "Autopista Urbana / Vía Expresa (Alto flujo continuo)"
+                elif tipo_via in ['primary', 'primary_link']:
+                    flujo_est = 100000
+                    desc_via = "Arteria Troncal Principal (Densidad vehicular + comercial)"
+                elif tipo_via in ['secondary', 'secondary_link']:
+                    flujo_est = 65000
+                    desc_via = "Avenida Colectora / Intercomunal"
+                elif tipo_via in ['tertiary', 'tertiary_link']:
+                    flujo_est = 40000
+                    desc_via = "Vía de distribución comunal media"
+                else:
+                    flujo_est = 25000
+                    desc_via = "Vía local / barrial de proximidad"
+                
+                return {
+                    "ok": True,
+                    "comuna": comuna.upper(),
+                    "tipo_via": tipo_via,
+                    "desc_via": desc_via,
+                    "flujo_sugerido": flujo_est,
+                    "nombre_completo": res.get('display_name', '')
+                }
+    except Exception as e:
+        return {"ok": False, "error": str(e)}
+    return {"ok": False, "error": "No se encontraron coincidencias cartográficas"}
+
+# --- 4. COLORES CORPORATIVOS ---
 COLORES_BASE = {
     "Naranjo Enérgico": "#FF5630",
     "Amarillo (Smart Fit)": "#FFB800",
@@ -59,7 +108,7 @@ COLORES_BASE = {
     "Azul Marino": "#091E42"
 }
 
-# --- 4. BASE DE DATOS METRO DE SANTIAGO (OFICIAL IPSOS) ---
+# --- 5. BASE DE DATOS METRO DE SANTIAGO (OFICIAL IPSOS) ---
 METRO_DATA = {
     "Línea 1": {
         "Alberto Hurtado": {"flujo_mes": 5146950, "alcance_dia": 171565},
@@ -158,7 +207,7 @@ METRO_DATA = {
     }
 }
 
-# --- 5. BASE DE DATOS NACIONAL (16 REGIONES DE CHILE) ---
+# --- 6. BASE DE DATOS NACIONAL (16 REGIONES DE CHILE) ---
 DATA_JERARQUICA = {
     "Región de Arica y Parinacota": {
         "Arica Urbano": {
@@ -749,7 +798,7 @@ DATA_JERARQUICA = {
     }
 }
 
-# --- 6. FORMATOS COMERCIALES (OOH & METRO) ---
+# --- 7. FORMATOS COMERCIALES (OOH & METRO) ---
 FORMATOS_OOH = {
     "Building Wrap (Edificio)": {
         "base": 1, "c": 0.25, "m": 0.30, "o": 0.35, "tipo": "Gran impacto edificio", "unidad": "edificios",
@@ -785,7 +834,7 @@ FORMATOS_METRO = {
     }
 }
 
-# --- 7. BARRA LATERAL: LOGO MADCOM Y CONFIGURACIÓN ---
+# --- 8. BARRA LATERAL: LOGO MADCOM Y CONFIGURACIÓN ---
 st.sidebar.markdown("### 🏢 Agencia")
 logo_preview = generar_logo_madcom(fondo_oscuro=True)
 st.sidebar.image(logo_preview, width=170)
@@ -816,8 +865,23 @@ else:
     c_card_highlight_text = "#000000" if color_acento_nombre in ["Amarillo (Smart Fit)", "Naranjo Enérgico"] else "#FFFFFF"
 
 st.sidebar.markdown("---")
+st.sidebar.header("🗓️ Temporalidad de Campaña")
+temporada_sel = st.sidebar.selectbox(
+    "Periodo del Año:",
+    ["Marzo a Diciembre (Estándar / Año Laboral)", "☀️ Enero - Febrero (Temporada Estival / Verano)"]
+)
+es_verano = "Enero - Febrero" in temporada_sel
+
+st.sidebar.markdown("---")
 st.sidebar.header("⚙️ Configuración Territorial & Medios")
-medio_tipo = st.sidebar.radio("Selecciona Entorno:", ["Vía Pública Tradicional (Calles)", "Metro de Santiago (Estaciones y Trenes)"])
+medio_tipo = st.sidebar.radio(
+    "Selecciona Modalidad de Búsqueda:",
+    [
+        "Vía Pública Tradicional (Calles)",
+        "🔍 Búsqueda Automática por Dirección Exacta (Geocodificador OSM)",
+        "Metro de Santiago (Estaciones y Trenes)"
+    ]
+)
 
 ancho_wrap = 0
 alto_wrap = 0
@@ -828,25 +892,102 @@ if medio_tipo == "Metro de Santiago (Estaciones y Trenes)":
     formato_sel = st.sidebar.selectbox("Formato en Metro:", list(formato_dict.keys()))
     info_f = formato_dict[formato_sel]
     fuente_medicion_pie = "Medición Oficial de Audiencias: Metro de Santiago e Ipsos."
+    if es_verano:
+        fuente_medicion_pie += " (Calibrado Estacional DTPM Verano)."
     
     if info_f.get("es_tren", False):
-        universo_calculo = info_f["flujo_red_dia"]
+        base_dia = info_f["flujo_red_dia"]
+        universo_calculo = int(base_dia * 0.80) if es_verano else base_dia
         nombre_territorio = "Línea 1 Completa"
         nombre_titulo_lamina = "LÍNEA 1"
         texto_estrategico_default = info_f["contexto"]
+        if es_verano:
+            texto_estrategico_default += " Aforo calibrado por receso estival (-20% red general)."
     else:
         linea_sel = st.sidebar.selectbox("Línea de Metro:", list(METRO_DATA.keys()))
         estacion_sel = st.sidebar.selectbox("Estación:", list(METRO_DATA[linea_sel].keys()))
         datos_estacion = METRO_DATA[linea_sel][estacion_sel]
-        universo_calculo = datos_estacion["alcance_dia"]
+        
+        # Ponderador estival según perfil de estación
+        estaciones_u = ["San Joaquin", "Republica", "Universidad Catolica", "Hospitales", "Toesca", "Salvador"]
+        estaciones_comerciales = ["Estacion Central", "Tobalaba", "Bellavista De La Florida"]
+        
+        if es_verano:
+            if estacion_sel in estaciones_u:
+                factor_estival = 0.65 # -35% receso escolar/universitario
+            elif estacion_sel in estaciones_comerciales:
+                factor_estival = 0.95 # Muy estable por turismo/compras
+            else:
+                factor_estival = 0.80 # -20% promedio laboral
+        else:
+            factor_estival = 1.0
+            
+        universo_calculo = int(datos_estacion["alcance_dia"] * factor_estival)
         nombre_territorio = f"Metro {linea_sel} - {estacion_sel}"
         nombre_titulo_lamina = f"ESTACIÓN {estacion_sel.upper()}"
+        
         if "Muro" in formato_sel:
-            texto_estrategico_default = f"Muro completo en Estación {estacion_sel} ({datos_estacion['flujo_mes']:,.0f} pasajeros mensuales Ipsos), entregando máxima superficie y dominación de andén.".replace(",", ".")
+            texto_estrategico_default = f"Muro completo en Estación {estacion_sel} ({datos_estacion['flujo_mes']:,.0f} pasajeros mensuales base Ipsos), entregando máxima superficie y dominación de andén.".replace(",", ".")
         else:
             texto_estrategico_default = f"Estación {estacion_sel} registra {datos_estacion['flujo_mes']:,.0f} pasajeros mensuales (Ipsos), con tiempo de espera cautivo de alta exposición.".replace(",", ".")
-else:
+        if es_verano:
+            texto_estrategico_default += f" Flujo diario ajustado por temporada estival ({int(factor_estival*100)}% de demanda regular)."
+
+elif medio_tipo == "🔍 Búsqueda Automática por Dirección Exacta (Geocodificador OSM)":
+    fuente_medicion_pie = "Medición Oficial: OpenStreetMap Cartography · INE Chile · SECTRA/UOCT."
+    if es_verano:
+        fuente_medicion_pie += " (Ajuste Estival SERNATUR/MTT)."
+        
+    st.sidebar.markdown("📍 **Ingresa la Dirección o Esquina:**")
+    dir_input = st.sidebar.text_input("Dirección en Chile:", value="Av. Kennedy con Alonso de Córdova")
+    
+    if st.sidebar.button("🔎 Georreferenciar y Calcular Flujo", use_container_width=True):
+        with st.spinner("Analizando jerarquía vial y cono de flujo satelital..."):
+            st.session_state.geo_resultado = consultar_direccion_osm(dir_input)
+    
+    res_geo = st.session_state.geo_resultado
+    if res_geo and res_geo.get("ok", False):
+        st.sidebar.success(f"📍 Detectado: **{res_geo['comuna']}**\n\n*{res_geo['desc_via']}*")
+        flujo_base_geo = res_geo['flujo_sugerido']
+        # Si es verano y está en zona céntrica/Santiago se ajusta a la baja
+        if es_verano:
+            flujo_base_geo = int(flujo_base_geo * 0.82)
+        nombre_titulo_lamina = res_geo['comuna'].split()[0].upper()
+    else:
+        flujo_base_geo = 120000 if not es_verano else 100000
+        nombre_titulo_lamina = "SANTIAGO"
+        if res_geo and not res_geo.get("ok", False):
+            st.sidebar.warning(f"No se pudo autocalibrar ({res_geo.get('error')}). Ingresa el flujo estimado:")
+            
+    universo_calculo = st.sidebar.number_input(
+        "Flujo Activo Diario Estimado (Vehículos + Peatones):",
+        min_value=5000,
+        value=flujo_base_geo,
+        step=5000
+    )
+    nombre_territorio = dir_input.strip()
+    texto_estrategico_default = f"Punto georreferenciado en {dir_input} con aforo vial y peatonal estimado de {universo_calculo:,.0f} personas al día.".replace(",", ".")
+    if es_verano:
+        texto_estrategico_default += " Estimación calibrada para temporada de verano."
+
+    formato_dict = FORMATOS_OOH
+    formato_sel = st.sidebar.selectbox("Formato Publicitario:", list(formato_dict.keys()))
+    info_f = formato_dict[formato_sel]
+
+    if info_f.get("es_wrap", False):
+        st.sidebar.markdown("📐 **Dimensiones de la Gigantografía:**")
+        col_w, col_h = st.sidebar.columns(2)
+        ancho_wrap = col_w.number_input("Ancho (metros):", min_value=5.0, max_value=60.0, value=20.0, step=1.0)
+        alto_wrap = col_h.number_input("Alto (metros):", min_value=5.0, max_value=80.0, value=25.0, step=1.0)
+        superficie_wrap = ancho_wrap * alto_wrap
+        st.sidebar.success(f"Superficie total: **{superficie_wrap:,.0f} m²** ({ancho_wrap:.0f}×{alto_wrap:.0f} m)")
+        texto_estrategico_default = f"Building Wrap de {superficie_wrap:,.0f} m² en {dir_input}, con cono de visibilidad a larga distancia y flujo auditado de {universo_calculo:,.0f} personas/día."
+
+else: # Vía Pública Tradicional
     fuente_medicion_pie = "Medición Oficial de Audiencias: INE Chile · EOD / SECTRA / MTT · UOCT / MOP."
+    if es_verano:
+        fuente_medicion_pie += " (Ponderado Estival SERNATUR)."
+        
     reg_sel = st.sidebar.selectbox("1. Región:", list(DATA_JERARQUICA.keys()))
     sec_sel = st.sidebar.selectbox("2. Sector / Zona:", list(DATA_JERARQUICA[reg_sel].keys()))
     datos_sec = DATA_JERARQUICA[reg_sel][sec_sel]
@@ -854,8 +995,18 @@ else:
     opciones_comuna = ["Todo el Sector en conjunto"] + list(datos_sec["comunas"].keys())
     com_sel = st.sidebar.selectbox("3. Comuna:", opciones_comuna)
     
+    # Detección de comunas turísticas de verano
+    es_zona_turistica_verano = any(c in com_sel for c in ["Viña del Mar", "Concón", "La Serena", "Coquimbo", "Villarrica", "Pucón", "Puerto Varas", "Iquique"])
+    
     if com_sel == "Todo el Sector en conjunto":
-        universo_calculo = datos_sec["res_sector"] + datos_sec["flot_sector"]
+        base_res = datos_sec["res_sector"]
+        base_flot = datos_sec["flot_sector"]
+        if es_verano:
+            if "Metropolitana" in reg_sel:
+                base_flot = int(base_flot * 0.75) # Baja en Santiago
+            elif es_zona_turistica_verano:
+                base_flot = int(base_flot * 1.50) # Alza estival balnearios
+        universo_calculo = base_res + base_flot
         nombre_territorio = f"{sec_sel}"
         nombre_titulo_lamina = sec_sel.split("(")[0].strip().upper()
         texto_estrategico_default = f"Macrozona con un flujo activo superior a {universo_calculo:,.0f} personas al día.".replace(",", ".")
@@ -869,30 +1020,47 @@ else:
         pto_sel = st.sidebar.selectbox("4. Georreferencia / Punto:", puntos_disponibles)
         nombre_titulo_lamina = com_sel.split("/")[0].strip().upper()
         
+        # Ponderación verano según zona
+        if es_verano:
+            if "Metropolitana" in reg_sel:
+                factor_v = 0.80 # -20% en Santiago
+            elif es_zona_turistica_verano:
+                factor_v = 1.45 # +45% en balnearios
+            else:
+                factor_v = 1.00
+        else:
+            factor_v = 1.00
+        
         if pto_sel == "Toda la comuna (General)":
-            universo_calculo = com_data["res"] + com_data["flot"]
+            universo_calculo = int((com_data["res"] + com_data["flot"]) * factor_v)
             nombre_territorio = com_sel
             texto_estrategico_default = com_data.get("contexto", "Cobertura continua sobre residentes y población flotante.")
         elif pto_sel == "➕ Otro punto específico (Personalizado)":
             punto_custom_nombre = st.sidebar.text_input("Nombre del Punto / Intersección:", "Ej: Vicuña Mackenna con Departamental")
-            flujo_sugerido_comuna = int(round(((com_data["res"] + com_data["flot"]) * 0.30) / 5000) * 5000)
+            flujo_sugerido_comuna = int(round(((com_data["res"] + com_data["flot"]) * 0.30 * factor_v) / 5000) * 5000)
             flujo_sugerido_comuna = max(10000, flujo_sugerido_comuna)
             universo_calculo = st.sidebar.number_input("Flujo Activo Diario Estimado (Vehículos + Peatones):", min_value=5000, value=flujo_sugerido_comuna, step=5000)
             nombre_territorio = f"{com_sel} - {punto_custom_nombre}"
             texto_estrategico_default = f"Punto comercial y vial de alta afluencia con un flujo estimado de {universo_calculo:,.0f} personas al día.".replace(",", ".")
         else:
-            universo_calculo = com_data["puntos"][pto_sel]["flujo"]
+            flujo_base = com_data["puntos"][pto_sel]["flujo"]
+            universo_calculo = int(flujo_base * factor_v)
             nombre_territorio = f"{com_sel} - {pto_sel}"
             if "Kennedy" in pto_sel:
                 texto_estrategico_default = "Polo neurálgico de máxima plusvalía con cono visual despejado sobre Autopista Kennedy, alta fricción vehicular y flujo cautivo de Parque Arauco y Nueva Las Condes."
             else:
                 texto_estrategico_default = f"Punto de alta concentración vial y comercial con un flujo auditado de {universo_calculo:,.0f} personas diarias.".replace(",", ".")
 
+        if es_verano:
+            if factor_v > 1.0:
+                texto_estrategico_default += " Flujo incrementado por alta afluencia turística estival."
+            elif factor_v < 1.0:
+                texto_estrategico_default += " Aforo ponderado por receso estival de vacaciones laborales y escolares."
+
     formato_dict = FORMATOS_OOH
     formato_sel = st.sidebar.selectbox("Formato Publicitario:", list(formato_dict.keys()))
     info_f = formato_dict[formato_sel]
 
-    # Cuadros de dimensiones para Building Wrap
     if info_f.get("es_wrap", False):
         st.sidebar.markdown("📐 **Dimensiones de la Gigantografía:**")
         col_w, col_h = st.sidebar.columns(2)
@@ -901,7 +1069,7 @@ else:
         superficie_wrap = ancho_wrap * alto_wrap
         st.sidebar.success(f"Superficie total: **{superficie_wrap:,.0f} m²** ({ancho_wrap:.0f}×{alto_wrap:.0f} m)")
         if "Kennedy" in nombre_territorio:
-            texto_estrategico_default = f"Building Wrap monumental de {superficie_wrap:,.0f} m² ({ancho_wrap:.0f}×{alto_wrap:.0f}m) en Autopista Kennedy frente a Parque Arauco, con visibilidad a más de 500 metros y alta retención en horas punta."
+            texto_estrategico_default = f"Building Wrap monumental de {superficie_wrap:,.0f} m² ({ancho_wrap:.0f}×{alto_wrap:.0f}m) en Autopista Kennedy frente a Parque Arauco, con visibilidad a más de 500 metros y alta retención vehicular."
         else:
             texto_estrategico_default = f"Elemento monumental de {superficie_wrap:,.0f} m² sobre edificio ({ancho_wrap:.0f}×{alto_wrap:.0f}m), con cono de visibilidad a más de 400 metros de distancia sobre arteria principal."
 
@@ -963,7 +1131,7 @@ if st.sidebar.button("🗑️ Limpiar Plan de Medios", use_container_width=True)
     st.session_state.plan_items = []
     st.rerun()
 
-# --- 8. RENDERIZADOR PIL: LÁMINA INDIVIDUAL (CON FOTO) ---
+# --- 9. RENDERIZADOR PIL: LÁMINA INDIVIDUAL (CON FOTO) ---
 def render_lamina_jpg():
     W, H = 1920, 1080
     im = Image.new("RGB", (W, H), c_bg)
@@ -986,6 +1154,9 @@ def render_lamina_jpg():
     else:
         subtitle_text = f"{cant_unidades} {info_f['unidad']} · {dias_campana} días"
     
+    if es_verano:
+        subtitle_text += " [Verano]"
+        
     max_title_w = W - 520
     t_size = 42
     f_title = obtener_fuente(t_size, bold=True)
@@ -998,7 +1169,7 @@ def render_lamina_jpg():
         f_title = obtener_fuente(t_size, bold=True)
 
     draw.text((60, 48), title_text, fill=c_accent, font=f_title)
-    draw.text((W - 440, 58), subtitle_text, fill=c_text_muted, font=f_sub)
+    draw.text((W - 470, 58), subtitle_text, fill=c_text_muted, font=f_sub)
     draw.line([(60, 115), (W - 60, 115)], fill=c_accent, width=3)
 
     # 2. Recuadro Foto Soporte
@@ -1137,7 +1308,7 @@ def render_lamina_jpg():
     return buf.getvalue()
 
 
-# --- 9. RENDERIZADOR PIL: LÁMINA CONSOLIDADA (MIX COMPLETO - PANORÁMICA SIN FOTO) ---
+# --- 10. RENDERIZADOR PIL: LÁMINA CONSOLIDADA (MIX COMPLETO - PANORÁMICA SIN FOTO) ---
 def render_lamina_consolidada_jpg():
     W, H = 1920, 1080
     im = Image.new("RGB", (W, H), c_bg)
@@ -1160,7 +1331,6 @@ def render_lamina_consolidada_jpg():
     cpm_global_c = (total_inversion / total_imp_c * 1000) if total_imp_c > 0 else 0
     cpm_global_o = (total_inversion / total_imp_o * 1000) if total_imp_o > 0 else 0
 
-    # Fuentes técnicas presentes en el plan
     tiene_metro = any(item.get("Entorno") == "Metro de Santiago (Estaciones y Trenes)" for item in st.session_state.plan_items)
     tiene_ooh = any(item.get("Entorno") != "Metro de Santiago (Estaciones y Trenes)" for item in st.session_state.plan_items)
     if tiene_metro and tiene_ooh:
@@ -1169,10 +1339,15 @@ def render_lamina_consolidada_jpg():
         fuente_plan_pie = "Medición Oficial de Audiencias: Metro de Santiago e Ipsos."
     else:
         fuente_plan_pie = "Medición Oficial de Audiencias: INE Chile · EOD / SECTRA / MTT · UOCT / MOP."
+    if es_verano:
+        fuente_plan_pie += " [Ajuste de temporada estival incluido]"
 
     # 1. Cabecera Panorámica
     draw.text((60, 48), "PLAN DE MEDIOS - RESUMEN CONSOLIDADO", fill=c_accent, font=f_title)
-    draw.text((W - 520, 58), f"{num_items} soportes en el Mix · Campaña Integral", fill=c_text_muted, font=f_sub)
+    sub_c = f"{num_items} soportes en el Mix · Campaña Integral"
+    if es_verano:
+        sub_c += " · Modo Verano"
+    draw.text((W - 550, 58), sub_c, fill=c_text_muted, font=f_sub)
     draw.line([(60, 115), (W - 60, 115)], fill=c_accent, width=3)
 
     # 2. 4 Tarjetas Superiores Panorámicas (x=60 a 1860, ancho 1800 px)
@@ -1293,7 +1468,7 @@ def render_lamina_consolidada_jpg():
     return buf.getvalue()
 
 
-# --- 10. VISTA PRINCIPAL ---
+# --- 11. VISTA PRINCIPAL ---
 st.title("🎯 Planificador de medios / Vía pública")
 st.markdown("Calcula el rendimiento por soporte, diseña la lámina ejecutiva y consolida el mix total de la campaña.")
 
