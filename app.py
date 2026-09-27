@@ -292,17 +292,17 @@ DATA_JERARQUICA = {
                     "puntos": {
                         "Toda la comuna (General)": None,
                         "1 Norte con Libertad / Mall Marina": {"flujo": 130000},
-                        "Av. 15 Norte con 4 Oriente": {"flujo": 85000},
+                        "Av. 15 Norte esquina 4 Norte": {"flujo": 75000},
                         "Av. Borgoño costado Balneario Las Salinas hacia Viña": {"flujo": 65000},
                         "Av. Benidorm (15 Norte) con San Martín": {"flujo": 85000}
                     }
                 },
                 "Valparaíso": {
                     "res": 315000, "flot": 90000,
-                    "contexto": "Centro administrativo, patrimonial y universitario regional con flujo masivo en torno a Av. España, Pedro Montt y Plaza Victoria.",
+                    "contexto": "Centro administrativo, patrimonial y universitario regional con flujo masivo en torno a Av. España, Plaza Victoria y Pedro Montt.",
                     "puntos": {
                         "Toda la comuna (General)": None,
-                        "Av. España, sector Balmaceda": {"flujo": 115000},
+                        "Av. España, sector Balmaceda": {"flujo": 120000},
                         "Pedro Montt & Edwards, Plaza Victoria": {"flujo": 95000},
                         "Av. Argentina con Pedro Montt (Congreso / Terminal)": {"flujo": 110000}
                     }
@@ -783,6 +783,10 @@ FORMATOS_METRO = {
         "base": 1, "c": 0.30, "m": 0.40, "o": 0.50, "tipo": "DOOH Andén", "unidad": "circuitos", "es_tren": False,
         "contexto": "Pantallas frente a los usuarios en tiempo de espera cautiva en andén, con alto recuerdo de marca."
     },
+    "Tótem / Paleta Digital Mesanina (DOOH)": {
+        "base": 1, "c": 0.15, "m": 0.20, "o": 0.25, "tipo": "Tótem Vertical", "unidad": "pantallas", "es_tren": False,
+        "contexto": "Paleta digital vertical (~1x1,6m) ubicada en sectores de boleterías, línea de torniquetes y pasillos de trasbordo/combinación con alta visibilidad y dinamismo digital."
+    },
     "Valla / Panel Andén Estático": {
         "base": 1, "c": 0.25, "m": 0.35, "o": 0.45, "tipo": "Panel Andén", "unidad": "paneles", "es_tren": False,
         "contexto": "Panel publicitario de gran formato ubicado frente a las vías de abordaje."
@@ -1001,14 +1005,14 @@ else: # Vía Pública Tradicional
                 texto_estrategico_default = "Nudo neurálgico que conecta la costanera de Av. Grecia y Balneario Municipal con el eje de Av. Matta hacia el centro comercial y cívico de Antofagasta."
             elif "Costanera Arturo Prat con Eleuterio Ramírez" in pto_sel:
                 texto_estrategico_default = "Eje de alto impacto que conecta la costanera de Av. Arturo Prat con el acceso al centro comercial y financiero de Iquique por Eleuterio Ramírez."
-            elif "España" in pto_sel:
-                texto_estrategico_default = "Arteria conurbada estructurante de máximo flujo vehicular continuo y transporte público masivo entre Valparaíso y Viña del Mar."
-            elif "Pedro Montt & Edwards" in pto_sel:
-                texto_estrategico_default = "Epicentro cívico, comercial y peatonal de Plaza Victoria con altísima densidad de público caminante y retención semafórica en el plan de Valparaíso."
-            elif "15 Norte con 4 Oriente" in pto_sel:
-                texto_estrategico_default = "Polo comercial neurálgico de Viña del Mar que conecta los centros comerciales de 15 Norte con el flujo residencial y automotriz de Población Vergara."
-            elif "Las Salinas" in pto_sel:
-                texto_estrategico_default = "Eje costero estructurante de Av. Borgoño con cono de visibilidad despejado y flujo cautivo vehicular hacia el centro de Viña del Mar y balnearios."
+            elif "Av. España" in pto_sel:
+                texto_estrategico_default = "Arteria intercomunal de máxima concentración vial entre Valparaíso y Viña del Mar, con exposición continua de alto impacto pendular."
+            elif "Plaza Victoria" in pto_sel or "Pedro Montt" in pto_sel:
+                texto_estrategico_default = "Polo cívico y comercial neurálgico en Plaza Victoria, con alto flujo peatonal, bancario y de transporte público continuo."
+            elif "15 Norte" in pto_sel:
+                texto_estrategico_default = "Eje comercial estructurante del sector norte de Viña del Mar, con alto tránsito vehicular y peatonal vinculado al polo retail."
+            elif "Las Salinas" in pto_sel or "Borgoño" in pto_sel:
+                texto_estrategico_default = "Borde costero de Av. Borgoño frente a Balneario Las Salinas con tránsito continuo Reñaca-Viña y máxima retención vehicular en horas punta."
             else:
                 texto_estrategico_default = f"Punto de alta concentración vial y comercial con un flujo auditado de {universo_calculo:,.0f} personas diarias.".replace(",", ".")
 
@@ -1337,7 +1341,7 @@ def render_lamina_consolidada_jpg():
 
     # Tarjeta 3: Impactos Totales (Destacada)
     x_pos += card_w + gap
-    draw.rounded_rectangle([(x_pos, 145), (x_pos + card_w, 145 + card_h)], radius=12, fill=c_card, outline=c_border, width=1)
+    draw.rounded_rectangle([(x_pos, 145), (x_pos + card_w, 145 + card_h)], radius=12, fill=c_card_highlight_bg)
     draw.text((x_pos + 25, 165), "Impactos Brutos (Caso Medio)", fill=c_card_highlight_text, font=f_label)
     draw.text((x_pos + 25, 202), f"{total_imp_m:,.0f}".replace(",", "."), fill=c_card_highlight_text, font=obtener_fuente(42, bold=True))
 
