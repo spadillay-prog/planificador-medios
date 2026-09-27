@@ -166,7 +166,7 @@ DATA_JERARQUICA = {
             "comunas": {
                 "Arica": {
                     "res": 245000, "flot": 35000,
-                    "contexto": "Eje fronterizo y comercial costero, con flujo constante en torno a Av. Diego Portales, playas y el puerto.",
+                    "contexto": "Eje fronterizo y comercial costero, con flujo constante en torno a Av. Diego Portales, playas Chinchorro/El Laucho y el puerto.",
                     "puntos": {
                         "Toda la comuna (General)": None,
                         "Av. Diego Portales con Santa María": {"flujo": 65000},
@@ -230,7 +230,7 @@ DATA_JERARQUICA = {
             "comunas": {
                 "Copiapó": {
                     "res": 175000, "flot": 25000,
-                    "contexto": "Eje minero y comercial centrado en Av. Copayapu y el centro cívico de la plaza de armas.",
+                    "contexto": "Eje minero y comercial centrado en Av. Copayapu y el centro cívico de la plaza de armas, con paso a Caldera.",
                     "puntos": {
                         "Toda la comuna (General)": None,
                         "Av. Copayapu con Los Carrera": {"flujo": 60000}
@@ -252,7 +252,7 @@ DATA_JERARQUICA = {
             "comunas": {
                 "Coquimbo": {
                     "res": 240000, "flot": 40000,
-                    "contexto": "Coquimbo concentra su movimiento en pocos ejes que todas las rutas cruzan, generando repetición diaria de alto impacto sobre el puerto, el centro y los barrios altos.",
+                    "contexto": "Coquimbo concentra su movimiento en pocos ejes que todas las rutas cruzan, generando repetición diaria de alto impacto sobre el puerto, La Herradura y barrios altos.",
                     "puntos": {
                         "Toda la comuna (General)": None,
                         "Ruta 5 con La Cantera": {"flujo": 75000},
@@ -293,7 +293,7 @@ DATA_JERARQUICA = {
                 },
                 "Valparaíso": {
                     "res": 315000, "flot": 90000,
-                    "contexto": "Centro administrativo y universitario regional con flujo masivo en torno a Av. Argentina y Pedro Montt.",
+                    "contexto": "Centro administrativo, patrimonial y universitario regional con flujo masivo en torno a Av. Argentina y Pedro Montt.",
                     "puntos": {
                         "Toda la comuna (General)": None,
                         "Av. Argentina con Pedro Montt (Congreso / Terminal)": {"flujo": 110000}
@@ -534,7 +534,7 @@ DATA_JERARQUICA = {
                 },
                 "San Fernando": {
                     "res": 80000, "flot": 15000,
-                    "contexto": "Centro comercial y de distribución del Valle de Colchagua.",
+                    "contexto": "Centro comercial y enoturístico de distribución del Valle de Colchagua.",
                     "puntos": {
                         "Toda la comuna (General)": None
                     }
@@ -557,14 +557,14 @@ DATA_JERARQUICA = {
                 },
                 "Curicó": {
                     "res": 165000, "flot": 25000,
-                    "contexto": "Polo agroindustrial con alta concurrencia en eje Camilo Henríquez.",
+                    "contexto": "Polo agroindustrial y de ruta del vino con alta concurrencia en eje Camilo Henríquez y paso a costa.",
                     "puntos": {
                         "Toda la comuna (General)": None
                     }
                 },
                 "Linares": {
                     "res": 100000, "flot": 15000,
-                    "contexto": "Centro de servicios agrícolas de la cuenca sur del Maule.",
+                    "contexto": "Centro de servicios agrícolas y conexión a precordillera / Achibueno.",
                     "puntos": {
                         "Toda la comuna (General)": None
                     }
@@ -578,7 +578,7 @@ DATA_JERARQUICA = {
             "comunas": {
                 "Chillán": {
                     "res": 195000, "flot": 35000,
-                    "contexto": "Capital regional con flujo continuo en torno a la plaza de armas, mercado y Av. O'Higgins.",
+                    "contexto": "Capital regional y hub distribuidor hacia Valle Las Trancas / Termas y costa, con flujo continuo en eje O'Higgins.",
                     "puntos": {
                         "Toda la comuna (General)": None,
                         "Av. O'Higgins con Av. Ecuador": {"flujo": 60000}
@@ -609,7 +609,7 @@ DATA_JERARQUICA = {
                 },
                 "Talcahuano": {
                     "res": 160000, "flot": 50000,
-                    "contexto": "Polo portuario e industrial con tránsito masivo en torno a Mall Plaza Trébol y autopista.",
+                    "contexto": "Polo portuario, turístico e industrial con tránsito masivo en torno a Mall Plaza Trébol y caletas.",
                     "puntos": {
                         "Toda la comuna (General)": None,
                         "Autopista Concepción-Talcahuano frente a Mall Plaza": {"flujo": 110000}
@@ -617,7 +617,7 @@ DATA_JERARQUICA = {
                 },
                 "San Pedro de la Paz": {
                     "res": 145000, "flot": 30000,
-                    "contexto": "Paso obligado del tránsito hacia la costa sur y ruta de la madera.",
+                    "contexto": "Paso obligado del tránsito hacia balnearios de la costa sur y Ruta de la Madera.",
                     "puntos": {
                         "Toda la comuna (General)": None,
                         "Ruta 160 con Puente Llacolén": {"flujo": 80000}
@@ -625,7 +625,7 @@ DATA_JERARQUICA = {
                 },
                 "Los Ángeles": {
                     "res": 220000, "flot": 40000,
-                    "contexto": "Capital del sector forestal e industrial de la provincia con alta actividad en el centro.",
+                    "contexto": "Capital del sector forestal e industrial de la provincia con paso a Salto del Laja y cordillera.",
                     "puntos": {
                         "Toda la comuna (General)": None
                     }
@@ -639,7 +639,7 @@ DATA_JERARQUICA = {
             "comunas": {
                 "Temuco": {
                     "res": 310000, "flot": 65000,
-                    "contexto": "Principal polo comercial, de salud y universitario del sur con alta densidad en Av. Alemania y Caupolicán.",
+                    "contexto": "Principal polo comercial, de salud y distribuidor turístico regional con alta densidad en Av. Alemania y Caupolicán.",
                     "puntos": {
                         "Toda la comuna (General)": None,
                         "Av. Alemania con Mall Portal Temuco": {"flujo": 90000},
@@ -655,7 +655,7 @@ DATA_JERARQUICA = {
                 },
                 "Villarrica / Pucón": {
                     "res": 105000, "flot": 50000,
-                    "contexto": "Polo turístico lacustre con altísima saturación y tráfico vehicular durante temporada alta.",
+                    "contexto": "Epicentro turístico lacustre con máxima saturación y colapso vehicular estival.",
                     "puntos": {
                         "Toda la comuna (General)": None,
                         "Camino Villarrica - Pucón": {"flujo": 45000}
@@ -670,7 +670,7 @@ DATA_JERARQUICA = {
             "comunas": {
                 "Valdivia": {
                     "res": 180000, "flot": 35000,
-                    "contexto": "Polo turístico, fluvial y cervecero con paso obligado por los puentes Pedro de Valdivia y Calle-Calle.",
+                    "contexto": "Polo turístico y cervecero líder en ocupación estival con paso obligado por puentes Pedro de Valdivia, Niebla y Calle-Calle.",
                     "puntos": {
                         "Toda la comuna (General)": None,
                         "Av. Ramón Picarte con Plaza de la República": {"flujo": 60000},
@@ -686,7 +686,7 @@ DATA_JERARQUICA = {
             "comunas": {
                 "Puerto Montt": {
                     "res": 260000, "flot": 50000,
-                    "contexto": "Capital de la industria acuícola y punto neurálgico de conexión hacia la Carretera Austral.",
+                    "contexto": "Capital regional, punto neurálgico de salida a Carretera Austral y polo de Angelmó.",
                     "puntos": {
                         "Toda la comuna (General)": None,
                         "Av. Diego Portales (Costanera frente al Mall)": {"flujo": 80000}
@@ -694,21 +694,21 @@ DATA_JERARQUICA = {
                 },
                 "Puerto Varas": {
                     "res": 55000, "flot": 25000,
-                    "contexto": "Zona residencial y de turismo premium con alta afluencia por costanera Vicente Pérez Rosales.",
+                    "contexto": "Zona residencial y de turismo premium con altísima afluencia por costanera Vicente Pérez Rosales.",
                     "puntos": {
                         "Toda la comuna (General)": None
                     }
                 },
                 "Osorno": {
                     "res": 175000, "flot": 30000,
-                    "contexto": "Polo lechero y ganadero con alta actividad en el eje Mackenna y Plaza de Armas.",
+                    "contexto": "Nudo estratégico y distribuidor turístico obligado hacia Lago Puyehue, Argentina (Paso Samoré) y costa de San Juan de la Costa.",
                     "puntos": {
                         "Toda la comuna (General)": None
                     }
                 },
                 "Castro (Chiloé)": {
                     "res": 55000, "flot": 20000,
-                    "contexto": "Cabecera del archipiélago con circulación en torno a la plaza y el bypass.",
+                    "contexto": "Cabecera del archipiélago con circulación masiva en torno a la plaza, bypass y festivales costumbristas.",
                     "puntos": {
                         "Toda la comuna (General)": None
                     }
@@ -722,7 +722,7 @@ DATA_JERARQUICA = {
             "comunas": {
                 "Coyhaique": {
                     "res": 65000, "flot": 15000,
-                    "contexto": "Centro de servicios de la Patagonia chilena centrado en torno a su plaza pentagonal y Av. Baquedano.",
+                    "contexto": "Centro de provisiones y hotelería líder de la Carretera Austral centrado en su plaza pentagonal y Av. Baquedano.",
                     "puntos": {
                         "Toda la comuna (General)": None,
                         "Av. Baquedano con Plaza de Armas": {"flujo": 30000}
@@ -737,7 +737,7 @@ DATA_JERARQUICA = {
             "comunas": {
                 "Punta Arenas": {
                     "res": 140000, "flot": 25000,
-                    "contexto": "Polo austral del país con tráfico comercial en torno a la Costanera del Estrecho y Zona Franca.",
+                    "contexto": "Polo austral del país con tráfico de cruceros internacionales, turismo antártico y compras en Costanera y Zona Franca.",
                     "puntos": {
                         "Toda la comuna (General)": None,
                         "Av. Costanera con Av. Colón": {"flujo": 45000},
@@ -895,27 +895,49 @@ else: # Vía Pública Tradicional
     opciones_comuna = ["Todo el Sector en conjunto"] + list(datos_sec["comunas"].keys())
     com_sel = st.sidebar.selectbox("3. Comuna:", opciones_comuna)
     
-    # MATRIZ NACIONAL COMPLETA DE ESTACIONALIDAD (SERNATUR / SECTRA)
-    balnearios_saturacion = ["Viña del Mar", "Concón", "La Serena", "Coquimbo", "Villarrica", "Pucón", "Puerto Varas"]
-    polos_costeros_norte_sur = ["Arica", "Iquique", "Valdivia", "Castro", "Chiloé", "Puerto Montt", "Punta Arenas"]
-    polos_costeros_moderados = ["Antofagasta"]
-    
+    # MATRIZ NACIONAL COMPLETA Y CALIBRADA COMUNA POR COMUNA (SERNATUR / SECTRA / MOP)
     if es_verano:
         if "Metropolitana" in reg_sel:
             factor_v = 0.80 # -20% en Santiago por receso laboral y escolar
             desc_verano = "Aforo ponderado por receso estival de vacaciones laborales y escolares (-20%)."
-        elif any(b in com_sel for b in balnearios_saturacion):
-            factor_v = 1.55 # +55% en balnearios masivos
-            desc_verano = "Flujo fuertemente incrementado por alta afluencia turística estival (+55%)."
-        elif any(p in com_sel for p in polos_costeros_norte_sur):
-            factor_v = 1.30 # +30% en Arica, Iquique, Valdivia, Chiloé, etc.
-            desc_verano = "Flujo incrementado por turismo estival costero y regional (+30%)."
-        elif any(m in com_sel for m in polos_costeros_moderados):
-            factor_v = 1.15 # +15% en Antofagasta (turismo regional y playas)
-            desc_verano = "Flujo incrementado por afluencia estival hacia eje costero, centros comerciales y playas (+15%)."
-        else:
-            factor_v = 1.00 # Neutro para ciudades agroindustriales e interiores
-            desc_verano = ""
+        # Balnearios masivos y centros lacustres top
+        elif any(b in com_sel for b in ["Viña del Mar", "La Serena"]):
+            factor_v = 1.55
+            desc_verano = "Flujo fuertemente incrementado por alta temporada de veraneo y turismo masivo (+55%)."
+        elif "Concón" in com_sel or "Villarrica" in com_sel or "Pucón" in com_sel:
+            factor_v = 1.60
+            desc_verano = "Flujo fuertemente incrementado por peak de temporada turística y gastronómica (+60%)."
+        elif "Puerto Varas" in com_sel or "Coquimbo" in com_sel:
+            factor_v = 1.50
+            desc_verano = "Flujo incrementado por turismo estival lacustre y costero (+50%)."
+        # Polos fluviales, insulares y de borde costero
+        elif "Valdivia" in com_sel:
+            factor_v = 1.40
+            desc_verano = "Flujo fuertemente incrementado por turismo estival líder en ocupación, costanera y Niebla (+40%)."
+        elif "Castro" in com_sel or "Chiloé" in com_sel or "Iquique" in com_sel:
+            factor_v = 1.35
+            desc_verano = "Flujo incrementado por turismo estival, borde costero y comercio (+35%)."
+        elif "Arica" in com_sel:
+            factor_v = 1.30
+            desc_verano = "Flujo incrementado por turismo de compras fronterizo y balnearios de Chinchorro/El Laucho (+30%)."
+        elif any(p in com_sel for p in ["Coyhaique", "Puerto Montt", "Punta Arenas", "Valparaíso"]):
+            factor_v = 1.25
+            desc_verano = "Flujo incrementado por alta temporada turística regional, cruceros y Carretera Austral (+25%)."
+        elif "Osorno" in com_sel:
+            factor_v = 1.20
+            desc_verano = "Flujo incrementado por ser nodo y distribuidor turístico obligado hacia Puyehue, Argentina y costa (+20%)."
+        elif "San Pedro de la Paz" in com_sel:
+            factor_v = 1.20
+            desc_verano = "Flujo incrementado por tránsito masivo hacia balnearios de la costa sur y Ruta de la Madera (+20%)."
+        elif any(m in com_sel for m in ["Antofagasta", "Temuco", "Chillán", "Talcahuano"]):
+            factor_v = 1.15
+            desc_verano = "Flujo incrementado por afluencia estival hacia eje costero, centros comerciales y distribución regional (+15%)."
+        elif any(c in com_sel for c in ["Copiapó", "Vallenar", "Curicó", "Linares", "San Fernando", "Los Ángeles", "Concepción", "Alto Hospicio", "Quilpué"]):
+            factor_v = 1.10
+            desc_verano = "Flujo dinamizado por tránsito de temporada estival y actividades comerciales de verano (+10%)."
+        else: # Rancagua, Machalí, Calama, Chillán Viejo, Villa Alemana
+            factor_v = 1.05
+            desc_verano = "Flujo con leve incremento por tránsito de paso estival (+5%)."
     else:
         factor_v = 1.00
         desc_verano = ""
@@ -926,11 +948,11 @@ else: # Vía Pública Tradicional
         if es_verano:
             if "Metropolitana" in reg_sel:
                 base_flot = int(base_flot * 0.75)
-            elif any(b in sec_sel for b in balnearios_saturacion):
-                base_flot = int(base_flot * 1.60)
-            elif any(p in sec_sel for p in polos_costeros_norte_sur):
+            elif "Valparaíso" in reg_sel or "Coquimbo" in reg_sel or "Araucanía" in reg_sel:
+                base_flot = int(base_flot * 1.55)
+            elif "Los Lagos" in reg_sel or "Los Ríos" in reg_sel:
                 base_flot = int(base_flot * 1.35)
-            elif any(m in sec_sel for m in polos_costeros_moderados):
+            else:
                 base_flot = int(base_flot * 1.20)
         universo_calculo = base_res + base_flot
         nombre_territorio = f"{sec_sel}"
