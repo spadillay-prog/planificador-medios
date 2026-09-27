@@ -288,18 +288,22 @@ DATA_JERARQUICA = {
             "comunas": {
                 "Viña del Mar": {
                     "res": 360000, "flot": 120000,
-                    "contexto": "Alta densidad turística, comercial y gastronómica concentrada en ejes 1 Norte, Libertad y borde costero.",
+                    "contexto": "Alta densidad turística, comercial y gastronómica concentrada en ejes 1 Norte, Libertad, 15 Norte y borde costero de Las Salinas.",
                     "puntos": {
                         "Toda la comuna (General)": None,
                         "1 Norte con Libertad / Mall Marina": {"flujo": 130000},
+                        "Av. 15 Norte con 4 Oriente": {"flujo": 85000},
+                        "Av. Borgoño costado Balneario Las Salinas hacia Viña": {"flujo": 65000},
                         "Av. Benidorm (15 Norte) con San Martín": {"flujo": 85000}
                     }
                 },
                 "Valparaíso": {
                     "res": 315000, "flot": 90000,
-                    "contexto": "Centro administrativo, patrimonial y universitario regional con flujo masivo en torno a Av. Argentina y Pedro Montt.",
+                    "contexto": "Centro administrativo, patrimonial y universitario regional con flujo masivo en torno a Av. España, Pedro Montt y Plaza Victoria.",
                     "puntos": {
                         "Toda la comuna (General)": None,
+                        "Av. España, sector Balmaceda": {"flujo": 115000},
+                        "Pedro Montt & Edwards, Plaza Victoria": {"flujo": 95000},
                         "Av. Argentina con Pedro Montt (Congreso / Terminal)": {"flujo": 110000}
                     }
                 },
@@ -997,6 +1001,14 @@ else: # Vía Pública Tradicional
                 texto_estrategico_default = "Nudo neurálgico que conecta la costanera de Av. Grecia y Balneario Municipal con el eje de Av. Matta hacia el centro comercial y cívico de Antofagasta."
             elif "Costanera Arturo Prat con Eleuterio Ramírez" in pto_sel:
                 texto_estrategico_default = "Eje de alto impacto que conecta la costanera de Av. Arturo Prat con el acceso al centro comercial y financiero de Iquique por Eleuterio Ramírez."
+            elif "España" in pto_sel:
+                texto_estrategico_default = "Arteria conurbada estructurante de máximo flujo vehicular continuo y transporte público masivo entre Valparaíso y Viña del Mar."
+            elif "Pedro Montt & Edwards" in pto_sel:
+                texto_estrategico_default = "Epicentro cívico, comercial y peatonal de Plaza Victoria con altísima densidad de público caminante y retención semafórica en el plan de Valparaíso."
+            elif "15 Norte con 4 Oriente" in pto_sel:
+                texto_estrategico_default = "Polo comercial neurálgico de Viña del Mar que conecta los centros comerciales de 15 Norte con el flujo residencial y automotriz de Población Vergara."
+            elif "Las Salinas" in pto_sel:
+                texto_estrategico_default = "Eje costero estructurante de Av. Borgoño con cono de visibilidad despejado y flujo cautivo vehicular hacia el centro de Viña del Mar y balnearios."
             else:
                 texto_estrategico_default = f"Punto de alta concentración vial y comercial con un flujo auditado de {universo_calculo:,.0f} personas diarias.".replace(",", ".")
 
@@ -1496,7 +1508,7 @@ with tab2:
             {
                 "Escenario Global": "Medio (Recomendado)",
                 "Impactos Totales Campaña": f"{total_imp_m:,.0f}".replace(",", "."),
-                "Costo x Impacto Promedio": f"${(total_inversion / total_imp_m):.2f}" if total_imp_c > 0 else "$0",
+                "Costo x Impacto Promedio": f"${(total_inversion / total_imp_m):.2f}" if total_imp_m > 0 else "$0",
                 "CPM Ponderado Global": f"${int(round(cpm_global_m)):,}".replace(",", ".")
             },
             {
