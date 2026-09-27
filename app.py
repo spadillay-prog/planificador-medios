@@ -261,9 +261,11 @@ DATA_JERARQUICA = {
                 },
                 "La Serena": {
                     "res": 240000, "flot": 40000,
-                    "contexto": "Ejes Balmaceda, Av. del Mar y Ruta 5 conectan el flujo intercomunal con alta retención en semáforos y centros comerciales.",
+                    "contexto": "Ejes Balmaceda, Av. del Mar, Cuatro Esquinas y Ruta 5 conectan el flujo intercomunal con alta retención en semáforos, centros médicos y servicios comerciales.",
                     "puntos": {
                         "Toda la comuna (General)": None,
+                        "Avenida del Mar con 4 Esquinas": {"flujo": 70000},
+                        "Amunategui con Larraín Alcalde": {"flujo": 60000},
                         "Ruta 5 con Francisco de Aguirre": {"flujo": 80000},
                         "Av. Balmaceda con Cuatro Esquinas": {"flujo": 65000}
                     }
@@ -900,7 +902,6 @@ else: # Vía Pública Tradicional
         if "Metropolitana" in reg_sel:
             factor_v = 0.80 # -20% en Santiago por receso laboral y escolar
             desc_verano = "Aforo ponderado por receso estival de vacaciones laborales y escolares (-20%)."
-        # Balnearios masivos y centros lacustres top
         elif any(b in com_sel for b in ["Viña del Mar", "La Serena"]):
             factor_v = 1.55
             desc_verano = "Flujo fuertemente incrementado por alta temporada de veraneo y turismo masivo (+55%)."
@@ -910,7 +911,6 @@ else: # Vía Pública Tradicional
         elif "Puerto Varas" in com_sel or "Coquimbo" in com_sel:
             factor_v = 1.50
             desc_verano = "Flujo incrementado por turismo estival lacustre y costero (+50%)."
-        # Polos fluviales, insulares y de borde costero
         elif "Valdivia" in com_sel:
             factor_v = 1.40
             desc_verano = "Flujo fuertemente incrementado por turismo estival líder en ocupación, costanera y Niebla (+40%)."
@@ -985,6 +985,10 @@ else: # Vía Pública Tradicional
             nombre_territorio = f"{com_sel} - {pto_sel}"
             if "Kennedy" in pto_sel:
                 texto_estrategico_default = "Polo neurálgico de máxima plusvalía con cono visual despejado sobre Autopista Kennedy, alta fricción vehicular y flujo cautivo de Parque Arauco y Nueva Las Condes."
+            elif "Avenida del Mar" in pto_sel:
+                texto_estrategico_default = "Acceso estructurante a la costanera de La Serena con alto tráfico vehicular, gastronómico y hotelero, maximizando la retención en semáforos."
+            elif "Amunategui" in pto_sel:
+                texto_estrategico_default = "Eje conector central de La Serena con alto tránsito peatonal y vehicular continuo hacia centros médicos, servicios hospitalarios y comercio."
             else:
                 texto_estrategico_default = f"Punto de alta concentración vial y comercial con un flujo auditado de {universo_calculo:,.0f} personas diarias.".replace(",", ".")
 
