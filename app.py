@@ -783,6 +783,10 @@ FORMATOS_METRO = {
         "base": 1, "c": 0.30, "m": 0.40, "o": 0.50, "tipo": "DOOH Andén", "unidad": "circuitos", "es_tren": False,
         "contexto": "Pantallas frente a los usuarios en tiempo de espera cautiva en andén, con alto recuerdo de marca."
     },
+    "Gran Digital (DOOH)": {
+        "base": 1, "c": 0.20, "m": 0.25, "o": 0.30, "tipo": "Gran Pantalla LED", "unidad": "pantallas", "es_tren": False,
+        "contexto": "Pantalla digital individual de gran formato ubicada en sectores de boleterías, línea de torniquetes o accesos a andenes, con alta visibilidad aérea y dinamismo de video."
+    },
     "Tótem / Paleta Digital Mesanina (DOOH)": {
         "base": 1, "c": 0.15, "m": 0.20, "o": 0.25, "tipo": "Tótem Vertical", "unidad": "pantallas", "es_tren": False,
         "contexto": "Paleta digital vertical (~1x1,6m) ubicada en sectores de boleterías, línea de torniquetes y pasillos de trasbordo/combinación con alta visibilidad y dinamismo digital."
