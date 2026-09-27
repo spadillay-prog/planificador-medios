@@ -166,7 +166,7 @@ DATA_JERARQUICA = {
             "comunas": {
                 "Arica": {
                     "res": 245000, "flot": 35000,
-                    "contexto": "Eje fronterizo y comercial costero, con flujo constante en torno a Av. Diego Portales y el puerto.",
+                    "contexto": "Eje fronterizo y comercial costero, con flujo constante en torno a Av. Diego Portales, playas y el puerto.",
                     "puntos": {
                         "Toda la comuna (General)": None,
                         "Av. Diego Portales con Santa María": {"flujo": 65000},
@@ -206,7 +206,7 @@ DATA_JERARQUICA = {
             "comunas": {
                 "Antofagasta": {
                     "res": 440000, "flot": 50000,
-                    "contexto": "Ciudad lineal encajonada entre cerro y mar; la concentración vehicular en Av. Costanera y Pedro Aguirre Cerda eleva los OTS diarios.",
+                    "contexto": "Ciudad lineal encajonada entre cerro y mar; la concentración vehicular en Av. Costanera, Mall Plaza y balnearios eleva los OTS diarios.",
                     "puntos": {
                         "Toda la comuna (General)": None,
                         "Av. Costanera con Balmaceda (Mall Plaza)": {"flujo": 110000},
@@ -261,7 +261,7 @@ DATA_JERARQUICA = {
                 },
                 "La Serena": {
                     "res": 240000, "flot": 40000,
-                    "contexto": "Ejes Balmaceda y Ruta 5 conectan el flujo intercomunal con alta retención en semáforos y centros comerciales.",
+                    "contexto": "Ejes Balmaceda, Av. del Mar y Ruta 5 conectan el flujo intercomunal con alta retención en semáforos y centros comerciales.",
                     "puntos": {
                         "Toda la comuna (General)": None,
                         "Ruta 5 con Francisco de Aguirre": {"flujo": 80000},
@@ -858,7 +858,7 @@ if medio_tipo == "Metro de Santiago (Estaciones y Trenes)":
         estacion_sel = st.sidebar.selectbox("Estación:", list(METRO_DATA[linea_sel].keys()))
         datos_estacion = METRO_DATA[linea_sel][estacion_sel]
         
-        # Ponderador estival según perfil de estación
+        # Ponderador estival según perfil de estación en Santiago
         estaciones_u = ["San Joaquin", "Republica", "Universidad Catolica", "Hospitales", "Toesca", "Salvador"]
         estaciones_comerciales = ["Estacion Central", "Tobalaba", "Bellavista De La Florida"]
         
@@ -895,17 +895,43 @@ else: # Vía Pública Tradicional
     opciones_comuna = ["Todo el Sector en conjunto"] + list(datos_sec["comunas"].keys())
     com_sel = st.sidebar.selectbox("3. Comuna:", opciones_comuna)
     
-    # Detección de comunas turísticas de verano
-    es_zona_turistica_verano = any(c in com_sel for c in ["Viña del Mar", "Concón", "La Serena", "Coquimbo", "Villarrica", "Pucón", "Puerto Varas", "Iquique"])
+    # MATRIZ NACIONAL COMPLETA DE ESTACIONALIDAD (SERNATUR / SECTRA)
+    balnearios_saturacion = ["Viña del Mar", "Concón", "La Serena", "Coquimbo", "Villarrica", "Pucón", "Puerto Varas"]
+    polos_costeros_norte_sur = ["Arica", "Iquique", "Valdivia", "Castro", "Chiloé", "Puerto Montt", "Punta Arenas"]
+    polos_costeros_moderados = ["Antofagasta"]
+    
+    if es_verano:
+        if "Metropolitana" in reg_sel:
+            factor_v = 0.80 # -20% en Santiago por receso laboral y escolar
+            desc_verano = "Aforo ponderado por receso estival de vacaciones laborales y escolares (-20%)."
+        elif any(b in com_sel for b in balnearios_saturacion):
+            factor_v = 1.55 # +55% en balnearios masivos
+            desc_verano = "Flujo fuertemente incrementado por alta afluencia turística estival (+55%)."
+        elif any(p in com_sel for p in polos_costeros_norte_sur):
+            factor_v = 1.30 # +30% en Arica, Iquique, Valdivia, Chiloé, etc.
+            desc_verano = "Flujo incrementado por turismo estival costero y regional (+30%)."
+        elif any(m in com_sel for m in polos_costeros_moderados):
+            factor_v = 1.15 # +15% en Antofagasta (turismo regional y playas)
+            desc_verano = "Flujo incrementado por afluencia estival hacia eje costero, centros comerciales y playas (+15%)."
+        else:
+            factor_v = 1.00 # Neutro para ciudades agroindustriales e interiores
+            desc_verano = ""
+    else:
+        factor_v = 1.00
+        desc_verano = ""
     
     if com_sel == "Todo el Sector en conjunto":
         base_res = datos_sec["res_sector"]
         base_flot = datos_sec["flot_sector"]
         if es_verano:
             if "Metropolitana" in reg_sel:
-                base_flot = int(base_flot * 0.75) # Baja en Santiago
-            elif es_zona_turistica_verano:
-                base_flot = int(base_flot * 1.50) # Alza estival balnearios
+                base_flot = int(base_flot * 0.75)
+            elif any(b in sec_sel for b in balnearios_saturacion):
+                base_flot = int(base_flot * 1.60)
+            elif any(p in sec_sel for p in polos_costeros_norte_sur):
+                base_flot = int(base_flot * 1.35)
+            elif any(m in sec_sel for m in polos_costeros_moderados):
+                base_flot = int(base_flot * 1.20)
         universo_calculo = base_res + base_flot
         nombre_territorio = f"{sec_sel}"
         nombre_titulo_lamina = sec_sel.split("(")[0].strip().upper()
@@ -919,17 +945,6 @@ else: # Vía Pública Tradicional
         puntos_disponibles = puntos_comuna + ["➕ Otro punto específico (Personalizado)"]
         pto_sel = st.sidebar.selectbox("4. Georreferencia / Punto:", puntos_disponibles)
         nombre_titulo_lamina = com_sel.split("/")[0].strip().upper()
-        
-        # Ponderación verano según zona
-        if es_verano:
-            if "Metropolitana" in reg_sel:
-                factor_v = 0.80 # -20% en Santiago
-            elif es_zona_turistica_verano:
-                factor_v = 1.45 # +45% en balnearios
-            else:
-                factor_v = 1.00
-        else:
-            factor_v = 1.00
         
         if pto_sel == "Toda la comuna (General)":
             universo_calculo = int((com_data["res"] + com_data["flot"]) * factor_v)
@@ -951,11 +966,8 @@ else: # Vía Pública Tradicional
             else:
                 texto_estrategico_default = f"Punto de alta concentración vial y comercial con un flujo auditado de {universo_calculo:,.0f} personas diarias.".replace(",", ".")
 
-        if es_verano:
-            if factor_v > 1.0:
-                texto_estrategico_default += " Flujo incrementado por alta afluencia turística estival."
-            elif factor_v < 1.0:
-                texto_estrategico_default += " Aforo ponderado por receso estival de vacaciones laborales y escolares."
+        if es_verano and desc_verano:
+            texto_estrategico_default += f" {desc_verano}"
 
     formato_dict = FORMATOS_OOH
     formato_sel = st.sidebar.selectbox("Formato Publicitario:", list(formato_dict.keys()))
