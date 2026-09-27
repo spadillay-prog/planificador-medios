@@ -185,6 +185,7 @@ DATA_JERARQUICA = {
                     "contexto": "Alta concentración vehicular entre el puerto, el polo comercial ZOFRI y la costanera de Cavancha.",
                     "puntos": {
                         "Toda la comuna (General)": None,
+                        "Costanera Arturo Prat con Eleuterio Ramírez": {"flujo": 75000},
                         "Rotonda El Pampino (Acceso Iquique)": {"flujo": 85000},
                         "Av. Arturo Prat frente a Cavancha": {"flujo": 70000}
                     }
@@ -903,6 +904,7 @@ else: # Vía Pública Tradicional
         if "Metropolitana" in reg_sel:
             factor_v = 0.80 # -20% en Santiago por receso laboral y escolar
             desc_verano = "Aforo ponderado por receso estival de vacaciones laborales y escolares (-20%)."
+        # Balnearios masivos y centros lacustres top
         elif any(b in com_sel for b in ["Viña del Mar", "La Serena"]):
             factor_v = 1.55
             desc_verano = "Flujo fuertemente incrementado por alta temporada de veraneo y turismo masivo (+55%)."
@@ -912,6 +914,7 @@ else: # Vía Pública Tradicional
         elif "Puerto Varas" in com_sel or "Coquimbo" in com_sel:
             factor_v = 1.50
             desc_verano = "Flujo incrementado por turismo estival lacustre y costero (+50%)."
+        # Polos fluviales, insulares y de borde costero
         elif "Valdivia" in com_sel:
             factor_v = 1.40
             desc_verano = "Flujo fuertemente incrementado por turismo estival líder en ocupación, costanera y Niebla (+40%)."
@@ -992,6 +995,8 @@ else: # Vía Pública Tradicional
                 texto_estrategico_default = "Eje conector central de La Serena con alto tránsito peatonal y vehicular continuo hacia centros médicos, servicios hospitalarios y comercio."
             elif "Grecia" in pto_sel or "Matta" in pto_sel:
                 texto_estrategico_default = "Nudo neurálgico que conecta la costanera de Av. Grecia y Balneario Municipal con el eje de Av. Matta hacia el centro comercial y cívico de Antofagasta."
+            elif "Costanera Arturo Prat con Eleuterio Ramírez" in pto_sel:
+                texto_estrategico_default = "Eje de alto impacto que conecta la costanera de Av. Arturo Prat con el acceso al centro comercial y financiero de Iquique por Eleuterio Ramírez."
             else:
                 texto_estrategico_default = f"Punto de alta concentración vial y comercial con un flujo auditado de {universo_calculo:,.0f} personas diarias.".replace(",", ".")
 
@@ -1320,7 +1325,7 @@ def render_lamina_consolidada_jpg():
 
     # Tarjeta 3: Impactos Totales (Destacada)
     x_pos += card_w + gap
-    draw.rounded_rectangle([(x_pos, 145), (x_pos + card_w, 145 + card_h)], radius=12, fill=c_card_highlight_bg)
+    draw.rounded_rectangle([(x_pos, 145), (x_pos + card_w, 145 + card_h)], radius=12, fill=c_card, outline=c_border, width=1)
     draw.text((x_pos + 25, 165), "Impactos Brutos (Caso Medio)", fill=c_card_highlight_text, font=f_label)
     draw.text((x_pos + 25, 202), f"{total_imp_m:,.0f}".replace(",", "."), fill=c_card_highlight_text, font=obtener_fuente(42, bold=True))
 
@@ -1491,7 +1496,7 @@ with tab2:
             {
                 "Escenario Global": "Medio (Recomendado)",
                 "Impactos Totales Campaña": f"{total_imp_m:,.0f}".replace(",", "."),
-                "Costo x Impacto Promedio": f"${(total_inversion / total_imp_m):.2f}" if total_imp_m > 0 else "$0",
+                "Costo x Impacto Promedio": f"${(total_inversion / total_imp_m):.2f}" if total_imp_c > 0 else "$0",
                 "CPM Ponderado Global": f"${int(round(cpm_global_m)):,}".replace(",", ".")
             },
             {
