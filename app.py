@@ -206,9 +206,10 @@ DATA_JERARQUICA = {
             "comunas": {
                 "Antofagasta": {
                     "res": 440000, "flot": 50000,
-                    "contexto": "Ciudad lineal encajonada entre cerro y mar; la concentración vehicular en Av. Costanera, Mall Plaza y balnearios eleva los OTS diarios.",
+                    "contexto": "Ciudad lineal encajonada entre cerro y mar; la concentración vehicular en Av. Costanera, Mall Plaza, Av. Grecia y balnearios eleva los OTS diarios.",
                     "puntos": {
                         "Toda la comuna (General)": None,
+                        "Av. Grecia con Av. Matta": {"flujo": 85000},
                         "Av. Costanera con Balmaceda (Mall Plaza)": {"flujo": 110000},
                         "Pedro Aguirre Cerda con Av. Pérez Zujovic": {"flujo": 90000}
                     }
@@ -989,6 +990,8 @@ else: # Vía Pública Tradicional
                 texto_estrategico_default = "Acceso estructurante a la costanera de La Serena con alto tráfico vehicular, gastronómico y hotelero, maximizando la retención en semáforos."
             elif "Amunategui" in pto_sel:
                 texto_estrategico_default = "Eje conector central de La Serena con alto tránsito peatonal y vehicular continuo hacia centros médicos, servicios hospitalarios y comercio."
+            elif "Grecia" in pto_sel or "Matta" in pto_sel:
+                texto_estrategico_default = "Nudo neurálgico que conecta la costanera de Av. Grecia y Balneario Municipal con el eje de Av. Matta hacia el centro comercial y cívico de Antofagasta."
             else:
                 texto_estrategico_default = f"Punto de alta concentración vial y comercial con un flujo auditado de {universo_calculo:,.0f} personas diarias.".replace(",", ".")
 
