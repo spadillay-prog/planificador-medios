@@ -672,6 +672,7 @@ DATA_JERARQUICA = {
                     "puntos": {
                         "Toda la comuna (General)": None,
                         "Av. Caupolicán con Av. Alemania": {"flujo": 95000},
+                        "Av. Alemania, frente a Casino Dreams": {"flujo": 85000},
                         "Av. Inés de Suarez esquina Las Encinas, frente al Jumbo": {"flujo": 70000},
                         "Av. Alemania con Mall Portal Temuco": {"flujo": 90000},
                         "Av. Caupolicán con Manuel Montt": {"flujo": 75000}
@@ -1070,6 +1071,8 @@ else: # Vía Pública Tradicional
                 texto_estrategico_default = "Punto neurálgico de la Ruta 160 en San Pedro de la Paz hacia los puentes sobre el Biobío, concentrando el flujo pendular masivo hacia Concepción."
             elif "Caupolicán con Av. Alemania" in pto_sel:
                 texto_estrategico_default = "Intersección neurálgica de máxima fricción vehicular y peatonal de Temuco, articulando el eje troncal Caupolicán con el polo financiero y comercial de Av. Alemania."
+            elif "Casino Dreams" in pto_sel or "Alemania, frente a Casino" in pto_sel:
+                texto_estrategico_default = "Polo de máxima visibilidad nocturna, comercial y ejecutiva en Av. Alemania frente a Casino Dreams, con flujo cautivo hacia restaurantes, hoteles y banca."
             elif "Inés de Suarez" in pto_sel or "Las Encinas" in pto_sel:
                 texto_estrategico_default = "Polo de alta plusvalía residencial y comercial del sector poniente de Temuco frente a Jumbo Los Pablos, con alta afluencia vehicular y público cautivo."
             else:
