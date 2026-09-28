@@ -559,18 +559,22 @@ DATA_JERARQUICA = {
             "comunas": {
                 "Talca": {
                     "res": 235000, "flot": 45000,
-                    "contexto": "Capital regional y universitaria con alto flujo comercial por 1 Sur y Av. San Miguel.",
+                    "contexto": "Capital regional y universitaria con alto flujo comercial por 1 Sur, Av. San Miguel, Las Rastras y sector poniente.",
                     "puntos": {
                         "Toda la comuna (General)": None,
+                        "Av. San Miguel / 30 Oriente (30 Norte)": {"flujo": 75000},
+                        "Uno Sur, entre 11 y 10 Poniente": {"flujo": 50000},
                         "Av. San Miguel con Mall Plaza Maule": {"flujo": 70000},
                         "1 Sur con 5 Oriente (Paseo Peatonal)": {"flujo": 55000}
                     }
                 },
                 "Curicó": {
                     "res": 165000, "flot": 25000,
-                    "contexto": "Polo agroindustrial y de ruta del vino con alta concurrencia en eje Camilo Henríquez y paso a costa.",
+                    "contexto": "Polo agroindustrial y de ruta del vino con alta concurrencia en eje Manso de Velasco, Camilo Henríquez y acceso a Ruta 5 por Zapallar.",
                     "puntos": {
-                        "Toda la comuna (General)": None
+                        "Toda la comuna (General)": None,
+                        "Av. Manso de Velasco / Buen Pastor": {"flujo": 65000},
+                        "Av. Manuel Labra Lillo / Ruta 5 Sur": {"flujo": 70000}
                     }
                 },
                 "Linares": {
@@ -1026,6 +1030,14 @@ else: # Vía Pública Tradicional
                 texto_estrategico_default = "Epicentro cívico y comercial peatonal sobre Paseo Independencia, con alta densidad de transeúntes, comercio tradicional y servicios públicos."
             elif "Bombero Villalobos" in pto_sel or "Carretera del Cobre" in pto_sel:
                 texto_estrategico_default = "Eje de alta plusvalía y flujo vehicular continuo Rancagua-Machalí, conectando clínicas, colegios y transporte hacia El Teniente."
+            elif "Manso de Velasco" in pto_sel:
+                texto_estrategico_default = "Eje estructurante de la Alameda Manso de Velasco en Curicó, con alto tránsito vehicular y recreativo en torno a áreas verdes, colegios y comercio."
+            elif "Labra Lillo" in pto_sel:
+                texto_estrategico_default = "Acceso estructurante al sector oriente y Zapallar con conexión inmediata a Ruta 5 Sur, canalizando el tráfico de alta plusvalía residencial."
+            elif "30 Oriente" in pto_sel or "San Miguel / 30" in pto_sel:
+                texto_estrategico_default = "Intersección neurálgica del sector oriente de Talca frente a Mall Plaza Maule, Casino y universidades, con máxima fricción y flujo cautivo hacia Las Rastras."
+            elif "Uno Sur, entre 11 y 10 Poniente" in pto_sel:
+                texto_estrategico_default = "Arteria comercial y de transporte estructurante del sector poniente de Talca, conectando el centro con el polo residencial de La Florida."
             else:
                 texto_estrategico_default = f"Punto de alta concentración vial y comercial con un flujo auditado de {universo_calculo:,.0f} personas diarias.".replace(",", ".")
 
