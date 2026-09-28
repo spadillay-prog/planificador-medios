@@ -620,16 +620,35 @@ DATA_JERARQUICA = {
         }
     },
     "Región del Biobío": {
-        "Gran Concepción": {
-            "res_sector": 1050000, "flot_sector": 220000,
+        "Gran Concepción y Provincia de Biobío": {
+            "res_sector": 1150000, "flot_sector": 240000,
             "comunas": {
                 "Concepción": {
                     "res": 240000, "flot": 160000,
-                    "contexto": "Segundo polo económico y universitario del país, con flujo intenso en el eje O'Higgins, Carrera y Mall del Centro.",
+                    "contexto": "Segundo polo económico y universitario del país, con intenso flujo en ejes O'Higgins, Paicaví, Los Carrera y Arturo Prat.",
                     "puntos": {
                         "Toda la comuna (General)": None,
+                        "Av. Paicaví esq. Independencia, hacia el Centro": {"flujo": 90000},
+                        "Arturo Prat 434, pasado Av. O'Higgins hacia Lider": {"flujo": 80000},
                         "Av. O'Higgins con Aníbal Pinto (Plaza Independencia)": {"flujo": 120000},
                         "Av. Los Carrera con Paicaví": {"flujo": 95000}
+                    }
+                },
+                "San Pedro de la Paz": {
+                    "res": 145000, "flot": 30000,
+                    "contexto": "Paso obligado del tránsito hacia balnearios de la costa sur y Ruta de la Madera, con alta fricción en eje Pedro Aguirre Cerda.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Av. Pedro Aguirre Cerda esquina Diagonal Biobío, hacia Concepción": {"flujo": 85000},
+                        "Ruta 160 con Puente Llacolén": {"flujo": 80000}
+                    }
+                },
+                "Los Ángeles": {
+                    "res": 220000, "flot": 40000,
+                    "contexto": "Capital industrial y de servicios del Biobío interior, con máximo flujo en torno a la Plaza de Armas por Caupolicán y Valdivia.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Caupolican con Valdivia costado Plaza": {"flujo": 55000}
                     }
                 },
                 "Talcahuano": {
@@ -638,21 +657,6 @@ DATA_JERARQUICA = {
                     "puntos": {
                         "Toda la comuna (General)": None,
                         "Autopista Concepción-Talcahuano frente a Mall Plaza": {"flujo": 110000}
-                    }
-                },
-                "San Pedro de la Paz": {
-                    "res": 145000, "flot": 30000,
-                    "contexto": "Paso obligado del tránsito hacia balnearios de la costa sur y Ruta de la Madera.",
-                    "puntos": {
-                        "Toda la comuna (General)": None,
-                        "Ruta 160 con Puente Llacolén": {"flujo": 80000}
-                    }
-                },
-                "Los Ángeles": {
-                    "res": 220000, "flot": 40000,
-                    "contexto": "Capital del sector forestal e industrial de la provincia con paso a Salto del Laja y cordillera.",
-                    "puntos": {
-                        "Toda la comuna (General)": None
                     }
                 }
             }
@@ -1054,6 +1058,14 @@ else: # Vía Pública Tradicional
                 texto_estrategico_default = "Nodo estructurante del centro de Chillán en el entorno del Mercado y terminales de buses, con intenso tránsito peatonal y comercial continuo."
             elif "Ignacio Serrano" in pto_sel or "Matta" in pto_sel and "San Carlos" in com_sel:
                 texto_estrategico_default = "Centro cívico, bancario y comercial de San Carlos sobre calle Serrano con Matta, a pasos de la Plaza de Armas y con alto flujo peatonal y vehicular de Punilla."
+            elif "Paicaví" in pto_sel and "Concepción" in com_sel:
+                texto_estrategico_default = "Arteria estructurante de Paicaví hacia el centro penquista, canalizando todo el flujo proveniente de autopistas, Talcahuano y el polo universitario."
+            elif "Arturo Prat 434" in pto_sel or "Prat" in pto_sel and "Concepción" in com_sel:
+                texto_estrategico_default = "Eje de alto tráfico comercial y vehicular en Arturo Prat pasado O'Higgins, con gran impacto de flujo retail hacia Líder y la Costanera."
+            elif "Caupolican con Valdivia" in pto_sel or "Caupolican" in pto_sel and "Los Ángeles" in com_sel:
+                texto_estrategico_default = "Epicentro cívico, comercial y bancario de Los Ángeles al costado de la Plaza de Armas, con máxima afluencia peatonal y detención de locomoción colectiva."
+            elif "Diagonal Biobío" in pto_sel or "Pedro Aguirre Cerda" in pto_sel and "San Pedro" in com_sel:
+                texto_estrategico_default = "Punto neurálgico de la Ruta 160 en San Pedro de la Paz hacia los puentes sobre el Biobío, concentrando el flujo pendular masivo hacia Concepción."
             else:
                 texto_estrategico_default = f"Punto de alta concentración vial y comercial con un flujo auditado de {universo_calculo:,.0f} personas diarias.".replace(",", ".")
 
