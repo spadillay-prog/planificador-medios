@@ -720,22 +720,25 @@ DATA_JERARQUICA = {
             "comunas": {
                 "Puerto Montt": {
                     "res": 260000, "flot": 50000,
-                    "contexto": "Capital regional, punto neurálgico de salida a Carretera Austral y polo de Angelmó.",
+                    "contexto": "Capital regional, punto neurálgico de salida a Carretera Austral, con altísimo flujo en el eje Costanera frente al Mall y paseo peatonal Antonio Varas.",
                     "puntos": {
                         "Toda la comuna (General)": None,
+                        "Exterior Mall Paseo Costanera, frente Plaza de Armas": {"flujo": 85000},
+                        "Paseo Talca / Antonio Varas": {"flujo": 70000},
                         "Av. Diego Portales (Costanera frente al Mall)": {"flujo": 80000}
+                    }
+                },
+                "Osorno": {
+                    "res": 175000, "flot": 30000,
+                    "contexto": "Nudo estratégico y distribuidor turístico obligado hacia Puyehue y Argentina, con su polo comercial en el paseo peatonal Eleuterio Ramírez.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Eleuterio Ramiréz / Ramón Freire": {"flujo": 60000}
                     }
                 },
                 "Puerto Varas": {
                     "res": 55000, "flot": 25000,
                     "contexto": "Zona residencial y de turismo premium con altísima afluencia por costanera Vicente Pérez Rosales.",
-                    "puntos": {
-                        "Toda la comuna (General)": None
-                    }
-                },
-                "Osorno": {
-                    "res": 175000, "flot": 30000,
-                    "contexto": "Nudo estratégico y distribuidor turístico obligado hacia Lago Puyehue, Argentina (Paso Samoré) y costa de San Juan de la Costa.",
                     "puntos": {
                         "Toda la comuna (General)": None
                     }
@@ -1081,6 +1084,12 @@ else: # Vía Pública Tradicional
                 texto_estrategico_default = "Eje receptor del flujo saliente de Isla Teja y Puente Pedro de Valdivia hacia el centro y Mall Plaza de Los Ríos, con altísima exposición y detención vehicular."
             elif "Casino Dreams" in pto_sel and "Valdivia" in com_sel:
                 texto_estrategico_default = "Punto neurálgico sobre calle Carampangue frente a Casino & Hotel Dreams, concentrando alto tráfico turístico, gastronómico y costanero fluvial."
+            elif "Mall Paseo Costanera" in pto_sel or "frente Plaza de Armas" in pto_sel:
+                texto_estrategico_default = "Polo de máxima concentración comercial y vehicular en el exterior de Mall Paseo Costanera frente a la Plaza de Armas de Puerto Montt."
+            elif "Paseo Talca" in pto_sel or "Antonio Varas" in pto_sel:
+                texto_estrategico_default = "Epicentro peatonal y comercial del centro histórico de Puerto Montt sobre Paseo Antonio Varas con Talca, con flujo masivo diario de transeúntes y retail."
+            elif "Eleuterio Ramiréz" in pto_sel or "Ramón Freire" in pto_sel:
+                texto_estrategico_default = "Intersección neurálgica sobre el paseo peatonal Eleuterio Ramírez con Freire, concentrando el corazón financiero, comercial y cívico de Osorno."
             else:
                 texto_estrategico_default = f"Punto de alta concentración vial y comercial con un flujo auditado de {universo_calculo:,.0f} personas diarias.".replace(",", ".")
 
