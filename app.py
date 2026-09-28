@@ -668,9 +668,11 @@ DATA_JERARQUICA = {
             "comunas": {
                 "Temuco": {
                     "res": 310000, "flot": 65000,
-                    "contexto": "Principal polo comercial, de salud y distribuidor turístico regional con alta densidad en Av. Alemania y Caupolicán.",
+                    "contexto": "Principal polo comercial, de salud y distribuidor turístico regional con alta densidad en Av. Alemania, Caupolicán y el polo poniente de Las Encinas.",
                     "puntos": {
                         "Toda la comuna (General)": None,
+                        "Av. Caupolicán con Av. Alemania": {"flujo": 95000},
+                        "Av. Inés de Suarez esquina Las Encinas, frente al Jumbo": {"flujo": 70000},
                         "Av. Alemania con Mall Portal Temuco": {"flujo": 90000},
                         "Av. Caupolicán con Manuel Montt": {"flujo": 75000}
                     }
@@ -1066,6 +1068,10 @@ else: # Vía Pública Tradicional
                 texto_estrategico_default = "Epicentro cívico, comercial y bancario de Los Ángeles al costado de la Plaza de Armas, con máxima afluencia peatonal y detención de locomoción colectiva."
             elif "Diagonal Biobío" in pto_sel or "Pedro Aguirre Cerda" in pto_sel and "San Pedro" in com_sel:
                 texto_estrategico_default = "Punto neurálgico de la Ruta 160 en San Pedro de la Paz hacia los puentes sobre el Biobío, concentrando el flujo pendular masivo hacia Concepción."
+            elif "Caupolicán con Av. Alemania" in pto_sel:
+                texto_estrategico_default = "Intersección neurálgica de máxima fricción vehicular y peatonal de Temuco, articulando el eje troncal Caupolicán con el polo financiero y comercial de Av. Alemania."
+            elif "Inés de Suarez" in pto_sel or "Las Encinas" in pto_sel:
+                texto_estrategico_default = "Polo de alta plusvalía residencial y comercial del sector poniente de Temuco frente a Jumbo Los Pablos, con alta afluencia vehicular y público cautivo."
             else:
                 texto_estrategico_default = f"Punto de alta concentración vial y comercial con un flujo auditado de {universo_calculo:,.0f} personas diarias.".replace(",", ".")
 
