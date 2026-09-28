@@ -526,9 +526,12 @@ DATA_JERARQUICA = {
             "comunas": {
                 "Rancagua": {
                     "res": 260000, "flot": 50000,
-                    "contexto": "Capital regional con intensa actividad minera, agrícola y comercial en torno al eje Alameda.",
+                    "contexto": "Capital regional con intensa actividad minera, agrícola y comercial en torno al eje Alameda, Paseo Independencia y Carretera del Cobre.",
                     "puntos": {
                         "Toda la comuna (General)": None,
+                        "Alameda con Manuel Montt, salida Carretera": {"flujo": 80000},
+                        "Carretera del Cobre, esquina Bombero Villalobos": {"flujo": 70000},
+                        "Calle Astorga con Paseo Independencia": {"flujo": 60000},
                         "Av. Bernardo O'Higgins (Alameda) con Freire": {"flujo": 75000}
                     }
                 },
@@ -1017,6 +1020,12 @@ else: # Vía Pública Tradicional
                 texto_estrategico_default = "Eje comercial estructurante del sector norte de Viña del Mar, con alto tránsito vehicular y peatonal vinculado al polo retail."
             elif "Las Salinas" in pto_sel or "Borgoño" in pto_sel:
                 texto_estrategico_default = "Borde costero de Av. Borgoño frente a Balneario Las Salinas con tránsito continuo Reñaca-Viña y máxima retención vehicular en horas punta."
+            elif "Manuel Montt" in pto_sel:
+                texto_estrategico_default = "Punto neurálgico sobre Av. Bernardo O'Higgins con salida directa hacia Ruta 5 Sur / Travesía, concentrando el flujo vehicular intercomunal de Rancagua."
+            elif "Astorga" in pto_sel:
+                texto_estrategico_default = "Epicentro cívico y comercial peatonal sobre Paseo Independencia, con alta densidad de transeúntes, comercio tradicional y servicios públicos."
+            elif "Bombero Villalobos" in pto_sel or "Carretera del Cobre" in pto_sel:
+                texto_estrategico_default = "Eje de alta plusvalía y flujo vehicular continuo Rancagua-Machalí, conectando clínicas, colegios y transporte hacia El Teniente."
             else:
                 texto_estrategico_default = f"Punto de alta concentración vial y comercial con un flujo auditado de {universo_calculo:,.0f} personas diarias.".replace(",", ".")
 
