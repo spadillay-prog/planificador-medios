@@ -702,9 +702,11 @@ DATA_JERARQUICA = {
             "comunas": {
                 "Valdivia": {
                     "res": 180000, "flot": 35000,
-                    "contexto": "Polo turístico y cervecero líder en ocupación estival con paso obligado por puentes Pedro de Valdivia, Niebla y Calle-Calle.",
+                    "contexto": "Polo turístico y cervecero líder en ocupación estival con paso obligado por puentes Pedro de Valdivia, Isla Teja, Casino Dreams y Calle-Calle.",
                     "puntos": {
                         "Toda la comuna (General)": None,
+                        "Av. Alemania esq. Camilo Henriquez desde Isla Tejas hacia Mall Plaza": {"flujo": 65000},
+                        "Casino Dreams (Carampangue)": {"flujo": 55000},
                         "Av. Ramón Picarte con Plaza de la República": {"flujo": 60000},
                         "Acceso Puente Pedro de Valdivia (Isla Teja)": {"flujo": 45000}
                     }
@@ -1071,10 +1073,14 @@ else: # Vía Pública Tradicional
                 texto_estrategico_default = "Punto neurálgico de la Ruta 160 en San Pedro de la Paz hacia los puentes sobre el Biobío, concentrando el flujo pendular masivo hacia Concepción."
             elif "Caupolicán con Av. Alemania" in pto_sel:
                 texto_estrategico_default = "Intersección neurálgica de máxima fricción vehicular y peatonal de Temuco, articulando el eje troncal Caupolicán con el polo financiero y comercial de Av. Alemania."
-            elif "Casino Dreams" in pto_sel or "Alemania, frente a Casino" in pto_sel:
+            elif "Casino Dreams" in pto_sel and "Temuco" in com_sel:
                 texto_estrategico_default = "Polo de máxima visibilidad nocturna, comercial y ejecutiva en Av. Alemania frente a Casino Dreams, con flujo cautivo hacia restaurantes, hoteles y banca."
             elif "Inés de Suarez" in pto_sel or "Las Encinas" in pto_sel:
                 texto_estrategico_default = "Polo de alta plusvalía residencial y comercial del sector poniente de Temuco frente a Jumbo Los Pablos, con alta afluencia vehicular y público cautivo."
+            elif "Alemania esq. Camilo Henriquez" in pto_sel or "Isla Tejas" in pto_sel:
+                texto_estrategico_default = "Eje receptor del flujo saliente de Isla Teja y Puente Pedro de Valdivia hacia el centro y Mall Plaza de Los Ríos, con altísima exposición y detención vehicular."
+            elif "Casino Dreams" in pto_sel and "Valdivia" in com_sel:
+                texto_estrategico_default = "Punto neurálgico sobre calle Carampangue frente a Casino & Hotel Dreams, concentrando alto tráfico turístico, gastronómico y costanero fluvial."
             else:
                 texto_estrategico_default = f"Punto de alta concentración vial y comercial con un flujo auditado de {universo_calculo:,.0f} personas diarias.".replace(",", ".")
 
