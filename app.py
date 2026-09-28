@@ -588,15 +588,25 @@ DATA_JERARQUICA = {
         }
     },
     "Región de Ñuble": {
-        "Chillán Urbano": {
-            "res_sector": 250000, "flot_sector": 40000,
+        "Conurbación Chillán y Provincia de Punilla": {
+            "res_sector": 310000, "flot_sector": 55000,
             "comunas": {
                 "Chillán": {
                     "res": 195000, "flot": 35000,
-                    "contexto": "Capital regional y hub distribuidor hacia Valle Las Trancas / Termas y costa, con flujo continuo en eje O'Higgins.",
+                    "contexto": "Capital regional y hub distribuidor comercial hacia Valle Las Trancas / Termas y costa, con focos neurálgicos en Mall Arauco, Mercado y eje O'Higgins.",
                     "puntos": {
                         "Toda la comuna (General)": None,
+                        "Av. El Roble con Isabel Riquelme frente al Mall Arauco Chillan": {"flujo": 75000},
+                        "Maipón / Arauco": {"flujo": 65000},
                         "Av. O'Higgins con Av. Ecuador": {"flujo": 60000}
+                    }
+                },
+                "San Carlos": {
+                    "res": 56000, "flot": 12000,
+                    "contexto": "Segunda comuna más poblada de Ñuble y cabecera de la Provincia de Punilla, con intenso movimiento comercial, agropecuario y de servicios.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Ignacio Serrano / Matta": {"flujo": 35000}
                     }
                 },
                 "Chillán Viejo": {
@@ -955,7 +965,7 @@ else: # Vía Pública Tradicional
         elif any(m in com_sel for m in ["Antofagasta", "Temuco", "Chillán", "Talcahuano"]):
             factor_v = 1.15
             desc_verano = "Flujo incrementado por afluencia estival hacia eje costero, centros comerciales y distribución regional (+15%)."
-        elif any(c in com_sel for c in ["Copiapó", "Vallenar", "Curicó", "Linares", "San Fernando", "Los Ángeles", "Concepción", "Alto Hospicio", "Quilpué"]):
+        elif any(c in com_sel for c in ["Copiapó", "Vallenar", "Curicó", "Linares", "San Fernando", "Los Ángeles", "Concepción", "Alto Hospicio", "Quilpué", "San Carlos"]):
             factor_v = 1.10
             desc_verano = "Flujo dinamizado por tránsito de temporada estival y actividades comerciales de verano (+10%)."
         else: # Rancagua, Machalí, Calama, Chillán Viejo, Villa Alemana
@@ -1012,7 +1022,7 @@ else: # Vía Pública Tradicional
                 texto_estrategico_default = "Acceso estructurante a la costanera de La Serena con alto tráfico vehicular, gastronómico y hotelero, maximizando la retención en semáforos."
             elif "Amunategui" in pto_sel:
                 texto_estrategico_default = "Eje conector central de La Serena con alto tránsito peatonal y vehicular continuo hacia centros médicos, servicios hospitalarios y comercio."
-            elif "Grecia" in pto_sel or "Matta" in pto_sel:
+            elif "Grecia" in pto_sel or "Matta" in pto_sel and "Antofagasta" in com_sel:
                 texto_estrategico_default = "Nudo neurálgico que conecta la costanera de Av. Grecia y Balneario Municipal con el eje de Av. Matta hacia el centro comercial y cívico de Antofagasta."
             elif "Costanera Arturo Prat con Eleuterio Ramírez" in pto_sel:
                 texto_estrategico_default = "Eje de alto impacto que conecta la costanera de Av. Arturo Prat con el acceso al centro comercial y financiero de Iquique por Eleuterio Ramírez."
@@ -1024,7 +1034,7 @@ else: # Vía Pública Tradicional
                 texto_estrategico_default = "Eje comercial estructurante del sector norte de Viña del Mar, con alto tránsito vehicular y peatonal vinculado al polo retail."
             elif "Las Salinas" in pto_sel or "Borgoño" in pto_sel:
                 texto_estrategico_default = "Borde costero de Av. Borgoño frente a Balneario Las Salinas con tránsito continuo Reñaca-Viña y máxima retención vehicular en horas punta."
-            elif "Manuel Montt" in pto_sel:
+            elif "Manuel Montt" in pto_sel and "Rancagua" in com_sel:
                 texto_estrategico_default = "Punto neurálgico sobre Av. Bernardo O'Higgins con salida directa hacia Ruta 5 Sur / Travesía, concentrando el flujo vehicular intercomunal de Rancagua."
             elif "Astorga" in pto_sel:
                 texto_estrategico_default = "Epicentro cívico y comercial peatonal sobre Paseo Independencia, con alta densidad de transeúntes, comercio tradicional y servicios públicos."
@@ -1038,6 +1048,12 @@ else: # Vía Pública Tradicional
                 texto_estrategico_default = "Intersección neurálgica del sector oriente de Talca frente a Mall Plaza Maule, Casino y universidades, con máxima fricción y flujo cautivo hacia Las Rastras."
             elif "Uno Sur, entre 11 y 10 Poniente" in pto_sel:
                 texto_estrategico_default = "Arteria comercial y de transporte estructurante del sector poniente de Talca, conectando el centro con el polo residencial de La Florida."
+            elif "Mall Arauco Chillan" in pto_sel or "El Roble" in pto_sel:
+                texto_estrategico_default = "Principal polo comercial y de entretenimiento de Ñuble sobre Av. El Roble frente a Mall Arauco Chillán, con máxima concurrencia de público cautivo y transporte."
+            elif "Maipón" in pto_sel or "Arauco" in pto_sel and "Chillán" in com_sel:
+                texto_estrategico_default = "Nodo estructurante del centro de Chillán en el entorno del Mercado y terminales de buses, con intenso tránsito peatonal y comercial continuo."
+            elif "Ignacio Serrano" in pto_sel or "Matta" in pto_sel and "San Carlos" in com_sel:
+                texto_estrategico_default = "Centro cívico, bancario y comercial de San Carlos sobre calle Serrano con Matta, a pasos de la Plaza de Armas y con alto flujo peatonal y vehicular de Punilla."
             else:
                 texto_estrategico_default = f"Punto de alta concentración vial y comercial con un flujo auditado de {universo_calculo:,.0f} personas diarias.".replace(",", ".")
 
