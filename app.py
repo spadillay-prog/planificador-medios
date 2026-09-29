@@ -825,15 +825,17 @@ DATA_JERARQUICA = {
                     "puntos": {
                         "Toda la comuna (General)": None
                     }
-                }
-            }
-    }
+
+        
     },
     "Región de Aysén": {
         "Coyhaique Urbano": {
             "res_sector": 80000, "flot_sector": 15000,
             "comunas": {
                 "Coyhaique": {
+                    "res": 65000, "flot": 15000,
+                    "contexto": "Centro de provisiones y hotelería líder",
+                    "puntos": {
                     "res": 65000, "flot": 15000,
                     "contexto": "Centro de provisiones y hotelería líder de la Carretera Austral centrado en su plaza pentagonal y Av. Baquedano.",
                     "puntos": {
