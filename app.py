@@ -824,10 +824,9 @@ DATA_JERARQUICA = {
                     "contexto": "Cabecera del archipiélago con circulación masiva en torno a la plaza, bypass y festivales costumbristas.",
                     "puntos": {
                         "Toda la comuna (General)": None
-                 }
+                    }
                 }
             }
-        }
     },
     "Región de Aysén": {
         "Coyhaique Urbano": {
