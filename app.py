@@ -827,7 +827,7 @@ DATA_JERARQUICA = {
                     }
                 }
             }
-        }
+    }
     },
     "Región de Aysén": {
         "Coyhaique Urbano": {
