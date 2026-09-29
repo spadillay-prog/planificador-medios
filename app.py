@@ -1,96 +1,16 @@
 import streamlit as st
+import pandas as pd
+from PIL import Image, ImageDraw, ImageFont
+import io
+import os
 
-# Usuarios autorizados
-USUARIOS = {
-    "admin": "madcom2026",
-    "equipo": "planificador2026",
-    "spadilla": "madcom@ooh",
-}
+st.set_page_config(
+    page_title="Planificador de medios / Vía pública",
+    page_icon="🎯",
+    layout="wide"
+)
 
-# Estado inicial de sesion
-if "autenticado" not in st.session_state:
-    st.session_state.autenticado = False
-if "usuario" not in st.session_state:
-    st.session_state.usuario = ""
-
-
-def verificar_credenciales(usuario, clave):
-    usuario = usuario.strip()
-    if usuario in USUARIOS and USUARIOS[usuario] == clave:
-        st.session_state.autenticado = True
-        st.session_state.usuario = usuario
-        return True
-    return False
-
-
-def cerrar_sesion():
-    st.session_state.autenticado = False
-    st.session_state.usuario = ""
-    st.session_state.plan_items = []
-    st.rerun()
-
-
-def pantalla_login():
-    st.markdown(
-        """
-        <style>
-            [data-testid="stSidebar"] { display: none; }
-            .login-logo {
-                background: #161616;
-                border: 1px solid #2A2A2A;
-                border-radius: 14px;
-                padding: 28px 10px 18px 10px;
-                text-align: center;
-                margin-top: 60px;
-                margin-bottom: 18px;
-            }
-            .login-logo h1 {
-                color: #FF7A00;
-                font-size: 52px;
-                font-weight: 900;
-                letter-spacing: 8px;
-                margin: 0;
-            }
-            .login-logo p {
-                color: #BDBDBD;
-                font-size: 14px;
-                letter-spacing: 2px;
-                margin: 6px 0 0 0;
-                text-transform: uppercase;
-            }
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
-    col_izq, col_centro, col_der = st.columns([1, 1.2, 1])
-    with col_centro:
-        st.markdown(
-            '<div class="login-logo"><h1>MADCOM</h1><p>Planificador OOH y Metro</p></div>',
-            unsafe_allow_html=True,
-        )
-        with st.form("form_login"):
-            usuario = st.text_input("Usuario")
-            clave = st.text_input("Contrasena", type="password")
-            ingresar = st.form_submit_button("Ingresar", use_container_width=True)
-        if ingresar:
-            if verificar_credenciales(usuario, clave):
-                st.rerun()
-            else:
-                st.error("Usuario o contrasena incorrectos.")
-
-
-# Control de acceso: si no esta autenticado, se muestra solo el login
-if not st.session_state.autenticado:
-    pantalla_login()
-    st.stop()
-
-# Boton de cierre de sesion en la barra lateral
-with st.sidebar:
-    st.markdown(f"**Usuario:** {st.session_state.usuario}")
-    if st.button("Cerrar Sesion", use_container_width=True):
-        cerrar_sesion()
-
-# Inicializacion del carrito del plan
+# Inicializar sesión para el Plan de Medios Multi-Formato (Carrito)
 if "plan_items" not in st.session_state:
     st.session_state.plan_items = []
 
@@ -794,7 +714,11 @@ DATA_JERARQUICA = {
             }
         }
     },
-   "Puerto Montt": {
+    "Región de Los Lagos": {
+        "Puerto Montt - Osorno": {
+            "res_sector": 550000, "flot_sector": 85000,
+            "comunas": {
+                "Puerto Montt": {
                     "res": 260000, "flot": 50000,
                     "contexto": "Capital regional, punto neurálgico de salida a Carretera Austral, con altísimo flujo en el eje Costanera frente al Mall y paseo peatonal Antonio Varas.",
                     "puntos": {
@@ -823,7 +747,8 @@ DATA_JERARQUICA = {
                     "res": 55000, "flot": 20000,
                     "contexto": "Cabecera del archipiélago con circulación masiva en torno a la plaza, bypass y festivales costumbristas.",
                     "puntos": {
-                "Toda la comuna (General)": None
+                        "Toda la comuna (General)": None
+                    }
                 }
             }
         }
@@ -1244,49 +1169,6 @@ if st.sidebar.button("➕ Agregar este elemento al Plan de Medios", use_containe
 if st.sidebar.button("🗑️ Limpiar Plan de Medios", use_container_width=True):
     st.session_state.plan_items = []
     st.rerun()
-
-# ==============================================================================
-# MODAL DE METODOLOGÍA Y FUENTES OFICIALES (EN LA BARRA LATERAL)
-# ==============================================================================
-@st.dialog("Metodología Técnica y Fuentes Oficiales", width="large")
-def mostrar_metodologia_modal():
-    texto_metodologia = (
-        "### MADCOM · Plataforma de Planificación Estratégica OOH y Metro\n"
-        "---\n"
-        "#### 1. Marco Metodológico General\n"
-        "El planificador de medios calcula la efectividad publicitaria mediante modelos cuantitativos de exposición vehicular y peatonal para soportes de Vía Pública (OOH/DOOH) y la red de Metro de Santiago.\n\n"
-        "* **Universo Activo Diario (Aforo):** Volumen total de personas y vehículos que transitan por el cono de visibilidad directa del soporte en una jornada de 24 horas.\n"
-        "* **Tasa de Exposición Efectiva (OTS / Opportunity to See):** Coeficiente de visibilidad calibrado según el tipo de soporte, velocidad de desplazamiento, distancia de lectura y tiempo de permanencia.\n"
-        "* **Impactos Brutos:** Total de contactos visuales (Impactos = Aforo x Tasa x Días).\n"
-        "* **CPM Efectivo:** Costo por cada mil impactos (CPM = Inversión / Impactos x 1000).\n\n"
-        "---\n"
-        "#### 2. Fuentes Oficiales de Información\n"
-        "##### A. Metro de Santiago (Subterráneo y Estaciones)\n"
-        "* **Medición de Pasajeros:** Datos provistos por **Metro S.A.** e **Ipsos Chile**.\n"
-        "* **Calibración Estacional DTPM:** Ajuste de aforo por receso escolar/universitario y laboral en periodo estival (enero-febrero).\n\n"
-        "##### B. Vía Pública Tradicional (Calles y Autopistas)\n"
-        "* **EOD y Flujos:** Programas de Vialidad y Transporte Urbano (**SECTRA** / MTT), **UOCT** y Dirección de Vialidad del **MOP**.\n"
-        "* **Bases Demográficas:** Censos y proyecciones del **INE Chile**.\n"
-        "* **Calibración Turística (SERNATUR):** Factores de fluctuación estacional aplicados a balnearios, zonas lacustres y capitales regionales en verano.\n\n"
-        "---\n"
-        "#### 3. Escenarios de Proyección y Tasas de Exposición\n"
-        "Estimación realista según Share of Voice (SOV) y fricción visual (Conservador | Medio | Optimista):\n"
-        "* **Building Wrap (Edificio):** 25% | 30% | 35%\n"
-        "* **Pantalla Digital (DOOH Calle):** 20% | 25% | 30%\n"
-        "* **Lunetas de Buses:** 20% | 25% | 30%\n"
-        "* **Buses Troncales:** 30% | 35% | 40%\n"
-        "* **Muro Estación (Metro):** 35% | 45% | 55%\n"
-        "* **Gran Digital (Metro DOOH):** 20% | 25% | 30%\n"
-        "* **Tótem / Paleta Digital (Metro DOOH):** 15% | 20% | 25%\n"
-        "* **Torniquetes / Mesanina Estático:** 35% | 45% | 55%\n"
-    )
-    st.markdown(texto_metodologia)
-    if st.button("Cerrar Metodología", use_container_width=True, type="primary"):
-        st.rerun()
-
-st.sidebar.markdown("---")
-if st.sidebar.button("📖 Ver Metodología y Fuentes Técnicas", use_container_width=True):
-    mostrar_metodologia_modal()
 
 # --- 8. RENDERIZADOR PIL: LÁMINA INDIVIDUAL (CON FOTO) ---
 def render_lamina_jpg():
