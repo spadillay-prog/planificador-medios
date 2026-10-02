@@ -333,7 +333,21 @@ DATA_JERARQUICA = {
             }
         }
     },
-    "Región Metropolitana": {
+"Región Metropolitana": {
+        "Gran Santiago (Red Intercomunal / Troncales)": {
+            "res_sector": 6250000, "flot_sector": 2200000,
+            "comunas": {
+                "Conurbación Completa (Santiago)": {
+                    "res": 6250000, "flot": 2200000,
+                    "contexto": "Red troncal y alimentadora de transporte público con cobertura integral sobre más de 25 comunas del Gran Santiago, conectando ejes estructurantes de alta densidad vehicular y peatonal.",
+                    "puntos": {
+                        "Toda la conurbación (General)": None,
+                        "Ejes Troncales Principales (Alameda / Providencia / Apoquindo)": {"flujo": 480000},
+                        "Anillo Américo Vespucio (Norte - Sur - Oriente - Poniente)": {"flujo": 390000}
+                    }
+                }
+            }
+        },
         "Sector Oriente": {
             "res_sector": 1060000, "flot_sector": 800000,
             "comunas": {
