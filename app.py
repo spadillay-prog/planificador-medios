@@ -796,6 +796,22 @@ FORMATOS_OOH = {
     "Pantalla Digital (DOOH)": {"base": 1, "c": 0.20, "m": 0.25, "o": 0.30, "tipo": "Gran impacto LED", "unidad": "pantallas", "es_wrap": False},
     "Lunetas Buses": {"base": 30, "c": 0.20, "m": 0.25, "o": 0.30, "tipo": "Cobertura móvil", "unidad": "lunetas", "es_wrap": False},
     "Buses Troncales": {"base": 70, "c": 0.30, "m": 0.35, "o": 0.40, "tipo": "Troncal móvil", "unidad": "buses", "es_wrap": False},
+    "Metbus Troncal (Lateral Chofer / Izquierdo)": {
+        "base": 1, "c": 0.35, "m": 0.45, "o": 0.55, "tipo": "Móvil Troncal Metbus", "unidad": "buses", "es_wrap": False,
+        "contexto": "Lateral conductor con impacto directo al flujo vehicular contrario y paralelo a lo largo de 21 comunas estructurantes del eje poniente-oriente."
+    },
+    "Metbus Troncal (Lateral Puertas / Derecho)": {
+        "base": 1, "c": 0.25, "m": 0.35, "o": 0.45, "tipo": "Móvil Troncal Metbus", "unidad": "buses", "es_wrap": False,
+        "contexto": "Lateral puertas con impacto continuo a peatones en veredas, paraderos y áreas comerciales a lo largo del recorrido Metbus (21 comunas)."
+    },
+    "Redbus Alimentador/Troncal (Lateral Chofer)": {
+        "base": 1, "c": 0.30, "m": 0.40, "o": 0.50, "tipo": "Móvil Redbus B-C", "unidad": "buses", "es_wrap": False,
+        "contexto": "Lateral conductor con exposición vehicular continua en la macrozona norte y oriente (14 comunas, conectividad troncal y alimentadora)."
+    },
+    "Redbus Alimentador/Troncal (Lateral Puertas)": {
+        "base": 1, "c": 0.22, "m": 0.30, "o": 0.38, "tipo": "Móvil Redbus B-C", "unidad": "buses", "es_wrap": False,
+        "contexto": "Lateral puertas con alta frecuencia de impacto peatonal en zonas residenciales y comerciales de las 14 comunas del recorrido Redbus."
+    },
     "Valla Estática": {"base": 1, "c": 0.15, "m": 0.20, "o": 0.25, "tipo": "Soporte fijo", "unidad": "soportes", "es_wrap": False}
 }
 
