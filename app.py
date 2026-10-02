@@ -796,25 +796,20 @@ FORMATOS_OOH = {
     "Pantalla Digital (DOOH)": {"base": 1, "c": 0.20, "m": 0.25, "o": 0.30, "tipo": "Gran impacto LED", "unidad": "pantallas", "es_wrap": False},
     "Lunetas Buses": {"base": 30, "c": 0.20, "m": 0.25, "o": 0.30, "tipo": "Cobertura móvil", "unidad": "lunetas", "es_wrap": False},
     "Buses Troncales": {"base": 70, "c": 0.30, "m": 0.35, "o": 0.40, "tipo": "Troncal móvil", "unidad": "buses", "es_wrap": False},
-    "Metbus Troncal (Lateral Chofer / Izquierdo)": {
+    "Metbus Troncal 5-4-1 (Lateral)": {
         "base": 1, "c": 0.35, "m": 0.45, "o": 0.55, "tipo": "Móvil Troncal Metbus", "unidad": "buses", "es_wrap": False,
-        "contexto": "Lateral conductor con impacto directo al flujo vehicular contrario y paralelo a lo largo de 21 comunas estructurantes del eje poniente-oriente."
+        "contexto": "Caras laterales sobre flota Metbus (Troncales 5, 4 y 1) con cobertura masiva en 21 comunas del eje estructurante poniente-centro-oriente de Santiago."
     },
-    "Metbus Troncal (Lateral Puertas / Derecho)": {
-        "base": 1, "c": 0.25, "m": 0.35, "o": 0.45, "tipo": "Móvil Troncal Metbus", "unidad": "buses", "es_wrap": False,
-        "contexto": "Lateral puertas con impacto continuo a peatones en veredas, paraderos y áreas comerciales a lo largo del recorrido Metbus (21 comunas)."
-    },
-    "Redbus Alimentador/Troncal (Lateral Chofer)": {
+    "Redbus Alimentador/Troncal 4 (Lateral)": {
         "base": 1, "c": 0.30, "m": 0.40, "o": 0.50, "tipo": "Móvil Redbus B-C", "unidad": "buses", "es_wrap": False,
-        "contexto": "Lateral conductor con exposición vehicular continua en la macrozona norte y oriente (14 comunas, conectividad troncal y alimentadora)."
+        "contexto": "Caras laterales sobre recorridos Redbus (Alimentadores B y C, Troncal 4) impactando flujos vehiculares y peatonales de 14 comunas en la zona norte y oriente."
     },
-    "Redbus Alimentador/Troncal (Lateral Puertas)": {
-        "base": 1, "c": 0.22, "m": 0.30, "o": 0.38, "tipo": "Móvil Redbus B-C", "unidad": "buses", "es_wrap": False,
-        "contexto": "Lateral puertas con alta frecuencia de impacto peatonal en zonas residenciales y comerciales de las 14 comunas del recorrido Redbus."
+    "Circuito Combinado Laterales (Metbus + Redbus)": {
+        "base": 100, "c": 0.35, "m": 0.45, "o": 0.55, "tipo": "Troncal + Alimentador", "unidad": "buses", "es_wrap": False,
+        "contexto": "Circuito integrado de laterales (3,5×1,0 m) distribuidos entre recorridos Metbus y Redbus, cubriendo ejes estructurantes de más de 20 comunas de Santiago."
     },
     "Valla Estática": {"base": 1, "c": 0.15, "m": 0.20, "o": 0.25, "tipo": "Soporte fijo", "unidad": "soportes", "es_wrap": False}
 }
-
 FORMATOS_METRO = {
     "Muro Estación (Gran Formato)": {
         "base": 1, "c": 0.35, "m": 0.45, "o": 0.55, "tipo": "Dominación muro", "unidad": "muros", "es_tren": False,
