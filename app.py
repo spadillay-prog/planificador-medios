@@ -9,7 +9,28 @@ st.set_page_config(
     page_icon="🎯",
     layout="wide"
 )
+# --- CONTROL DE ACCESO SIMPLE (SIN USUARIOS) ---
+def verificar_acceso():
+    if "autenticado" not in st.session_state:
+        st.session_state.autenticado = False
 
+    if not st.session_state.autenticado:
+        st.markdown("### 🔒 Acceso Restringido - Planificador de Medios")
+        st.caption("Ingresa la clave de acceso corporativa para continuar.")
+        
+        PASSWORD_CORRECTO = "Madcom2026"
+        
+        pwd = st.text_input("Contraseña:", type="password")
+        if st.button("Ingresar", use_container_width=True):
+            if pwd == PASSWORD_CORRECTO:
+                st.session_state.autenticado = True
+                st.rerun()
+            else:
+                st.error("Contraseña incorrecta. Intenta nuevamente.")
+        st.stop()
+
+verificar_acceso()
+# ------------------------------------------------
 # Inicializar sesión para el Plan de Medios Multi-Formato (Carrito)
 if "plan_items" not in st.session_state:
     st.session_state.plan_items = []
