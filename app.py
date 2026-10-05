@@ -353,13 +353,13 @@ DATA_JERARQUICA = {
                     "contexto": "Zona gastronómica y residencial de alta plusvalía en el eje costero de Borgoño.",
                     "puntos": {
                         "Toda la comuna (General)": None,
-                        "Rotonda de Concón": {"flujo": 50000}
-                    }
+                   "Rotonda de Concón": {"flujo": 50000}
                 }
             }
-    },
-"Región Metropolitana": {
-        "Gran Santiago (Red Intercomunal / Troncales)": {
+        }
+    }
+},
+"Región Metropolitana": {        "Gran Santiago (Red Intercomunal / Troncales)": {
             "res_sector": 6250000, "flot_sector": 2200000,
             "comunas": {
                 "Conurbación Completa (Santiago)": {
