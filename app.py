@@ -824,7 +824,7 @@ DATA_JERARQUICA = {
             }
         }
     }
-}
+
 
 # --- 6. FORMATOS COMERCIALES (OOH & METRO) ---
 FORMATOS_OOH = {
