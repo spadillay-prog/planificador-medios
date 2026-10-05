@@ -357,7 +357,6 @@ DATA_JERARQUICA = {
                     }
                 }
             }
-        }
     },
 "Región Metropolitana": {
         "Gran Santiago (Red Intercomunal / Troncales)": {
