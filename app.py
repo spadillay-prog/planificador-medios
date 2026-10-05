@@ -310,12 +310,17 @@ DATA_JERARQUICA = {
                 "Viña del Mar": {
                     "res": 360000, "flot": 120000,
                     "contexto": "Alta densidad turística, comercial y gastronómica concentrada en ejes 1 Norte, Libertad, 15 Norte y borde costero de Las Salinas.",
-                    "puntos": {
-                        "Toda la comuna (General)": None,
-                        "1 Norte con Libertad / Mall Marina": {"flujo": 130000},
-                        "Av. 15 Norte esquina 4 Norte": {"flujo": 75000},
-                        "Av. Borgoño costado Balneario Las Salinas hacia Viña": {"flujo": 65000},
-                        "Av. Benidorm (15 Norte) con San Martín": {"flujo": 85000}
+                   "puntos": {
+                    "Toda la comuna (General)": None,
+                    "Mall Marina Tradicional (Interior - Regular)": {"flujo": 29300},
+                    "Mall Marina Tradicional (Interior - Verano)": {"flujo": 45000},
+                    "Mall Marina Oriente (Interior - Regular)": {"flujo": 19000},
+                    "Mall Marina Oriente (Interior - Verano)": {"flujo": 30000},
+                    "Mall Marina (Pasarela Conexión 14 Norte)": {"flujo": 36600},
+                    "Av. 15 Norte esquina 4 Norte": {"flujo": 75000},
+                    "Av. Borgoño costado Balneario Las Salinas hacia Viña": {"flujo": 65000},
+                    "Av. Benidorm (15 Norte) con San Martín": {"flujo": 85000}
+                }
                     }
                 },
                 "Valparaíso": {
