@@ -9,28 +9,7 @@ st.set_page_config(
     page_icon="🎯",
     layout="wide"
 )
-# --- CONTROL DE ACCESO SIMPLE (SIN USUARIOS) ---
-def verificar_acceso():
-    if "autenticado" not in st.session_state:
-        st.session_state.autenticado = False
 
-    if not st.session_state.autenticado:
-        st.markdown("### 🔒 Acceso Restringido - Planificador de Medios")
-        st.caption("Ingresa la clave de acceso corporativa para continuar.")
-        
-        PASSWORD_CORRECTO = "Madcom2026"
-        
-        pwd = st.text_input("Contraseña:", type="password")
-        if st.button("Ingresar", use_container_width=True):
-            if pwd == PASSWORD_CORRECTO:
-                st.session_state.autenticado = True
-                st.rerun()
-            else:
-                st.error("Contraseña incorrecta. Intenta nuevamente.")
-        st.stop()
-
-verificar_acceso()
-# ------------------------------------------------
 # Inicializar sesión para el Plan de Medios Multi-Formato (Carrito)
 if "plan_items" not in st.session_state:
     st.session_state.plan_items = []
@@ -310,17 +289,12 @@ DATA_JERARQUICA = {
                 "Viña del Mar": {
                     "res": 360000, "flot": 120000,
                     "contexto": "Alta densidad turística, comercial y gastronómica concentrada en ejes 1 Norte, Libertad, 15 Norte y borde costero de Las Salinas.",
-                   "puntos": {
-                    "Toda la comuna (General)": None,
-                    "Mall Marina Tradicional (Interior - Regular)": {"flujo": 29300},
-                    "Mall Marina Tradicional (Interior - Verano)": {"flujo": 45000},
-                    "Mall Marina Oriente (Interior - Regular)": {"flujo": 19000},
-                    "Mall Marina Oriente (Interior - Verano)": {"flujo": 30000},
-                    "Mall Marina (Pasarela Conexión 14 Norte)": {"flujo": 36600},
-                    "Av. 15 Norte esquina 4 Norte": {"flujo": 75000},
-                    "Av. Borgoño costado Balneario Las Salinas hacia Viña": {"flujo": 65000},
-                    "Av. Benidorm (15 Norte) con San Martín": {"flujo": 85000}
-                }
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "1 Norte con Libertad / Mall Marina": {"flujo": 130000},
+                        "Av. 15 Norte esquina 4 Norte": {"flujo": 75000},
+                        "Av. Borgoño costado Balneario Las Salinas hacia Viña": {"flujo": 65000},
+                        "Av. Benidorm (15 Norte) con San Martín": {"flujo": 85000}
                     }
                 },
                 "Valparaíso": {
@@ -353,13 +327,14 @@ DATA_JERARQUICA = {
                     "contexto": "Zona gastronómica y residencial de alta plusvalía en el eje costero de Borgoño.",
                     "puntos": {
                         "Toda la comuna (General)": None,
-                   "Rotonda de Concón": {"flujo": 50000}
+                        "Rotonda de Concón": {"flujo": 50000}
+                    }
                 }
             }
         }
-    }
-},
-"Región Metropolitana": {        "Gran Santiago (Red Intercomunal / Troncales)": {
+    },
+"Región Metropolitana": {
+        "Gran Santiago (Red Intercomunal / Troncales)": {
             "res_sector": 6250000, "flot_sector": 2200000,
             "comunas": {
                 "Conurbación Completa (Santiago)": {
@@ -823,7 +798,7 @@ DATA_JERARQUICA = {
             }
         }
     }
-
+}
 
 # --- 6. FORMATOS COMERCIALES (OOH & METRO) ---
 FORMATOS_OOH = {
