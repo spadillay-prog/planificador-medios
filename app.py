@@ -389,6 +389,7 @@ DATA_JERARQUICA = {
                         "Toda la comuna (General)": None,
                         "Av. Santa Teresa de Los Andes / Las Cujas (Subiendo hacia La Dehesa - Vista Oriente)": {"flujo": 40000},
                         "Av. Escrivá de Balaguer / Nueva Costanera (Lo Cañas Subiendo - Vista Oriente)": {"flujo": 50000},
+                        "Av. Escrivá de Balaguer / Nueva Costanera (Lo Cañas Bajando - Vista Poniente)": {"flujo": 50000},
                         "Paso Nivel Manquehue Norte / Costanera Norte (Cara Sur)": {"flujo": 65000},
                         "Av. Vitacura con Américo Vespucio": {"flujo": 95000}
                     }
