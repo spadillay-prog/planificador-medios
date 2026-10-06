@@ -348,37 +348,31 @@ DATA_JERARQUICA = {
                 }
             }
         },
-       "Sector Oriente": {
-        "res_sector": 650000, "flot_sector": 1450000,
-        "comunas": {
-            "Las Condes": {
-                "res": 330000, "flot": 850000,
-                "contexto": "Centro corporativo y financiero (Sanhattan, Av. Apoquindo, El Golf).",
-                "puntos": {
-                    "Toda la comuna (General)": None,
-                    "Eje Apoquindo (Escuela Militar / Manquehue)": {"flujo": 220000},
-                    "Eje Vespucio Oriente": {"flujo": 190000},
-                    "Parque Arauco Kennedy (Mall Interior / Boulevard)": {"flujo": 73000},
-                    "Parque Arauco Kennedy (Vial Exterior Kennedy)": {"flujo": 165000},
-                    "Circuito MUPIS Digitales Las Condes (15 Caras)": {"flujo": 600000},
-                    "MUPI Digital Individual Las Condes (Eje Apoquindo)": {"flujo": 40000}
-                }
-            },
-            "Providencia": {
-                "res": 142000, "flot": 600000,
-                "contexto": "Polo comercial, gastronómico y financiero de alta afluencia peatonal y vehicular.",
-                "puntos": {
-                    "Toda la comuna (General)": None,
-                    "Eje Providencia / Nueva Providencia": {"flujo": 180000},
-                    "Eje Tobalaba / Costanera": {"flujo": 160000},
-                    "Cenco Costanera (Mall Costanera Center)": {"flujo": 103000},
-                    "Circuito MUPIS Digitales Providencia (20 Caras)": {"flujo": 1040000},
-                    "MUPI Digital Individual Providencia (Eje Nueva Providencia)": {"flujo": 52000}
-                }
-            }
-        }
-    },
-    
+        "Sector Oriente": {
+            "res_sector": 1060000, "flot_sector": 800000,
+            "comunas": {
+                "Las Condes": {
+                    "res": 330000, "flot": 450000,
+                    "contexto": "Polo corporativo y financiero de máxima afluencia flotante de la capital, ideal para campañas de cobertura y frecuencia masiva.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Av. Presidente Kennedy / Parque Arauco (Eje Autopista)": {"flujo": 170000},
+                        "Apoquindo con Manquehue (Apumanque)": {"flujo": 140000},
+                        "Circuito MUPIS Digitales Las Condes (15 Caras)": {"flujo": 600000},
+                        "El Golf / Sanhattan (Apoquindo con El Bosque)": {"flujo": 160000},
+                        "Rotonda Atenas": {"flujo": 70000}
+                    }
+                },
+                "Providencia": {
+                    "res": 155000, "flot": 350000,
+                    "contexto": "Eje comercial y de oficinas de mayor flujo peatonal continuo y conectividad oriente-centro.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Circuito MUPIS Digitales Providencia (20 Caras)": {"flujo": 1040000},
+                        "Providencia con Tobalaba (Costanera Center)": {"flujo": 180000},
+                        "Plaza Baquedano": {"flujo": 150000}
+                    }
+                },
                 "Ñuñoa": {
                     "res": 255000, "flot": 80000,
                     "contexto": "Sector residencial y de servicios con importantes nudos de detención vehicular y gastronómicos.",
@@ -388,7 +382,7 @@ DATA_JERARQUICA = {
                         "Irarrázaval con Pedro de Valdivia": {"flujo": 85000}
                     }
                 },
-"Vitacura": {
+                "Vitacura": {
                     "res": 95000, "flot": 110000,
                     "contexto": "Polo de alta renta con vitrina premium en Av. Vitacura y Américo Vespucio.",
                     "puntos": {
