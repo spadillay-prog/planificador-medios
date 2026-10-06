@@ -416,6 +416,8 @@ DATA_JERARQUICA = {
                     "puntos": {
                         "Toda la comuna (General)": None,
                         "Gran Avenida con Departamental": {"flujo": 85000},
+                        "Gran Avenida / Av. Lo Ovalle (Metro Lo Ovalle - Vista Norte)": {"flujo": 75000},
+                        "Gran Avenida / Av. Lo Ovalle (Metro Lo Ovalle - Vista Sur)": {"flujo": 75000},
                         "Gran Avenida con Salesianos": {"flujo": 65000}
                     }
                 },
@@ -448,6 +450,7 @@ DATA_JERARQUICA = {
                         "Toda la comuna (General)": None,
                         "Rotonda Quilín / Américo Vespucio (Mall Paseo Quilín)": {"flujo": 130000},
                         "Autopista Vespucio Sur / Los Orientales (Metro Los Orientales - Vista Norte)": {"flujo": 100000},
+                        "Av. Consistorial / Antupirén (Mall Alto Peñalolén - Vista Sur)": {"flujo": 40000}
                         "Eje Quilín / Consistorial": {"flujo": 65000}
                     }
                 },
