@@ -810,6 +810,9 @@ FORMATOS_OOH = {
         "contexto": "Gigantografía monumental de gran escala sobre fachada de edificio (>400-500 m²), con visibilidad a más de 400 metros de distancia y alta retención vehicular."
     },
     "Pantalla Digital (DOOH)": {"base": 1, "c": 0.20, "m": 0.25, "o": 0.30, "tipo": "Gran impacto LED", "unidad": "pantallas", "es_wrap": False},
+    "Circuito MUPIS Digitales (MUD)": {"base": 1, "c": 0.20, "m": 0.25, "o": 0.30, "tipo": "Digital Urbano", "unidad": "circuitos", "es_wrap": False,
+        "contexto": "Circuito integrado de MUPIS digitales en paraderos y refugios peatonales urbanos."
+    },
     "Lunetas Buses": {"base": 30, "c": 0.20, "m": 0.25, "o": 0.30, "tipo": "Cobertura móvil", "unidad": "lunetas", "es_wrap": False},
     "Buses Troncales": {"base": 70, "c": 0.30, "m": 0.35, "o": 0.40, "tipo": "Troncal móvil", "unidad": "buses", "es_wrap": False},
     "Metbus Troncal 5-4-1 (Lateral)": {
@@ -820,14 +823,7 @@ FORMATOS_OOH = {
         "base": 1, "c": 0.30, "m": 0.40, "o": 0.50, "tipo": "Móvil Redbus B-C", "unidad": "buses", "es_wrap": False,
         "contexto": "Caras laterales sobre recorridos Redbus (Alimentadores B y C, Troncal 4) impactando flujos vehiculares y peatonales de 14 comunas en la zona norte y oriente."
     },
-    "Circuito MUPIS Digitales (MUD)": {
-        "c": 0.20,
-        "m": 0.25,
-        "o": 0.30,
-        "unidad": "circuitos",
-        "es_wrap": False,
-        "contexto": "Circuito integrado de MUPIS digitales en paraderos y refugios peatonales urbanos."
-    },
+
     "Circuito Combinado Laterales (Metbus + Redbus)": {
         "base": 100, "c": 0.35, "m": 0.45, "o": 0.55, "tipo": "Troncal + Alimentador", "unidad": "buses", "es_wrap": False,
         "contexto": "Circuito integrado de laterales (3,5×1,0 m) distribuidos entre recorridos Metbus y Redbus, cubriendo ejes estructurantes de más de 20 comunas de Santiago."
