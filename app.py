@@ -358,7 +358,7 @@ DATA_JERARQUICA = {
                         "Toda la comuna (General)": None,
                         "Av. Presidente Kennedy / Parque Arauco (Eje Autopista)": {"flujo": 170000},
                         "Apoquindo con Manquehue (Apumanque)": {"flujo": 140000},
-                        "Circuito MUPIS Digitales Las Condes (15 Caras)": {"flujo": 600000},
+                        "Eje Av. Apoquindo (Circuito 15 Caras)": {"flujo": 600000},
                         "El Golf / Sanhattan (Apoquindo con El Bosque)": {"flujo": 160000},
                         "Rotonda Atenas": {"flujo": 70000}
                     }
@@ -368,7 +368,7 @@ DATA_JERARQUICA = {
                     "contexto": "Eje comercial y de oficinas de mayor flujo peatonal continuo y conectividad oriente-centro.",
                     "puntos": {
                         "Toda la comuna (General)": None,
-                        "Circuito MUPIS Digitales Providencia (20 Caras)": {"flujo": 1040000},
+                        "Eje Providencia / Nueva Providencia (Circuito 20 Caras)": {"flujo": 1040000},
                         "Providencia con Tobalaba (Costanera Center)": {"flujo": 180000},
                         "Plaza Baquedano": {"flujo": 150000}
                     }
@@ -819,6 +819,13 @@ FORMATOS_OOH = {
     "Redbus Alimentador/Troncal 4 (Lateral)": {
         "base": 1, "c": 0.30, "m": 0.40, "o": 0.50, "tipo": "Móvil Redbus B-C", "unidad": "buses", "es_wrap": False,
         "contexto": "Caras laterales sobre recorridos Redbus (Alimentadores B y C, Troncal 4) impactando flujos vehiculares y peatonales de 14 comunas en la zona norte y oriente."
+    },
+    "Circuito MUPIS Digitales (MUD)": {
+        "c": 0.20,
+        "m": 0.25,
+        "o": 0.30,
+        "unidad": "Circuitos",
+        "descripcion": "Circuito integrado de MUPIS digitales en paraderos y refugios peatonales urbanos."
     },
     "Circuito Combinado Laterales (Metbus + Redbus)": {
         "base": 100, "c": 0.35, "m": 0.45, "o": 0.55, "tipo": "Troncal + Alimentador", "unidad": "buses", "es_wrap": False,
