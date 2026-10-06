@@ -825,6 +825,7 @@ FORMATOS_OOH = {
         "m": 0.25,
         "o": 0.30,
         "unidad": "circuitos",
+        "es_wrap": False,
         "contexto": "Circuito integrado de MUPIS digitales en paraderos y refugios peatonales urbanos."
     },
     "Circuito Combinado Laterales (Metbus + Redbus)": {
