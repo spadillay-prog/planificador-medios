@@ -547,7 +547,7 @@ DATA_JERARQUICA = {
                     "puntos": {
                         "Toda la comuna (General)": None,
                         "Costanera Norte / Autopista Central - Torre A (Building Wrap - Vista Oriente)": {"flujo": 100000},
-                        "Costanera Norte / Autopista Central - Torre B (Building Wrap - Vista Oriente)": {"flujo": 100000}
+                        "Costanera Norte / Autopista Central - Torre B (Building Wrap - Vista Oriente)": {"flujo": 100000},
                         "Av. Independencia con Santos Dumont": {"flujo": 95000}
                         
                     }
