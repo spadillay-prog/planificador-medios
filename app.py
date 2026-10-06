@@ -387,6 +387,7 @@ DATA_JERARQUICA = {
                     "contexto": "Polo de alta renta con vitrina premium en Av. Vitacura y Américo Vespucio.",
                     "puntos": {
                         "Toda la comuna (General)": None,
+                        "Av. Santa Teresa de Los Andes / Las Cujas (Subiendo hacia La Dehesa - Vista Oriente)": {"flujo": 40000},
                         "Av. Vitacura con Américo Vespucio": {"flujo": 95000}
                     }
                 }
