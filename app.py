@@ -450,7 +450,7 @@ DATA_JERARQUICA = {
                         "Toda la comuna (General)": None,
                         "Rotonda Quilín / Américo Vespucio (Mall Paseo Quilín)": {"flujo": 130000},
                         "Autopista Vespucio Sur / Los Orientales (Metro Los Orientales - Vista Norte)": {"flujo": 100000},
-                        "Av. Consistorial / Antupirén (Mall Alto Peñalolén - Vista Sur)": {"flujo": 40000}
+                        "Av. Consistorial / Antupirén (Mall Alto Peñalolén - Vista Sur)": {"flujo": 40000},
                         "Eje Quilín / Consistorial": {"flujo": 65000}
                     }
                 },
