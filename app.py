@@ -443,6 +443,8 @@ DATA_JERARQUICA = {
                         "Toda la comuna (General)": None,
                         "Rotonda Quilín / Américo Vespucio (Mall Paseo Quilín)": {"flujo": 130000}
                         "Eje Quilín / Consistorial": {"flujo": 65000}
+                    }
+                },
                 "Macul": {
                     "res": 134000, "flot": 115000,
                     "contexto": "Eje mixto residencial y polo universitario de alta afluencia por Av. Vicuña Mackenna y Metro San Joaquín.",
