@@ -6,7 +6,7 @@ import os
 
 st.set_page_config(
     page_title="Planificador de medios / Vía pública",
-    page_icon="🎯",
+    page_icon="🎯",	
     layout="wide"
 )
 
@@ -359,6 +359,7 @@ DATA_JERARQUICA = {
                         "Av. Presidente Kennedy / Parque Arauco (Eje Autopista)": {"flujo": 170000},
                         "Apoquindo con Manquehue (Apumanque)": {"flujo": 140000},
                         "Eje Av. Apoquindo (Circuito 15 Caras)": {"flujo": 600000},
+                        "Av. Manquehue 457 / Los Militares (Acceso Unimarc FoodMarket)": {"flujo": 15000},
                         "El Golf / Sanhattan (Apoquindo con El Bosque)": {"flujo": 160000},
                         "Rotonda Atenas": {"flujo": 70000}
                     }
@@ -486,6 +487,8 @@ DATA_JERARQUICA = {
                     "puntos": {
                         "Toda la comuna (General)": None,
                         "Alameda con Paseo Ahumada / Metro U. de Chile": {"flujo": 220000},
+                        "Paseo Ahumada / Huérfanos (Cara Paseo Ahumada)": {"flujo": 160000},
+                        "Paseo Ahumada / Huérfanos (Cara Paseo Huérfanos)": {"flujo": 160000},
                         "Alameda con Santa Rosa": {"flujo": 140000}
                     }
                 }
