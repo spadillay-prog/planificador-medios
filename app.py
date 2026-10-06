@@ -435,12 +435,21 @@ DATA_JERARQUICA = {
         "Sector Sur-Oriente": {
             "res_sector": 1420000, "flot_sector": 250000,
             "comunas": {
-                "Peñalolén / Macul (Eje Quilín)": {
-                    "res": 280000, "flot": 90000,
-                    "contexto": "Punto neurálgico de Vespucio Sur con gran afluencia hacia centros médicos y Mall Paseo Quilín.",
+                
+                "Peñalolén": {
+                    "res": 260000, "flot": 95000,
+                    "contexto": "Comuna precordillerana residencial con conectividad por Av. Grecia, Quilín y Américo Vespucio.",
                     "puntos": {
                         "Toda la comuna (General)": None,
                         "Rotonda Quilín / Américo Vespucio (Mall Paseo Quilín)": {"flujo": 130000}
+                        "Eje Quilín / Consistorial": {"flujo": 65000}
+                "Macul": {
+                    "res": 134000, "flot": 115000,
+                    "contexto": "Eje mixto residencial y polo universitario de alta afluencia por Av. Vicuña Mackenna y Metro San Joaquín.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "GDUC0001A: Vicuña Mackenna / Benito Rebolledo (Metro San Joaquín - Vista Norte)": {"flujo": 90000}
+                        
                     }
                 },
                 "La Florida": {
