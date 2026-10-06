@@ -441,7 +441,7 @@ DATA_JERARQUICA = {
                     "contexto": "Comuna precordillerana residencial con conectividad por Av. Grecia, Quilín y Américo Vespucio.",
                     "puntos": {
                         "Toda la comuna (General)": None,
-                        "Rotonda Quilín / Américo Vespucio (Mall Paseo Quilín)": {"flujo": 130000}
+                        "Rotonda Quilín / Américo Vespucio (Mall Paseo Quilín)": {"flujo": 130000},
                         "Eje Quilín / Consistorial": {"flujo": 65000}
                     }
                 },
