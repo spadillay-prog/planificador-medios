@@ -388,7 +388,7 @@ DATA_JERARQUICA = {
                         "Irarrázaval con Pedro de Valdivia": {"flujo": 85000}
                     }
                 },
-                "Vitacura": {
+"Vitacura": {
                     "res": 95000, "flot": 110000,
                     "contexto": "Polo de alta renta con vitrina premium en Av. Vitacura y Américo Vespucio.",
                     "puntos": {
