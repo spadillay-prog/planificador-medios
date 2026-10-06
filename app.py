@@ -511,6 +511,7 @@ DATA_JERARQUICA = {
                     "contexto": "Nodo de transporte interurbano con terminales de buses y estación de trenes sobre eje Alameda.",
                     "puntos": {
                         "Toda la comuna (General)": None,
+                        "Av. Alameda / Paseo Arauco Estación (Metro Estación Central - Vista Oriente)": {"flujo": 160000},
                         "Alameda frente a Terminales de Buses": {"flujo": 180000}
                     }
                 },
