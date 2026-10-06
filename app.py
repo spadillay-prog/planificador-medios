@@ -525,7 +525,8 @@ DATA_JERARQUICA = {
                     "contexto": "Polo empresarial y tecnológico con alto tráfico corporativo en Ciudad Empresarial.",
                     "puntos": {
                         "Toda la comuna (General)": None,
-                        "Ciudad Empresarial (Av. del Parque)": {"flujo": 110000}
+                        "Ciudad Empresarial (Av. del Parque)": {"flujo": 110000},
+                        "Av. Américo Vespucio Norte Km 27,7 (Bajada La Pirámide - Vista Nororiente)": {"flujo": 115000}
                     }
                 },
                 "Quilicura": {
