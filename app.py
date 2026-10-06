@@ -556,6 +556,14 @@ DATA_JERARQUICA = {
                         "Américo Vespucio Norte con Panamericana": {"flujo": 115000}
                     }
                 },
+                "Colina": {
+                    "res": 180000, "flot": 45000,
+                    "contexto": "Comuna de la zona norte con importante polo residencial de alta renta y desarrollo urbano en Chicureo y Piedra Roja.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                         "Rotonda Piedra Roja / Av. Chicureo (Piedra Roja - Vista Sur)": {"flujo": 40000}
+                    }
+                },
                 "Independencia": {
                     "res": 142000, "flot": 110000,
                     "contexto": "Comuna pericentral con fuerte densidad habitacional y polo hospitalario de alta afluencia por eje Av. Independencia.",
