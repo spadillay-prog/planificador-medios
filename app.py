@@ -537,12 +537,21 @@ DATA_JERARQUICA = {
                         "Américo Vespucio Norte con Panamericana": {"flujo": 115000}
                     }
                 },
-                "Independencia / Recoleta": {
-                    "res": 310000, "flot": 180000,
-                    "contexto": "Sector de alta concurrencia por el polo hospitalario, Vega Central y Patronato.",
+                "Independencia": {
+                    "res": 142000, "flot": 110000,
+                    "contexto": "Comuna pericentral con fuerte densidad habitacional y polo hospitalario de alta afluencia por eje Av. Independencia.",
                     "puntos": {
                         "Toda la comuna (General)": None,
                         "Av. Independencia con Santos Dumont": {"flujo": 95000},
+                        
+                    }
+                },
+                "Recoleta": {
+                    "res": 158000, "flot": 120000,
+                    "contexto": "Polo comercial mayorista (Vega Central, Patronato) y nudo de conectividad norte-oriente por Autopista Vespucio Norte.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Av. Américo Vespucio / El Salto (Subida La Pirámide - Vista Oriente)": {"flujo": 110000},
                         "Av. Recoleta con Av. La Paz (La Vega)": {"flujo": 130000}
                     }
                 }
