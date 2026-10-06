@@ -450,7 +450,8 @@ DATA_JERARQUICA = {
                     "contexto": "Eje mixto residencial y polo universitario de alta afluencia por Av. Vicuña Mackenna y Metro San Joaquín.",
                     "puntos": {
                         "Toda la comuna (General)": None,
-                        "GDUC0001A: Vicuña Mackenna / Benito Rebolledo (Metro San Joaquín - Vista Norte)": {"flujo": 90000}
+                        "Vicuña Mackenna / Benito Rebolledo (Metro San Joaquín - Vista Norte)": {"flujo": 90000},
+                        "Av. Departamental / Fabriciano González (Hacia Mall Florida Center - Vista Poniente)": {"flujo": 80000}
                         
                     }
                 },
