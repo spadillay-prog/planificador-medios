@@ -457,6 +457,7 @@ DATA_JERARQUICA = {
                     "puntos": {
                         "Toda la comuna (General)": None,
                         "Vicuña Mackenna / Benito Rebolledo (Metro San Joaquín - Vista Norte)": {"flujo": 90000},
+                        "Autopista Vespucio Sur / Rotonda Grecia (Metro Grecia - Vista Sur)": {"flujo": 110000},
                         "Av. Departamental / Fabriciano González (Hacia Mall Florida Center - Vista Poniente)": {"flujo": 80000}
                         
                     }
