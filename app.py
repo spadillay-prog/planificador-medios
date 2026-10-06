@@ -514,6 +514,14 @@ DATA_JERARQUICA = {
                         "Alameda frente a Terminales de Buses": {"flujo": 180000}
                     }
                 },
+                "Lo Prado": {
+                    "res": 96000	, "flot": 85000,
+                    "contexto": "Comuna pericentral poniente con polo de alta transferencia intermodal en eje Alameda y Metro Las Rejas.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Av. Alameda / Las Rejas (Metro Las Rejas - Vista Poniente)": {"flujo": 115000}
+                    }
+                },
                 "Pudahuel": {
                     "res": 255000, "flot": 120000,
                     "contexto": "Puerta de entrada logística e internacional por conectividad con el Aeropuerto de Santiago.",
