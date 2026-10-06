@@ -538,6 +538,7 @@ DATA_JERARQUICA = {
                     "contexto": "Gran polo industrial y logístico con conexión hacia Panamericana Norte.",
                     "puntos": {
                         "Toda la comuna (General)": None,
+                        "Av. O'Higgins 581 / José Francisco Vergara (Mall Arauco Quilicura)": {"flujo": 80000},
                         "Américo Vespucio Norte con Panamericana": {"flujo": 115000}
                     }
                 },
