@@ -447,6 +447,7 @@ DATA_JERARQUICA = {
                     "puntos": {
                         "Toda la comuna (General)": None,
                         "Rotonda Quilín / Américo Vespucio (Mall Paseo Quilín)": {"flujo": 130000},
+                        "Autopista Vespucio Sur / Los Orientales (Metro Los Orientales - Vista Norte)": {"flujo": 100000},
                         "Eje Quilín / Consistorial": {"flujo": 65000}
                     }
                 },
