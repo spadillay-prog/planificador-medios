@@ -11,11 +11,11 @@ def render_smartfit_advisor():
 
     col1, col2 = st.columns([1, 1], gap="medium")
 
-    # Catálogo de sedes referenciales con perfiles territoriales reales
+    # Catálogo oficial de las 22 sedes según Brief Q4 de Smart Fit
     SEDES_PRECARGADAS = {
         "--- Ingresar sucursal manualmente ---": None,
         
-        # --- BUDGET PRE-OPERACIONAL (APERTURAS / RAMP UP) ---
+        # --- BUDGET PRE-OPERACIONAL (APERTURAS / RAMP UP / PREVENTA) ---
         "Mallplaza Oeste [URGENTE] (Cerrillos)": {
             "plaza": "Gran Santiago (Urbano / Red Metro)", 
             "tipo": "Dentro de Mall / Strip Center / Gran Superficie", 
@@ -241,7 +241,8 @@ def render_smartfit_advisor():
 
         if data_pre:
             default_nombre = seleccion.split("(")[0].strip()
-            # Mapeo de índices automáticos
+            
+            # Mapeo de plaza
             if "Arica" in data_pre["plaza"]:
                 idx_plaza = 0
             elif "Gran Santiago" in data_pre["plaza"]:
@@ -251,13 +252,40 @@ def render_smartfit_advisor():
             else:
                 idx_plaza = 1
 
-            idx_tipo = 0 if "Mall" in data_pre["tipo"] else (1 if "calle" in data_pre["tipo"] else (2 if "Vial" in data_pre["tipo"] else 3))
-            idx_mov = 0 if "Transporte" in data_pre["mov"] else (1 if "Peatonal" in data_pre["mov"] else (2 if "Mixto" in data_pre["mov"] else 3))
-            idx_escala = 0 if "Compacta" in data_pre["escala"] else (1 if "Intermedia" in data_pre["escala"] else (2 if "Gran" in data_pre["escala"] else 3))
+            # Mapeo de escala
+            if "Compacta" in data_pre["escala"]:
+                idx_escala = 0
+            elif "Intermedia" in data_pre["escala"]:
+                idx_escala = 1
+            elif "Conurbación" in data_pre["escala"]:
+                idx_escala = 2
+            else:
+                idx_escala = 3
+
+            # Mapeo de tipo de local
+            if "Mall" in data_pre["tipo"]:
+                idx_tipo = 0
+            elif "calle" in data_pre["tipo"]:
+                idx_tipo = 1
+            elif "Vial" in data_pre["tipo"]:
+                idx_tipo = 2
+            else:
+                idx_tipo = 3
+
+            # Mapeo de movilidad
+            if "Transporte" in data_pre["mov"]:
+                idx_mov = 0
+            elif "Peatonal" in data_pre["mov"]:
+                idx_mov = 1
+            elif "Mixto" in data_pre["mov"]:
+                idx_mov = 2
+            else:
+                idx_mov = 3
+
             idx_fase = 0 if "Apertura" in data_pre["fase"] else 1
         else:
             default_nombre = "Nueva Sucursal Smart Fit"
-            idx_plaza, idx_tipo, idx_mov, idx_escala, idx_fase = 1, 0, 0, 1, 1
+            idx_plaza, idx_escala, idx_tipo, idx_mov, idx_fase = 1, 1, 0, 0, 1
 
         nombre_sucursal = st.text_input("Nombre de la sucursal", value=default_nombre)
         
@@ -322,6 +350,7 @@ def render_smartfit_advisor():
     es_corporativo = "Corporativo" in tipo_local
     es_peatonal_puro = "Peatonal" in movilidad
     es_metro_hub = "Nodo" in movilidad and "Santiago" in plaza
+    es_mall = "Mall" in tipo_local
 
     if es_flash:
         usa_luneta = False
@@ -335,7 +364,7 @@ def render_smartfit_advisor():
             "Se destina el 100% de la inversión a soportes digitales DOOH (pantallas viales y circuitos de Metro) para concentrar ráfagas de alta frecuencia en horas peak sin costo de imprenta."
         )
 
-    elif es_arica or es_ciudad_compacta:
+    elif es_arica or (es_ciudad_compacta and not es_mall):
         # En Arica o ciudades compactas: Flota pequeña, sin supervisión y dispersa.
         usa_luneta = False
         razon_luneta = "No recomendada: escala urbana compacta, parque de micros reducido y baja supervisión en terreno."
@@ -375,7 +404,7 @@ def render_smartfit_advisor():
     else:
         # Grandes conurbaciones o Malls regionales de gran escala (Concepción, Antofagasta, La Serena)
         usa_luneta = True
-        if "Mall" in tipo_local:
+        if es_mall:
             mix_movil_pct = 60 if ("Regiones" in plaza or "Conurbación" in escala_urbana) else 50
             mix_fijo_pct = 100 - mix_movil_pct
             formato_movil = "Lunetas de Buses (Flota Intercomunal / Red Conurbada)" if "Regiones" in plaza else "Lunetas RED Corredores hacia el Mall"
@@ -485,7 +514,7 @@ def generar_lamina_estrategica(nombre, plaza, entorno, movilidad, duracion, mix_
     draw.text((100, 60), "SMART FIT | ANÁLISIS DE PERTINENCIA & MIX OOH", font=f_tag, fill=amarillo_sf)
     draw.text((100, 100), nombre[:55], font=f_tit, fill="#FFFFFF")
     
-    # Metadatos limpios en 2 líneas independientes (sin cortes hacia la derecha)
+    # Metadatos limpios en 2 líneas independientes
     plaza_corta = plaza.split("(")[0].strip()
     campana_corta = duracion.split("(")[0].strip()
     draw.text((100, 168), f"Plaza: {plaza_corta}   •   Entorno: {entorno}   •   Campaña: {campana_corta}", font=f_sub, fill="#A6B0BF")
