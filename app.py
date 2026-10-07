@@ -574,8 +574,9 @@ DATA_JERARQUICA = {
                     "contexto": "Comuna pericentral con fuerte densidad habitacional y polo hospitalario de alta afluencia por eje Av. Independencia.",
                     "puntos": {
                         "Toda la comuna (General)": None,
-                        "Costanera Norte / Autopista Central - Torre A (Building Wrap - Vista Oriente)": {"flujo": 100000},
-                        "Costanera Norte / Autopista Central - Torre B (Building Wrap - Vista Oriente)": {"flujo": 100000},
+                        "Costanera Norte / Autopista Central - Torre A (Building Wrap - Vista Oriente)": {"flujo": 130000},
+                        "Costanera Norte / Autopista Central - Torre B (Building Wrap - Vista Oriente)": {"flujo": 130000},
+                        "Costanera Norte / Autopista Central - Torres A y B (Building Wrap Doble 1.400m² - Vista Oriente)": {"flujo": 190000},
                         "Av. Independencia con Santos Dumont": {"flujo": 95000}
                         
                     }
