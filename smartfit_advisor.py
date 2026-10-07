@@ -5,23 +5,71 @@ import os
 
 def render_smartfit_advisor():
     st.markdown("## 🏋️‍♂️ Smart Fit — Asesor Estratégico de Vía Pública")
-    st.caption("Motor de optimización de mix OOH multiescenario: análisis de cuenca, movilidad y pertinencia de soportes.")
+    st.caption("Motor de optimización de mix OOH: análisis de cuenca, pertinencia de soportes y escala urbana territorial.")
 
     st.markdown("---")
 
     col1, col2 = st.columns([1, 1], gap="medium")
 
-    # Catálogo de sedes referenciales (se puede expandir o usar modo manual)
+    # Catálogo de sedes referenciales con perfiles territoriales reales
     SEDES_PRECARGADAS = {
         "--- Ingresar sucursal manualmente ---": None,
-        "Mallplaza Arica (Arica)": {"plaza": "Regiones (Conurbación / Flota Intercomunal)", "tipo": "Centro Comercial / Mall", "mov": "Mixta (Bus + Auto)", "pob": "Ciudad Intermedia (100k - 300k hab)", "fase": "Mantención / Conversión Continua"},
-        "Mallplaza Antofagasta (Antofagasta)": {"plaza": "Regiones (Conurbación / Flota Intercomunal)", "tipo": "Centro Comercial / Mall", "mov": "Mixta (Bus + Auto)", "pob": "Gran Capital Regional (>300k hab)", "fase": "Mantención / Conversión Continua"},
-        "Rancagua Centro (Rancagua)": {"plaza": "Regiones (Flota Urbana Local)", "tipo": "A pie de calle / Centro urbano", "mov": "Alta densidad Peatonal", "pob": "Ciudad Intermedia (100k - 300k hab)", "fase": "Mantención / Conversión Continua"},
-        "Parque Titanium (Las Condes)": {"plaza": "Gran Santiago (Eje Urbano / Corporativo)", "tipo": "Polo Corporativo / Oficinas", "mov": "Flujo Peatonal / Metro / Vehicular Privado", "pob": "Gran Capital Regional (>300k hab)", "fase": "Mantención / Conversión Continua"},
-        "Estación Central (Santiago)": {"plaza": "Gran Santiago (Eje Urbano / Conectado)", "tipo": "A pie de calle / Centro urbano", "mov": "Nodo Intermodal Masivo (Metro + Caminata)", "pob": "Gran Capital Regional (>300k hab)", "fase": "Mantención / Conversión Continua"},
-        "Mallplaza Oeste (Cerrillos)": {"plaza": "Gran Santiago (Eje Urbano / Conectado)", "tipo": "Centro Comercial / Mall", "mov": "Mixta (Bus + Auto)", "pob": "Gran Capital Regional (>300k hab)", "fase": "Apertura / Pre-venta (Gran Cobertura)"},
-        "Espacio Urbano Melipilla (Melipilla)": {"plaza": "RM Provincial / Entorno Rural-Urbano", "tipo": "Centro Comercial / Mall", "mov": "Mixta (Bus + Auto)", "pob": "Ciudad Intermedia (100k - 300k hab)", "fase": "Mantención / Conversión Continua"},
-        "Cenco Costanera (Providencia)": {"plaza": "Gran Santiago (Eje Urbano / Corporativo)", "tipo": "Megapolo Comercial / Hito", "mov": "Nodo Intermodal Masivo (Metro + Caminata)", "pob": "Gran Capital Regional (>300k hab)", "fase": "Apertura / Pre-venta (Gran Cobertura)"}
+        "Mallplaza Arica (Arica)": {
+            "plaza": "Arica y Parinacota (Escala Compacta)", 
+            "tipo": "Dentro de Mall / Strip Center / Gran Superficie", 
+            "mov": "Tránsito Peatonal / Colectivo / Acceso Directo Mall", 
+            "escala": "Ciudad Compacta (<250k hab)", 
+            "fase": "Mantención / Campaña Estacional (Frecuencia & Conversión)"
+        },
+        "Mallplaza Antofagasta (Antofagasta)": {
+            "plaza": "Regiones (Capital Regional / Conurbación)", 
+            "tipo": "Dentro de Mall / Strip Center / Gran Superficie", 
+            "mov": "Alta dependencia de Transporte Público (Micros / Colectivos)", 
+            "escala": "Gran Capital Regional (>300k hab)", 
+            "fase": "Mantención / Campaña Estacional (Frecuencia & Conversión)"
+        },
+        "Rancagua Centro (Rancagua)": {
+            "plaza": "Regiones (Capital Regional / Conurbación)", 
+            "tipo": "A pie de calle (Paseo peatonal / Centro comercial abierto)", 
+            "mov": "Predominio Peatonal (Caminabilidad comercial / Oficinas)", 
+            "escala": "Ciudad Intermedia (250k - 300k hab)", 
+            "fase": "Mantención / Campaña Estacional (Frecuencia & Conversión)"
+        },
+        "Parque Titanium (Las Condes)": {
+            "plaza": "Gran Santiago (Urbano / Red Metro)", 
+            "tipo": "Polo Corporativo / Centro Financiero", 
+            "mov": "Tránsito Mixto estructurado (Autopistas / Vehicular particular)", 
+            "escala": "Metrópoli Nacional", 
+            "fase": "Mantención / Campaña Estacional (Frecuencia & Conversión)"
+        },
+        "Estación Central (Santiago)": {
+            "plaza": "Gran Santiago (Urbano / Red Metro)", 
+            "tipo": "A pie de calle (Paseo peatonal / Centro comercial abierto)", 
+            "mov": "Nodo de Conectividad Masiva (Estación Metro / Terminal de buses)", 
+            "escala": "Metrópoli Nacional", 
+            "fase": "Mantención / Campaña Estacional (Frecuencia & Conversión)"
+        },
+        "Mallplaza Oeste (Cerrillos)": {
+            "plaza": "Gran Santiago (Urbano / Red Metro)", 
+            "tipo": "Dentro de Mall / Strip Center / Gran Superficie", 
+            "mov": "Alta dependencia de Transporte Público (Micros / Colectivos)", 
+            "escala": "Metrópoli Nacional", 
+            "fase": "Apertura / Pre-venta (Máximo Reach & Recordación)"
+        },
+        "Espacio Urbano Melipilla (Melipilla)": {
+            "plaza": "RM Provincial / Periferia Autónoma (Melipilla, Talagante, etc.)", 
+            "tipo": "Dentro de Mall / Strip Center / Gran Superficie", 
+            "mov": "Alta dependencia de Transporte Público (Micros / Colectivos)", 
+            "escala": "Ciudad Compacta (<250k hab)", 
+            "fase": "Mantención / Campaña Estacional (Frecuencia & Conversión)"
+        },
+        "Cenco Costanera (Providencia)": {
+            "plaza": "Gran Santiago (Urbano / Red Metro)", 
+            "tipo": "Dentro de Mall / Strip Center / Gran Superficie", 
+            "mov": "Nodo de Conectividad Masiva (Estación Metro / Terminal de buses)", 
+            "escala": "Metrópoli Nacional", 
+            "fase": "Apertura / Pre-venta (Máximo Reach & Recordación)"
+        }
     }
 
     with col1:
@@ -31,23 +79,46 @@ def render_smartfit_advisor():
 
         if data_pre:
             default_nombre = seleccion.split("(")[0].strip()
-            idx_plaza = 0 if "Regiones" in data_pre["plaza"] else (1 if "Gran Santiago" in data_pre["plaza"] else 2)
-            idx_tipo = 0 if "Centro Comercial" in data_pre["tipo"] else (1 if "calle" in data_pre["tipo"] else 2)
-            idx_mov = 0 if "Mixta" in data_pre["mov"] else (1 if "Peatonal" in data_pre["mov"] else 2)
+            # Mapeo de índices automáticos
+            if "Arica" in data_pre["plaza"]:
+                idx_plaza = 0
+            elif "Gran Santiago" in data_pre["plaza"]:
+                idx_plaza = 2
+            elif "RM Provincial" in data_pre["plaza"]:
+                idx_plaza = 3
+            else:
+                idx_plaza = 1
+
+            idx_tipo = 0 if "Mall" in data_pre["tipo"] else (1 if "calle" in data_pre["tipo"] else (2 if "Vial" in data_pre["tipo"] else 3))
+            idx_mov = 0 if "Transporte" in data_pre["mov"] else (1 if "Peatonal" in data_pre["mov"] else (2 if "Mixto" in data_pre["mov"] else 3))
+            idx_escala = 0 if "Compacta" in data_pre["escala"] else (1 if "Intermedia" in data_pre["escala"] else (2 if "Gran" in data_pre["escala"] else 3))
+            idx_fase = 0 if "Apertura" in data_pre["fase"] else 1
         else:
             default_nombre = "Nueva Sucursal Smart Fit"
-            idx_plaza, idx_tipo, idx_mov = 0, 0, 0
+            idx_plaza, idx_tipo, idx_mov, idx_escala, idx_fase = 1, 0, 0, 1, 1
 
         nombre_sucursal = st.text_input("Nombre de la sucursal", value=default_nombre)
         
         plaza = st.selectbox(
             "Territorio / Entorno Regional",
             [
-                "Regiones (Capital Regional / Conurbación)",
+                "Arica y Parinacota (Escala Compacta)",
+                "Regiones (Capital Regional / Conurbación Mayor)",
                 "Gran Santiago (Urbano / Red Metro)",
-                "RM Provincial / Periferia Autónoma (Melipilla, Talagante, Peñaflor, etc.)"
+                "RM Provincial / Periferia Autónoma (Melipilla, Talagante, etc.)"
             ],
             index=idx_plaza
+        )
+
+        escala_urbana = st.selectbox(
+            "Escala de Población / Parque Urbano",
+            [
+                "Ciudad Compacta (<250k hab / Flota microbuses reducida)",
+                "Ciudad Intermedia (250k - 400k hab)",
+                "Gran Conurbación Regional (>400k hab / Concepción, Valparaíso, Antofagasta)",
+                "Metrópoli Nacional (Gran Santiago)"
+            ],
+            index=idx_escala
         )
 
         tipo_local = st.selectbox(
@@ -76,20 +147,21 @@ def render_smartfit_advisor():
             "Horizonte / Tipo de Campaña",
             [
                 "Continuidad / Trimestral (30+ días)",
-                "Táctica Flash / Conversión (7 a 15 días - Ej. Cyber, Halloween, Black Friday)"
+                "Táctica Flash / Conversión (7 a 15 días - Ej. Halloween, Black Friday)"
             ],
+            index=idx_fase,
             horizontal=True
         )
 
-    # --- MOTOR DE DECISIÓN TÁCTICO ---
-    # Evaluar pertinencia de Lunetas
+    # --- MOTOR DE DECISIÓN TÁCTICO MULTIVARIABLE ---
+    es_arica = "Arica" in nombre_sucursal or "Arica" in plaza
+    es_ciudad_compacta = "Compacta" in escala_urbana
     es_flash = "Flash" in duracion_campana
     es_corporativo = "Corporativo" in tipo_local
     es_peatonal_puro = "Peatonal" in movilidad
     es_metro_hub = "Nodo" in movilidad and "Santiago" in plaza
 
     if es_flash:
-        # En campañas flash, las lunetas quedan DESCARTADAS por tiempos de producción
         usa_luneta = False
         razon_luneta = "Descartadas por tiempos operativos de producción/instalación (5-7 días). Se prioriza DOOH digital."
         mix_movil_pct = 0
@@ -97,27 +169,39 @@ def render_smartfit_advisor():
         formato_movil = "Sin soporte móvil (No aplica para táctica flash)"
         formato_fijo = "Circuitos DOOH Digitales (Pantallas LED y Metro en ráfagas horarias)"
         estrategia_texto = (
-            f"Al tratarse de una campaña táctica de corta duración ({duracion_campana.split('(')[0].strip()}), el vinilo estático en buses no es eficiente por costo de producción y tiempo de montaje. "
-            "Se destina el 100% de la inversión a soportes digitales DOOH (pantallas viales y circuitos de Metro) para concentrar ráfagas de alta frecuencia en horas peak y permitir activación inmediata sin costo de imprenta."
+            f"Al tratarse de una campaña táctica de corta duración ({duracion_campana.split('(')[0].strip()}), el vinilo estático en buses no es eficiente por costo de producción y montaje. "
+            "Se destina el 100% de la inversión a soportes digitales DOOH (pantallas viales y circuitos de Metro) para concentrar ráfagas de alta frecuencia en horas peak sin costo de imprenta."
+        )
+
+    elif es_arica or es_ciudad_compacta:
+        # En Arica o ciudades compactas: Flota pequeña, sin supervisión y dispersa.
+        usa_luneta = False
+        razon_luneta = "No recomendada: escala urbana compacta, parque de micros reducido y baja supervisión en terreno."
+        mix_movil_pct = 0
+        mix_fijo_pct = 100
+        formato_movil = "Sin soporte en buses (Inviable operativamente / Baja tasa de retorno)"
+        formato_fijo = "Pantallas Digitales (DOOH) en accesos Mall + MUPIS en Ejes Principales"
+        estrategia_texto = (
+            f"En {nombre_sucursal}, la trama urbana concentrada y la dispersión del transporte menor no justifican producción de lunetas en buses. "
+            "Se destina el 100% del mix OOH a pantallas DOOH de alta frecuencia en el acceso directo al centro comercial y ejes estructurantes de llegada, "
+            "reforzando con radio local para cobertura comunal según los lineamientos de Q4."
         )
 
     elif es_corporativo or es_peatonal_puro:
-        # En ejes peatonales o corporativos premium, la luneta dispersa
         usa_luneta = False
-        razon_luneta = "Descartadas por dispersión de audiencia. El público se concentra a pie o en accesos cerrados."
+        razon_luneta = "Descartadas por dispersión. El público target se concentra a pie en el radio inmediato."
         mix_movil_pct = 0
         mix_fijo_pct = 100
-        formato_movil = "Sin soporte móvil (Baja afinidad con el target de la zona)"
+        formato_movil = "Sin soporte móvil (Baja afinidad con el público objetivo)"
         formato_fijo = "MUPIS Peatonales (<300m) / Tótems de Acceso / DOOH Corporativo"
         estrategia_texto = (
-            "Para una sucursal en entorno peatonal consolidado o corporativo, el transporte público en bus genera dispersión y bajo retorno. "
-            "La masa crítica se captura a pie en el radio inmediato. Se privilegia la proximidad con MUPIS, pantallas peatonales y señalética de cercanía ('a pasos de ti') para reducir fricción."
+            "Para un entorno peatonal consolidado o corporativo, el transporte público genera dispersión. "
+            "La masa crítica se captura a pie en el radio inmediato. Se privilegia la proximidad con MUPIS, pantallas peatonales y señalética de cercanía ('a pasos de ti')."
         )
 
     elif es_metro_hub:
-        # En centros intermodales con Metro, Metro absorbe la masa
         usa_luneta = True
-        razon_luneta = "Complementaria de baja escala. Metro absorbe el gran volumen."
+        razon_luneta = "Complementaria de baja escala. Metro absorbe el gran volumen de masa."
         mix_movil_pct = 25
         mix_fijo_pct = 75
         formato_movil = "Lunetas RED Troncales de apoyo"
@@ -127,32 +211,32 @@ def render_smartfit_advisor():
         )
 
     else:
-        # Casos donde la LUNETA ES RECOMENDADA (Regiones conurbadas, malls, barrios comerciales)
+        # Grandes conurbaciones o Malls regionales de gran escala (Concepción, Antofagasta, La Serena)
         usa_luneta = True
         if "Mall" in tipo_local:
-            mix_movil_pct = 60 if "Regiones" in plaza else 50
+            mix_movil_pct = 60 if ("Regiones" in plaza or "Conurbación" in escala_urbana) else 50
             mix_fijo_pct = 100 - mix_movil_pct
             formato_movil = "Lunetas de Buses (Flota Intercomunal / Red Conurbada)" if "Regiones" in plaza else "Lunetas RED Corredores hacia el Mall"
             formato_fijo = "Pantallas Digitales y Tótems en Accesos al Centro Comercial"
-            razon_luneta = "Altamente recomendada: cubre la cuenca residencial que se traslada hacia el centro comercial."
+            razon_luneta = "Recomendada: cubre la cuenca residencial intercomunal que viaja hacia el centro comercial."
             estrategia_texto = (
-                "La sucursal opera dentro de un polo comercial que atrae público de toda la comuna o conurbación. "
-                "Las lunetas de microbuses son el medio más rentable para capturar la cuenca de atracción completa (15 a 20 min de viaje), mientras que los elementos fijos en los accesos al mall cierran la conversión en el punto de destino."
+                "La sucursal opera dentro de un polo comercial de gran alcance que atrae público de toda la conurbación. "
+                "Las lunetas en flota son el medio más costo-eficiente para capturar la cuenca de atracción completa (15 a 20 min de viaje), combinadas con elementos fijos en los accesos al mall para el cierre."
             )
-        else: # Eje vial o residencial
+        else:
             mix_movil_pct = 50
             mix_fijo_pct = 50
-            formato_movil = "Lunetas de Buses Flota Comunal / Local"
-            formato_fijo = "MUPIS / Pantallas LED en Nudos Viales Cercanos"
-            razon_luneta = "Recomendada: genera masa crítica de impactos en el corredor vial estructurante."
+            formato_movil = "Lunetas de Buses Flota Local / Ejes Troncales"
+            formato_fijo = "MUPIS / Pantallas LED en Cruces Viales Cercanos"
+            razon_luneta = "Recomendada: genera masa crítica de impactos en el corredor vehicular principal."
             estrategia_texto = (
-                "Entorno de movilidad mixta. Las lunetas proporcionan cobertura y frecuencia continua en el corredor vehicular principal, complementadas equitativamente con presencia fija en cruces de alta visibilidad."
+                "Entorno de movilidad mixta en eje vial. Las lunetas proporcionan cobertura y frecuencia continua en el corredor principal, complementadas equitativamente con presencia fija en cruces de alta visibilidad."
             )
 
     with col2:
         st.markdown(f"#### 2. Diagnóstico y Recomendación: **{nombre_sucursal}**")
         
-        # Alerta visual sobre la pertinencia de buses
+        # Alerta visual en Streamlit
         if usa_luneta:
             st.success(f"🚌 **Uso de Lunetas de Bus:** RECOMENDADO ({mix_movil_pct}% del mix)\n\n*{razon_luneta}*")
         else:
@@ -170,7 +254,7 @@ def render_smartfit_advisor():
 
         st.markdown("---")
 
-        # Generación de Lámina Ejecutiva
+        # Generación de Lámina Ejecutiva 16:9
         slide_bytes = generar_lamina_estrategica(
             nombre=nombre_sucursal,
             plaza=plaza,
@@ -185,10 +269,10 @@ def render_smartfit_advisor():
             usa_luneta=usa_luneta
         )
 
-        st.image(slide_bytes, caption="Lámina ejecutiva lista para exportar a deck", use_container_width=True)
+        st.image(slide_bytes, caption="Lámina ejecutiva generada automáticamente (1920x1080)", use_container_width=True)
 
         st.download_button(
-            label="🖼️ Descargar Lámina en JPG (1920x1080)",
+            label="🖼️ Descargar Lámina en JPG (Alta Calidad)",
             data=slide_bytes,
             file_name=f"smartfit_{nombre_sucursal.lower().replace(' ', '_').replace('/', '_')}.jpg",
             mime="image/jpeg",
@@ -225,7 +309,7 @@ def generar_lamina_estrategica(nombre, plaza, entorno, movilidad, duracion, mix_
     f_tag = cargar(rutas_fuentes, 22)
     f_tit = cargar(rutas_fuentes, 46)
     f_sub = cargar(rutas_regular, 24)
-    f_num = cargar(rutas_fuentes, 70)
+    f_num = cargar(rutas_fuentes, 72)
     f_card_tit = cargar(rutas_fuentes, 24)
     f_body = cargar(rutas_regular, 22)
     f_bold = cargar(rutas_fuentes, 22)
@@ -235,14 +319,15 @@ def generar_lamina_estrategica(nombre, plaza, entorno, movilidad, duracion, mix_
     # Barra superior de acento corporativo
     draw.rectangle([(0, 0), (ancho, 14)], fill=amarillo_sf)
 
-    # Encabezado
+    # Encabezado / Branding
     draw.text((100, 60), "SMART FIT | ANÁLISIS DE PERTINENCIA & MIX OOH", font=f_tag, fill=amarillo_sf)
     draw.text((100, 100), nombre[:55], font=f_tit, fill="#FFFFFF")
     
-    # Metadatos limpios en 2 líneas
+    # Metadatos limpios en 2 líneas independientes (sin cortes hacia la derecha)
     plaza_corta = plaza.split("(")[0].strip()
-    draw.text((100, 168), f"Plaza: {plaza_corta}   •   Entorno: {entorno}   •   Campaña: {duracion.split('(')[0].strip()}", font=f_sub, fill="#A6B0BF")
-    draw.text((100, 204), f"Movilidad Dominante: {movilidad}", font=f_sub, fill="#7A828E")
+    campana_corta = duracion.split("(")[0].strip()
+    draw.text((100, 168), f"Plaza: {plaza_corta}   •   Entorno: {entorno}   •   Campaña: {campana_corta}", font=f_sub, fill="#A6B0BF")
+    draw.text((100, 204), f"Dinámica de Movilidad: {movilidad}", font=f_sub, fill="#7A828E")
 
     # Card 1: Cobertura Móvil (Lunetas)
     draw.rounded_rectangle([(100, 270), (930, 560)], radius=18, fill="#1C1E24", outline="#2D3139", width=2)
