@@ -862,9 +862,9 @@ DATA_JERARQUICA = {
 # --- 6. FORMATOS COMERCIALES (OOH & METRO) ---
 FORMATOS_OOH = {
     "Building Wrap (Edificio)": {
-        "base": 1, "c": 0.25, "m": 0.30, "o": 0.35, "tipo": "Gran impacto edificio", "unidad": "edificios",
+        "base": 1, "c": 0.40, "m": 0.50, "o": 0.65, "tipo": "Gran impacto edificio", "unidad": "edificios",
         "es_wrap": True,
-        "contexto": "Gigantografía monumental de gran escala sobre fachada de edificio (>400-500 m²), con visibilidad a más de 400 metros de distancia y alta retención vehicular."
+        "contexto": "Gigantografía monumental estática de gran escala sobre fachada de edificio (>400-1400 m²), con 100% SOV, visibilidad superior a 800-1200 metros y alta retención visual."
     },
     "Pantalla Digital (DOOH)": {"base": 1, "c": 0.20, "m": 0.25, "o": 0.30, "tipo": "Gran impacto LED", "unidad": "pantallas", "es_wrap": False},
     "Circuito MUPIS Digitales (MUD)": {"base": 1, "c": 0.20, "m": 0.25, "o": 0.30, "tipo": "Digital Urbano", "unidad": "circuitos", "es_wrap": False,
