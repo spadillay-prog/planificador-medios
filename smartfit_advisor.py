@@ -15,7 +15,7 @@ def render_smartfit_advisor():
         st.markdown("#### 1. Datos de la Sucursal")
         nombre_sucursal = st.text_input(
             "Nombre / Referencia de la sucursal", 
-            value="Smart Fit - Mallplaza El Trébol (Talcahuano / Concepción)"
+            value="Smart Fit - Mallplaza Arica"
         )
         
         plaza = st.selectbox(
@@ -43,7 +43,7 @@ def render_smartfit_advisor():
                 "Apertura / Pre-venta (Máximo Reach & Recordación)",
                 "Mantención / Campaña Estacional (Frecuencia & Conversión)"
             ],
-            index=0
+            index=1
         )
 
     # Lógica táctica adaptada a la realidad operativa de regiones
@@ -163,7 +163,7 @@ def generar_lamina_smartfit(nombre_sucursal, plaza, tipo_local, fase, mix_movil,
     img = Image.new("RGB", (ancho, alto), color="#121316")
     draw = ImageDraw.Draw(img)
 
-    # Intentar cargar fuentes del sistema compatibles con Linux/Debian
+    # Cargar fuentes del sistema compatibles con Linux / Streamlit Cloud
     rutas_fuentes = [
         "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
         "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
@@ -186,7 +186,7 @@ def generar_lamina_smartfit(nombre_sucursal, plaza, tipo_local, fase, mix_movil,
 
     f_tag = cargar(rutas_fuentes, 22)
     f_tit = cargar(rutas_fuentes, 48)
-    f_sub = cargar(rutas_regular, 26)
+    f_sub = cargar(rutas_regular, 24)
     f_num = cargar(rutas_fuentes, 72)
     f_card_tit = cargar(rutas_fuentes, 24)
     f_body = cargar(rutas_regular, 22)
@@ -194,21 +194,26 @@ def generar_lamina_smartfit(nombre_sucursal, plaza, tipo_local, fase, mix_movil,
 
     amarillo_sf = "#FFB703"
 
-    # Barra superior de acento
+    # Barra superior de acento corporativo
     draw.rectangle([(0, 0), (ancho, 14)], fill=amarillo_sf)
 
     # Header / Branding
-    draw.text((100, 70), "SMART FIT | ESTRATEGIA TÁCTICA DE VÍA PÚBLICA", font=f_tag, fill=amarillo_sf)
-    draw.text((100, 110), nombre_sucursal[:60], font=f_tit, fill="#FFFFFF")
-    draw.text((100, 180), f"Plaza: {plaza}   •   Entorno: {tipo_local}   •   Fase: {fase.split('(')[0].strip()}", font=f_sub, fill="#9E9E9E")
+    draw.text((100, 60), "SMART FIT | ESTRATEGIA TÁCTICA DE VÍA PÚBLICA", font=f_tag, fill=amarillo_sf)
+    draw.text((100, 100), nombre_sucursal[:55], font=f_tit, fill="#FFFFFF")
+    
+    # Metadatos limpios en dos líneas (evita desbordes horizontales)
+    fase_corta = fase.split("(")[0].strip()
+    meta_linea1 = f"Plaza: {plaza}   •   Fase: {fase_corta}"
+    meta_linea2 = f"Entorno: {tipo_local}"
+    draw.text((100, 170), meta_linea1, font=f_sub, fill="#A6B0BF")
+    draw.text((100, 205), meta_linea2, font=f_sub, fill="#7A828E")
 
     # Card 1: Cobertura Móvil
-    draw.rounded_rectangle([(100, 260), (930, 560)], radius=18, fill="#1C1E24", outline="#2D3139", width=2)
-    draw.text((140, 295), "COBERTURA TERRITORIAL (MÓVIL)", font=f_card_tit, fill="#A6B0BF")
-    draw.text((140, 345), f"{mix_movil}%", font=f_num, fill=amarillo_sf)
+    draw.rounded_rectangle([(100, 275), (930, 565)], radius=18, fill="#1C1E24", outline="#2D3139", width=2)
+    draw.text((140, 305), "COBERTURA TERRITORIAL (MÓVIL)", font=f_card_tit, fill="#A6B0BF")
+    draw.text((140, 350), f"{mix_movil}%", font=f_num, fill=amarillo_sf)
     draw.text((140, 445), "Soporte recomendado:", font=f_tag, fill="#6C757D")
     
-    # Texto del soporte móvil (con salto de línea si es largo)
     palabras_sm = formato_movil.split()
     l1, l2 = "", ""
     for p in palabras_sm:
@@ -218,12 +223,12 @@ def generar_lamina_smartfit(nombre_sucursal, plaza, tipo_local, fase, mix_movil,
             l2 += " " + p
     draw.text((140, 480), l1.strip(), font=f_bold, fill="#FFFFFF")
     if l2:
-        draw.text((140, 510), l2.strip(), font=f_bold, fill="#FFFFFF")
+        draw.text((140, 515), l2.strip(), font=f_bold, fill="#FFFFFF")
 
     # Card 2: Proximidad Fija
-    draw.rounded_rectangle([(990, 260), (1820, 560)], radius=18, fill="#1C1E24", outline="#2D3139", width=2)
-    draw.text((1030, 295), "PROXIMIDAD & CALL-TO-ACTION (FIJO)", font=f_card_tit, fill="#A6B0BF")
-    draw.text((1030, 345), f"{mix_fijo}%", font=f_num, fill="#FFFFFF")
+    draw.rounded_rectangle([(990, 275), (1820, 565)], radius=18, fill="#1C1E24", outline="#2D3139", width=2)
+    draw.text((1030, 305), "PROXIMIDAD & CALL-TO-ACTION (FIJO)", font=f_card_tit, fill="#A6B0BF")
+    draw.text((1030, 350), f"{mix_fijo}%", font=f_num, fill="#FFFFFF")
     draw.text((1030, 445), "Soporte recomendado:", font=f_tag, fill="#6C757D")
     
     palabras_sf = formato_fijo.split()
@@ -235,14 +240,14 @@ def generar_lamina_smartfit(nombre_sucursal, plaza, tipo_local, fase, mix_movil,
             l2f += " " + p
     draw.text((1030, 480), l1f.strip(), font=f_bold, fill="#FFFFFF")
     if l2f:
-        draw.text((1030, 510), l2f.strip(), font=f_bold, fill="#FFFFFF")
+        draw.text((1030, 515), l2f.strip(), font=f_bold, fill="#FFFFFF")
 
     # Card 3: Racional Estratégico y Operativo
-    draw.rounded_rectangle([(100, 600), (1820, 960)], radius=18, fill="#181A20", outline="#303540", width=2)
-    draw.rectangle([(100, 600), (115, 960)], fill=amarillo_sf) # Acento vertical
-    draw.text((150, 640), "RACIONAL ESTRATÉGICO Y OPERATIVO EN TERRITORIO", font=f_card_tit, fill=amarillo_sf)
+    draw.rounded_rectangle([(100, 610), (1820, 960)], radius=18, fill="#181A20", outline="#303540", width=2)
+    draw.rectangle([(100, 610), (115, 960)], fill=amarillo_sf) # Acento vertical
+    draw.text((150, 650), "RACIONAL ESTRATÉGICO Y OPERATIVO EN TERRITORIO", font=f_card_tit, fill=amarillo_sf)
 
-    # Word wrap del texto del racional
+    # Word wrap del texto explicativo
     palabras = estrategia.split()
     lineas, linea_actual = [], ""
     for p in palabras:
@@ -254,7 +259,7 @@ def generar_lamina_smartfit(nombre_sucursal, plaza, tipo_local, fase, mix_movil,
     if linea_actual:
         lineas.append(linea_actual.strip())
 
-    y_txt = 700
+    y_txt = 710
     for linea in lineas[:6]:
         draw.text((150, y_txt), linea, font=f_body, fill="#D8DCE3")
         y_txt += 38
