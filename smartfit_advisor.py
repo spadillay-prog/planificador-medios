@@ -14,61 +14,223 @@ def render_smartfit_advisor():
     # Catálogo de sedes referenciales con perfiles territoriales reales
     SEDES_PRECARGADAS = {
         "--- Ingresar sucursal manualmente ---": None,
-        "Mallplaza Arica (Arica)": {
-            "plaza": "Arica y Parinacota (Escala Compacta)", 
-            "tipo": "Dentro de Mall / Strip Center / Gran Superficie", 
-            "mov": "Tránsito Peatonal / Colectivo / Acceso Directo Mall", 
-            "escala": "Ciudad Compacta (<250k hab)", 
-            "fase": "Mantención / Campaña Estacional (Frecuencia & Conversión)"
-        },
-        "Mallplaza Antofagasta (Antofagasta)": {
-            "plaza": "Regiones (Capital Regional / Conurbación)", 
+        
+        # --- BUDGET PRE-OPERACIONAL (APERTURAS / RAMP UP) ---
+        "Mallplaza Oeste [URGENTE] (Cerrillos)": {
+            "plaza": "Gran Santiago (Urbano / Red Metro)", 
             "tipo": "Dentro de Mall / Strip Center / Gran Superficie", 
             "mov": "Alta dependencia de Transporte Público (Micros / Colectivos)", 
-            "escala": "Gran Capital Regional (>300k hab)", 
-            "fase": "Mantención / Campaña Estacional (Frecuencia & Conversión)"
+            "escala": "Metrópoli Nacional (Gran Santiago)", 
+            "fase": "Apertura / Pre-venta (Máximo Reach & Recordación)"
         },
-        "Rancagua Centro (Rancagua)": {
-            "plaza": "Regiones (Capital Regional / Conurbación)", 
-            "tipo": "A pie de calle (Paseo peatonal / Centro comercial abierto)", 
-            "mov": "Predominio Peatonal (Caminabilidad comercial / Oficinas)", 
-            "escala": "Ciudad Intermedia (250k - 300k hab)", 
-            "fase": "Mantención / Campaña Estacional (Frecuencia & Conversión)"
-        },
-        "Parque Titanium (Las Condes)": {
+        "Cenco Costanera [Hito Marca] (Providencia)": {
             "plaza": "Gran Santiago (Urbano / Red Metro)", 
-            "tipo": "Polo Corporativo / Centro Financiero", 
-            "mov": "Tránsito Mixto estructurado (Autopistas / Vehicular particular)", 
-            "escala": "Metrópoli Nacional", 
-            "fase": "Mantención / Campaña Estacional (Frecuencia & Conversión)"
+            "tipo": "Dentro de Mall / Strip Center / Gran Superficie", 
+            "mov": "Nodo de Conectividad Masiva (Estación Metro / Terminal de buses)", 
+            "escala": "Metrópoli Nacional (Gran Santiago)", 
+            "fase": "Apertura / Pre-venta (Máximo Reach & Recordación)"
         },
-        "Estación Central (Santiago)": {
+        "Lo Prado (San Pablo 6602)": {
             "plaza": "Gran Santiago (Urbano / Red Metro)", 
             "tipo": "A pie de calle (Paseo peatonal / Centro comercial abierto)", 
             "mov": "Nodo de Conectividad Masiva (Estación Metro / Terminal de buses)", 
-            "escala": "Metrópoli Nacional", 
-            "fase": "Mantención / Campaña Estacional (Frecuencia & Conversión)"
+            "escala": "Metrópoli Nacional (Gran Santiago)", 
+            "fase": "Apertura / Pre-venta (Máximo Reach & Recordación)"
         },
-        "Mallplaza Oeste (Cerrillos)": {
+        "Líder Quilín (Peñalolén / Macul)": {
+            "plaza": "Gran Santiago (Urbano / Red Metro)", 
+            "tipo": "Dentro de Mall / Strip Center / Gran Superficie", 
+            "mov": "Tránsito Mixto estructurado (Autopistas / Vehicular particular)", 
+            "escala": "Metrópoli Nacional (Gran Santiago)", 
+            "fase": "Apertura / Pre-venta (Máximo Reach & Recordación)"
+        },
+        "Mondrian (Quilpué - Los Carrera 1250)": {
+            "plaza": "Regiones (Capital Regional / Conurbación Mayor)", 
+            "tipo": "A pie de calle (Paseo peatonal / Centro comercial abierto)", 
+            "mov": "Alta dependencia de Transporte Público (Micros / Colectivos)", 
+            "escala": "Gran Conurbación Regional (>400k hab / Concepción, Valparaíso, Antofagasta)", 
+            "fase": "Apertura / Pre-venta (Máximo Reach & Recordación)"
+        },
+        "Open Macul (La Florida - Av. La Florida 6400)": {
             "plaza": "Gran Santiago (Urbano / Red Metro)", 
             "tipo": "Dentro de Mall / Strip Center / Gran Superficie", 
             "mov": "Alta dependencia de Transporte Público (Micros / Colectivos)", 
-            "escala": "Metrópoli Nacional", 
+            "escala": "Metrópoli Nacional (Gran Santiago)", 
             "fase": "Apertura / Pre-venta (Máximo Reach & Recordación)"
         },
-        "Espacio Urbano Melipilla (Melipilla)": {
+        "Mallplaza Los Dominicos (Las Condes)": {
+            "plaza": "Gran Santiago (Urbano / Red Metro)", 
+            "tipo": "Dentro de Mall / Strip Center / Gran Superficie", 
+            "mov": "Predominio Peatonal (Caminabilidad comercial / Oficinas)", 
+            "escala": "Metrópoli Nacional (Gran Santiago)", 
+            "fase": "Apertura / Pre-venta (Máximo Reach & Recordación)"
+        },
+        "Mallplaza Tobalaba (Puente Alto)": {
+            "plaza": "Gran Santiago (Urbano / Red Metro)", 
+            "tipo": "Dentro de Mall / Strip Center / Gran Superficie", 
+            "mov": "Alta dependencia de Transporte Público (Micros / Colectivos)", 
+            "escala": "Metrópoli Nacional (Gran Santiago)", 
+            "fase": "Apertura / Pre-venta (Máximo Reach & Recordación)"
+        },
+        "Go Florida Talca [Próximamente] (Talca)": {
+            "plaza": "Regiones (Capital Regional / Conurbación Mayor)", 
+            "tipo": "Dentro de Mall / Strip Center / Gran Superficie", 
+            "mov": "Tránsito Mixto estructurado (Autopistas / Vehicular particular)", 
+            "escala": "Ciudad Intermedia (250k - 400k hab)", 
+            "fase": "Apertura / Pre-venta (Máximo Reach & Recordación)"
+        },
+        "Midmall Maipú [Próximamente] (Maipú)": {
+            "plaza": "Gran Santiago (Urbano / Red Metro)", 
+            "tipo": "Dentro de Mall / Strip Center / Gran Superficie", 
+            "mov": "Tránsito Mixto estructurado (Autopistas / Vehicular particular)", 
+            "escala": "Metrópoli Nacional (Gran Santiago)", 
+            "fase": "Apertura / Pre-venta (Máximo Reach & Recordación)"
+        },
+
+        # --- BUDGET OPERACIONAL (SEDES SOS REGIONES) ---
+        "Mallplaza Arica [SOS] (Arica)": {
+            "plaza": "Arica y Parinacota (Escala Compacta)", 
+            "tipo": "Dentro de Mall / Strip Center / Gran Superficie", 
+            "mov": "Predominio Peatonal (Caminabilidad comercial / Oficinas)", 
+            "escala": "Ciudad Compacta (<250k hab / Flota microbuses reducida)", 
+            "fase": "Mantención / Campaña Estacional (Frecuencia & Conversión)"
+        },
+        "Mallplaza Antofagasta [SOS] (Antofagasta)": {
+            "plaza": "Regiones (Capital Regional / Conurbación Mayor)", 
+            "tipo": "Dentro de Mall / Strip Center / Gran Superficie", 
+            "mov": "Alta dependencia de Transporte Público (Micros / Colectivos)", 
+            "escala": "Gran Conurbación Regional (>400k hab / Concepción, Valparaíso, Antofagasta)", 
+            "fase": "Mantención / Campaña Estacional (Frecuencia & Conversión)"
+        },
+        "Coquimbo [SOS] (Coquimbo)": {
+            "plaza": "Regiones (Capital Regional / Conurbación Mayor)", 
+            "tipo": "A pie de calle (Paseo peatonal / Centro comercial abierto)", 
+            "mov": "Alta dependencia de Transporte Público (Micros / Colectivos)", 
+            "escala": "Gran Conurbación Regional (>400k hab / Concepción, Valparaíso, Antofagasta)", 
+            "fase": "Mantención / Campaña Estacional (Frecuencia & Conversión)"
+        },
+        "Rancagua Plaza América [SOS] (Rancagua)": {
+            "plaza": "Regiones (Capital Regional / Conurbación Mayor)", 
+            "tipo": "Dentro de Mall / Strip Center / Gran Superficie", 
+            "mov": "Tránsito Mixto estructurado (Autopistas / Vehicular particular)", 
+            "escala": "Ciudad Intermedia (250k - 400k hab)", 
+            "fase": "Mantención / Campaña Estacional (Frecuencia & Conversión)"
+        },
+        "Rancagua Centro [SOS] (Rancagua)": {
+            "plaza": "Regiones (Capital Regional / Conurbación Mayor)", 
+            "tipo": "A pie de calle (Paseo peatonal / Centro comercial abierto)", 
+            "mov": "Predominio Peatonal (Caminabilidad comercial / Oficinas)", 
+            "escala": "Ciudad Intermedia (250k - 400k hab)", 
+            "fase": "Mantención / Campaña Estacional (Frecuencia & Conversión)"
+        },
+        "Curicó [SOS] (Curicó)": {
+            "plaza": "Regiones (Capital Regional / Conurbación Mayor)", 
+            "tipo": "A pie de calle (Paseo peatonal / Centro comercial abierto)", 
+            "mov": "Predominio Peatonal (Caminabilidad comercial / Oficinas)", 
+            "escala": "Ciudad Compacta (<250k hab / Flota microbuses reducida)", 
+            "fase": "Mantención / Campaña Estacional (Frecuencia & Conversión)"
+        },
+        "Talca Centro [SOS] (Talca)": {
+            "plaza": "Regiones (Capital Regional / Conurbación Mayor)", 
+            "tipo": "A pie de calle (Paseo peatonal / Centro comercial abierto)", 
+            "mov": "Alta dependencia de Transporte Público (Micros / Colectivos)", 
+            "escala": "Ciudad Intermedia (250k - 400k hab)", 
+            "fase": "Mantención / Campaña Estacional (Frecuencia & Conversión)"
+        },
+        "Chillán [SOS] (Chillán)": {
+            "plaza": "Regiones (Capital Regional / Conurbación Mayor)", 
+            "tipo": "A pie de calle (Paseo peatonal / Centro comercial abierto)", 
+            "mov": "Alta dependencia de Transporte Público (Micros / Colectivos)", 
+            "escala": "Ciudad Intermedia (250k - 400k hab)", 
+            "fase": "Mantención / Campaña Estacional (Frecuencia & Conversión)"
+        },
+        "Acuenta Azaleas [SOS] (Los Ángeles)": {
+            "plaza": "Regiones (Capital Regional / Conurbación Mayor)", 
+            "tipo": "Dentro de Mall / Strip Center / Gran Superficie", 
+            "mov": "Alta dependencia de Transporte Público (Micros / Colectivos)", 
+            "escala": "Ciudad Compacta (<250k hab / Flota microbuses reducida)", 
+            "fase": "Mantención / Campaña Estacional (Frecuencia & Conversión)"
+        },
+        "Los Ángeles Alemania [SOS] (Los Ángeles)": {
+            "plaza": "Regiones (Capital Regional / Conurbación Mayor)", 
+            "tipo": "Eje Vial / Corredor Vehicular Residencial", 
+            "mov": "Tránsito Mixto estructurado (Autopistas / Vehicular particular)", 
+            "escala": "Ciudad Compacta (<250k hab / Flota microbuses reducida)", 
+            "fase": "Mantención / Campaña Estacional (Frecuencia & Conversión)"
+        },
+
+        # --- BUDGET OPERACIONAL (SEDES SOS RM: SANTIAGO URBANO) ---
+        "Alameda Telecanal [SOS] (Santiago Centro)": {
+            "plaza": "Gran Santiago (Urbano / Red Metro)", 
+            "tipo": "A pie de calle (Paseo peatonal / Centro comercial abierto)", 
+            "mov": "Nodo de Conectividad Masiva (Estación Metro / Terminal de buses)", 
+            "escala": "Metrópoli Nacional (Gran Santiago)", 
+            "fase": "Mantención / Campaña Estacional (Frecuencia & Conversión)"
+        },
+        "Estación Central [SOS] (Estación Central)": {
+            "plaza": "Gran Santiago (Urbano / Red Metro)", 
+            "tipo": "A pie de calle (Paseo peatonal / Centro comercial abierto)", 
+            "mov": "Nodo de Conectividad Masiva (Estación Metro / Terminal de buses)", 
+            "escala": "Metrópoli Nacional (Gran Santiago)", 
+            "fase": "Mantención / Campaña Estacional (Frecuencia & Conversión)"
+        },
+        "Núcleo San Diego [SOS] (Santiago Centro)": {
+            "plaza": "Gran Santiago (Urbano / Red Metro)", 
+            "tipo": "A pie de calle (Paseo peatonal / Centro comercial abierto)", 
+            "mov": "Predominio Peatonal (Caminabilidad comercial / Oficinas)", 
+            "escala": "Metrópoli Nacional (Gran Santiago)", 
+            "fase": "Mantención / Campaña Estacional (Frecuencia & Conversión)"
+        },
+        "Núcleo Recoleta [SOS] (Recoleta)": {
+            "plaza": "Gran Santiago (Urbano / Red Metro)", 
+            "tipo": "A pie de calle (Paseo peatonal / Centro comercial abierto)", 
+            "mov": "Alta dependencia de Transporte Público (Micros / Colectivos)", 
+            "escala": "Metrópoli Nacional (Gran Santiago)", 
+            "fase": "Mantención / Campaña Estacional (Frecuencia & Conversión)"
+        },
+        "Parque Titanium [SOS] (Las Condes)": {
+            "plaza": "Gran Santiago (Urbano / Red Metro)", 
+            "tipo": "Polo Corporativo / Centro Financiero", 
+            "mov": "Predominio Peatonal (Caminabilidad comercial / Oficinas)", 
+            "escala": "Metrópoli Nacional (Gran Santiago)", 
+            "fase": "Mantención / Campaña Estacional (Frecuencia & Conversión)"
+        },
+
+        # --- BUDGET OPERACIONAL (SEDES SOS RM: PERIFERIA / PROVINCIAL) ---
+        "Quilicura [SOS] (Quilicura)": {
+            "plaza": "Gran Santiago (Urbano / Red Metro)", 
+            "tipo": "A pie de calle (Paseo peatonal / Centro comercial abierto)", 
+            "mov": "Alta dependencia de Transporte Público (Micros / Colectivos)", 
+            "escala": "Metrópoli Nacional (Gran Santiago)", 
+            "fase": "Mantención / Campaña Estacional (Frecuencia & Conversión)"
+        },
+        "San Bernardo [SOS] (San Bernardo)": {
+            "plaza": "Gran Santiago (Urbano / Red Metro)", 
+            "tipo": "A pie de calle (Paseo peatonal / Centro comercial abierto)", 
+            "mov": "Alta dependencia de Transporte Público (Micros / Colectivos)", 
+            "escala": "Metrópoli Nacional (Gran Santiago)", 
+            "fase": "Mantención / Campaña Estacional (Frecuencia & Conversión)"
+        },
+        "Melipilla Centro [SOS] (Melipilla)": {
+            "plaza": "RM Provincial / Periferia Autónoma (Melipilla, Talagante, etc.)", 
+            "tipo": "A pie de calle (Paseo peatonal / Centro comercial abierto)", 
+            "mov": "Predominio Peatonal (Caminabilidad comercial / Oficinas)", 
+            "escala": "Ciudad Compacta (<250k hab / Flota microbuses reducida)", 
+            "fase": "Mantención / Campaña Estacional (Frecuencia & Conversión)"
+        },
+        "Espacio Urbano Melipilla [SOS] (Melipilla)": {
             "plaza": "RM Provincial / Periferia Autónoma (Melipilla, Talagante, etc.)", 
             "tipo": "Dentro de Mall / Strip Center / Gran Superficie", 
             "mov": "Alta dependencia de Transporte Público (Micros / Colectivos)", 
-            "escala": "Ciudad Compacta (<250k hab)", 
+            "escala": "Ciudad Compacta (<250k hab / Flota microbuses reducida)", 
             "fase": "Mantención / Campaña Estacional (Frecuencia & Conversión)"
         },
-        "Cenco Costanera (Providencia)": {
-            "plaza": "Gran Santiago (Urbano / Red Metro)", 
+        "Peñaflor Stripcenter [SOS] (Peñaflor)": {
+            "plaza": "RM Provincial / Periferia Autónoma (Melipilla, Talagante, etc.)", 
             "tipo": "Dentro de Mall / Strip Center / Gran Superficie", 
-            "mov": "Nodo de Conectividad Masiva (Estación Metro / Terminal de buses)", 
-            "escala": "Metrópoli Nacional", 
-            "fase": "Apertura / Pre-venta (Máximo Reach & Recordación)"
+            "mov": "Tránsito Mixto estructurado (Autopistas / Vehicular particular)", 
+            "escala": "Ciudad Compacta (<250k hab / Flota microbuses reducida)", 
+            "fase": "Mantención / Campaña Estacional (Frecuencia & Conversión)"
         }
     }
 
