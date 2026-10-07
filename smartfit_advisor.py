@@ -132,3 +132,11 @@ def render_smartfit_advisor():
             f"Racional Estratégico:\n{estrategia_texto}"
         )
         st.text_area("📋 Resumen ejecutivo (copiar para propuesta / deck):", value=resumen_pitch, height=140)
+        
+        st.download_button(
+            label="📥 Descargar Resumen Ejecutivo (.txt)",
+            data=resumen_pitch,
+            file_name=f"estrategia_ooh_{nombre_sucursal.lower().replace(' ', '_')}.txt",
+            mime="text/plain",
+            use_container_width=True
+        )
