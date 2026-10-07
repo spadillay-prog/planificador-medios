@@ -3,6 +3,7 @@ import pandas as pd
 from PIL import Image, ImageDraw, ImageFont
 import io
 import os
+from smartfit_advisor import render_smartfit_advisor
 
 st.set_page_config(
     page_title="Planificador de medios / Vía pública",
@@ -574,9 +575,8 @@ DATA_JERARQUICA = {
                     "contexto": "Comuna pericentral con fuerte densidad habitacional y polo hospitalario de alta afluencia por eje Av. Independencia.",
                     "puntos": {
                         "Toda la comuna (General)": None,
-                        "Costanera Norte / Autopista Central - Torre A (Building Wrap - Vista Oriente)": {"flujo": 130000},
-                        "Costanera Norte / Autopista Central - Torre B (Building Wrap - Vista Oriente)": {"flujo": 130000},
-                        "Costanera Norte / Autopista Central - Torres A y B (Building Wrap Doble 1.400m² - Vista Oriente)": {"flujo": 190000},
+                        "Costanera Norte / Autopista Central - Torre A (Building Wrap - Vista Oriente)": {"flujo": 100000},
+                        "Costanera Norte / Autopista Central - Torre B (Building Wrap - Vista Oriente)": {"flujo": 100000},
                         "Av. Independencia con Santos Dumont": {"flujo": 95000}
                         
                     }
@@ -862,9 +862,9 @@ DATA_JERARQUICA = {
 # --- 6. FORMATOS COMERCIALES (OOH & METRO) ---
 FORMATOS_OOH = {
     "Building Wrap (Edificio)": {
-        "base": 1, "c": 0.40, "m": 0.50, "o": 0.65, "tipo": "Gran impacto edificio", "unidad": "edificios",
+        "base": 1, "c": 0.25, "m": 0.30, "o": 0.35, "tipo": "Gran impacto edificio", "unidad": "edificios",
         "es_wrap": True,
-        "contexto": "Gigantografía monumental estática de gran escala sobre fachada de edificio (>400-1400 m²), con 100% SOV, visibilidad superior a 800-1200 metros y alta retención visual."
+        "contexto": "Gigantografía monumental de gran escala sobre fachada de edificio (>400-500 m²), con visibilidad a más de 400 metros de distancia y alta retención vehicular."
     },
     "Pantalla Digital (DOOH)": {"base": 1, "c": 0.20, "m": 0.25, "o": 0.30, "tipo": "Gran impacto LED", "unidad": "pantallas", "es_wrap": False},
     "Circuito MUPIS Digitales (MUD)": {"base": 1, "c": 0.20, "m": 0.25, "o": 0.30, "tipo": "Digital Urbano", "unidad": "circuitos", "es_wrap": False,
@@ -1599,7 +1599,7 @@ def render_lamina_consolidada_jpg():
 st.title("🎯 Planificador de medios / Vía pública")
 st.markdown("Calcula el rendimiento por soporte, diseña la lámina ejecutiva y consolida el mix total de la campaña.")
 
-tab1, tab2 = st.tabs(["🖼️ Lámina Ejecutiva (Soporte Actual)", "📊 Plan de Medios Consolidado (Mix Completo)"])
+tab1, tab2, tab_smartfit = st.tabs(["🖼️ Lámina Ejecutiva (Soporte Actual)", "📊 Plan de Medios Consolidado (Mix Completo)", "🏋️ Smart Fit (Táctico)"])
 
 with tab1:
     img_bytes = render_lamina_jpg()
@@ -1707,3 +1707,6 @@ with tab2:
 *Valores netos calculados en pesos chilenos.*
 """
         st.code(texto_resumen, language="markdown")
+
+with tab_smartfit:
+    render_smartfit_advisor()
