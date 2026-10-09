@@ -430,6 +430,16 @@ DATA_JERARQUICA = {
                         "Intermodal La Cisterna (Américo Vespucio con Gran Avenida)": {"flujo": 140000}
                     }
                 },
+
+                "Lo Espejo": {
+                    "res": 98800, "flot": 115000,
+                    "contexto": "Eje de conectividad del sector sur atravesado por Américo Vespucio Sur y Autopista Central / General Velásquez en ruta hacia Mallplaza Oeste.",   
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Américo Vespucio con General Velásquez (Hacia Mallplaza Oeste)": {"flujo": 110000},
+                        "Av. Lo Ovalle con Av. Central": {"flujo": 45000}
+                    }
+                },
                 "San Bernardo": {
                     "res": 335000, "flot": 50000,
                     "contexto": "Polo sur de gran tamaño con alto tráfico en torno a la Plaza de Armas y estación Tren Central.",
