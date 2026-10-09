@@ -1086,7 +1086,8 @@ elif medio_tipo == "Centros Comerciales / Malls":
 
     # Selector de Formato
     formato_sel = st.sidebar.selectbox("2. Formato Mall:", list(formato_dict.keys()))
-    datos_formato = formato_dict[formato_sel]
+    info_f = formato_dict[formato_sel]
+    datos_formato = info_f
 
     # Variables de nombres y textos para la lámina
     nombre_territorio = f"{mall_sel}"
@@ -1094,7 +1095,7 @@ elif medio_tipo == "Centros Comerciales / Malls":
     
     texto_estrategico_default = (
         f"{formato_sel} en {mall_sel} con aforo auditado de {flujo_mes_mall:,.0f} visitas mensuales. "
-        f"{datos_formato['contexto']}"
+        f"{info_f['contexto']}"
     ).replace(",", ".")
 
 else: # Vía Pública Tradicional
