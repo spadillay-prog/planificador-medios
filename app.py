@@ -937,7 +937,43 @@ FORMATOS_METRO = {
         "contexto": "Impacto forzado al paso en torniquetes y accesos principales a la estación."
     }
 }
+MALLPLAZA_FLUJOS_MENSUALES = {
+    "Mallplaza Vespucio": 2692500,
+    "Mallplaza La Serena": 1492917,
+    "Mallplaza El Trébol": 1479167,
+    "Mallplaza Norte": 1331667,
+    "Mallplaza Egaña": 1330000,
+    "Mallplaza Oeste": 1265000,
+    "Mallplaza Los Ángeles": 999167,
+    "Mallplaza Antofagasta": 947500,
+    "Mallplaza Tobalaba": 943750,
+    "Mallplaza Sur": 819167,
+    "Mallplaza Calama": 766667,
+    "Mallplaza Los Dominicos": 629583,
+    "Mallplaza Bio Bio": 590833,
+    "Mallplaza Copiapó": 486250,
+    "Mallplaza Alameda": 458333,
+    "Mallplaza Iquique": 410000,
+    "Mallplaza Arica": 361250
+}
 
+FORMATOS_MALLS = {
+    "Videowall Aéreo Pasillo (7x2 m)": {
+        "base": 1, "c": 0.30, "m": 0.375, "o": 0.45,
+        "tipo": "DOOH Aéreo Suspendido", "unidad": "pantallas", "es_wrap": False,
+        "contexto": "Pantalla LED suspendida en nave central o plaza principal con cono visual frontal abierto."
+    },
+    "Paleta Vertical Suelo (1x2 m)": {
+        "base": 1, "c": 0.07, "m": 0.09, "o": 0.12,
+        "tipo": "Mobiliario Peatonal Suelo", "unidad": "caras", "es_wrap": False,
+        "contexto": "MUPIS / Tótem peatonal unitario a nivel de piso en pasillo de alto tráfico."
+    },
+    "Pantalla Digital de Acceso (Vial / Estacionamiento)": {
+        "base": 1, "c": 0.18, "m": 0.245, "o": 0.30,
+        "tipo": "DOOH Acceso Exterior", "unidad": "pantallas", "es_wrap": False,
+        "contexto": "Pantalla LED en rampas de acceso vehicular y peatonal con alta detención obligatoria."
+    }
+}
 # --- 7. BARRA LATERAL: LOGO MADCOM Y CONFIGURACIÓN ---
 st.sidebar.markdown("### 🏢 Agencia")
 logo_preview = generar_logo_madcom(fondo_oscuro=True)
