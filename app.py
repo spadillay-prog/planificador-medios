@@ -983,6 +983,7 @@ medio_tipo = st.sidebar.radio(
     [
         "Vía Pública Tradicional (Calles)",
         "Metro de Santiago (Estaciones y Trenes)"
+        "Centros Comerciales / Malls"
     ]
 )
 
