@@ -292,7 +292,6 @@ def generar_lamina_roles(nombre, plaza, entorno, vial, presupuesto, tit1, desc1,
     f_card_desc = cargar(rutas_regular, 23)
     f_body = cargar(rutas_regular, 24)
 
-    # Ajuste preciso midiendo el ancho real en píxeles (evita palabras sueltas/huérfanas)
     def wrap_pixels(texto, font, max_px):
         palabras = texto.split()
         lineas = []
@@ -313,7 +312,7 @@ def generar_lamina_roles(nombre, plaza, entorno, vial, presupuesto, tit1, desc1,
 
     amarillo_sf = "#FFB703"
 
-    # Barra de acento corporativo
+    # Barra superior de acento corporativo
     draw.rectangle([(0, 0), (ancho, 14)], fill=amarillo_sf)
 
     # Encabezado
@@ -328,52 +327,51 @@ def generar_lamina_roles(nombre, plaza, entorno, vial, presupuesto, tit1, desc1,
     draw.text((100, 165), f"Plaza: {plaza_corta}   •   Entorno: {entorno_corto}", font=f_sub, fill="#A6B0BF")
     draw.text((100, 200), f"Flujo Dominante: {vial_corto}   •   Presupuesto: {presupuesto_corto}", font=f_sub, fill="#7A828E")
 
-    # --- CARDS SUPERIORES: Altura optimizada (250px) para evitar vacíos ---
-    # Card 1 (x: 100 a 930 = 830px de ancho total, 740px ancho útil de texto)
-    draw.rounded_rectangle([(100, 260), (930, 510)], radius=16, fill="#1C1E24", outline="#2D3139", width=2)
-    draw.text((140, 290), "SOPORTE PRIMARIO (ALTO IMPACTO / EJE)", font=f_card_label, fill=amarillo_sf)
+    # --- CARDS SUPERIORES: Textos subidos para dejar un margen inferior limpio y holgado ---
+    # Card 1 (x: 100 a 930 = 830px de ancho total, y: 260 a 515 = 255px de alto)
+    draw.rounded_rectangle([(100, 260), (930, 515)], radius=16, fill="#1C1E24", outline="#2D3139", width=2)
+    draw.text((140, 285), "SOPORTE PRIMARIO (ALTO IMPACTO / EJE)", font=f_card_label, fill=amarillo_sf)
     
     lineas_t1 = wrap_pixels(tit1, f_card_tit, 730)
-    y_t1 = 330
+    y_t1 = 320
     for l in lineas_t1[:2]:
         draw.text((140, y_t1), l, font=f_card_tit, fill="#FFFFFF")
-        y_t1 += 38
+        y_t1 += 36
     
-    draw.text((140, 420), "Detalle operativo:", font=f_card_label, fill="#7A828E")
+    draw.text((140, 395), "Detalle operativo:", font=f_card_label, fill="#7A828E")
     lineas_d1 = wrap_pixels(desc1, f_card_desc, 730)
-    y_d1 = 450
+    y_d1 = 425
     for l in lineas_d1[:2]:
         draw.text((140, y_d1), l, font=f_card_desc, fill="#E2E8F0")
-        y_d1 += 30
+        y_d1 += 28
 
-    # Card 2 (x: 990 a 1820 = 830px de ancho total, 740px ancho útil de texto)
-    draw.rounded_rectangle([(990, 260), (1820, 510)], radius=16, fill="#1C1E24", outline="#2D3139", width=2)
-    draw.text((1030, 290), "SOPORTE SECUNDARIO (PROXIMIDAD / CIERRE)", font=f_card_label, fill="#60A5FA")
+    # Card 2 (x: 990 a 1820 = 830px de ancho total, y: 260 a 515 = 255px de alto)
+    draw.rounded_rectangle([(990, 260), (1820, 515)], radius=16, fill="#1C1E24", outline="#2D3139", width=2)
+    draw.text((1030, 285), "SOPORTE SECUNDARIO (PROXIMIDAD / CIERRE)", font=f_card_label, fill="#60A5FA")
     
     lineas_t2 = wrap_pixels(tit2, f_card_tit, 730)
-    y_t2 = 330
+    y_t2 = 320
     for l in lineas_t2[:2]:
         draw.text((1030, y_t2), l, font=f_card_tit, fill="#FFFFFF")
-        y_t2 += 38
+        y_t2 += 36
 
-    draw.text((1030, 420), "Detalle operativo:", font=f_card_label, fill="#7A828E")
+    draw.text((1030, 395), "Detalle operativo:", font=f_card_label, fill="#7A828E")
     lineas_d2 = wrap_pixels(desc2, f_card_desc, 730)
-    y_d2 = 450
+    y_d2 = 425
     for l in lineas_d2[:2]:
         draw.text((1030, y_d2), l, font=f_card_desc, fill="#E2E8F0")
-        y_d2 += 30
+        y_d2 += 28
 
     # --- CARD 3: RACIONAL ESTRATÉGICO ---
-    draw.rounded_rectangle([(100, 550), (1820, 960)], radius=16, fill="#181A20", outline="#303540", width=2)
-    draw.rectangle([(100, 550), (115, 960)], fill=amarillo_sf)
-    draw.text((150, 590), "RACIONAL TÁCTICO Y JUSTIFICACIÓN DE FORMATOS", font=f_tag, fill=amarillo_sf)
+    draw.rounded_rectangle([(100, 555), (1820, 960)], radius=16, fill="#181A20", outline="#303540", width=2)
+    draw.rectangle([(100, 555), (115, 960)], fill=amarillo_sf)
+    draw.text((150, 595), "RACIONAL TÁCTICO Y JUSTIFICACIÓN DE FORMATOS", font=f_tag, fill=amarillo_sf)
 
-    # Ancho generoso de 1600px para que el texto fluya hasta los bordes con lectura natural
     lineas_est = wrap_pixels(estrategia, f_body, 1600)
     y_txt = 650
     for l in lineas_est[:6]:
         draw.text((150, y_txt), l, font=f_body, fill="#D8DCE3")
-        y_txt += 44
+        y_txt += 42
 
     draw.text((100, 1010), "Generado con Planificador Táctico OOH • Optimización de Medios y Retorno de Inversión", font=f_sub, fill="#555B66")
 
