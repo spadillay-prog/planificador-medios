@@ -11,7 +11,6 @@ def render_smartfit_advisor():
 
     col1, col2 = st.columns([1, 1], gap="medium")
 
-    # Catálogo referencial de sedes
     SEDES_PRECARGADAS = {
         "--- Ingresar sucursal manualmente ---": None,
         
@@ -19,7 +18,7 @@ def render_smartfit_advisor():
         "Mallplaza Arica [SOS] (Arica)": {
             "plaza": "Arica y Parinacota (Escala Compacta)",
             "tipo": "Dentro de Mall / Strip Center / Gran Superficie",
-            "vial": "Avenida / Eje Estructurante Principal (Diego Portales / Costanera)",
+            "vial": "Avenida / Eje Estructurante (Diego Portales / Costanera)",
             "presupuesto": "Presupuesto Ajustado / Medio ($1.5M - $3.5M)",
             "escala": "Ciudad Compacta (<250k hab)",
             "duracion": "Continuidad / Trimestral (30+ días)"
@@ -27,7 +26,7 @@ def render_smartfit_advisor():
         "Mallplaza Antofagasta [SOS] (Antofagasta)": {
             "plaza": "Regiones (Capital Regional / Conurbación Mayor)",
             "tipo": "Dentro de Mall / Strip Center / Gran Superficie",
-            "vial": "Avenida / Eje Estructurante Principal (Balmaceda / Costanera)",
+            "vial": "Avenida / Eje Estructurante (Balmaceda / Costanera)",
             "presupuesto": "Presupuesto Óptimo (> $4M)",
             "escala": "Gran Conurbación Regional (>400k hab)",
             "duracion": "Continuidad / Trimestral (30+ días)"
@@ -79,7 +78,7 @@ def render_smartfit_advisor():
         "Melipilla / Espacio Urbano [SOS] (Melipilla)": {
             "plaza": "RM Provincial / Periferia Autónoma (Melipilla, Talagante, etc.)",
             "tipo": "Dentro de Mall / Strip Center / Gran Superficie",
-            "vial": "Avenida / Eje Estructurante Principal (Ruta 78 / Autopista del Sol)",
+            "vial": "Avenida / Eje Estructurante (Ruta 78 / Autopista del Sol)",
             "presupuesto": "Presupuesto Ajustado / Medio ($1.5M - $3.5M)",
             "escala": "Ciudad Compacta (<250k hab)",
             "duracion": "Continuidad / Trimestral (30+ días)"
@@ -167,9 +166,9 @@ def render_smartfit_advisor():
 
     if es_flash:
         soporte_primario_titulo = "DOOH GRAN FORMATO (PANTALLAS LED)"
-        soporte_primario_desc = "Pantallas LED Viales de Alto Tráfico"
+        soporte_primario_desc = "Pantallas LED Viales de Alto Tráfico y Frecuencia"
         soporte_secundario_titulo = "PANTALLAS DIGITALES EN ACCESO"
-        soporte_secundario_desc = "Circuito DOOH en Mall / Metro Andenes"
+        soporte_secundario_desc = "Circuito DOOH en Accesos de Mall y Estaciones Metro"
         estrategia_texto = (
             f"Al ser una campaña táctica de corta duración ({duracion_campana.split('(')[0].strip()}), no se justifica producción gráfica en papel ni vinilos. "
             "Se destina la inversión a soportes digitales DOOH sincronizados en horarios peak para generar alta frecuencia y permitir salida al aire inmediata sin costo de imprenta."
@@ -177,9 +176,9 @@ def render_smartfit_advisor():
 
     elif es_arica or (es_avenida and presupuesto_ajustado):
         soporte_primario_titulo = "GRAN FORMATO ESTÁTICO (ALTO IMPACTO)"
-        soporte_primario_desc = "Valla Monumental o Letrero Estático en Eje Principal"
-        soporte_secundario_titulo = "CIRCUITO PANTALLAS (DOOH) DIGITALES"
-        soporte_secundario_desc = "Pantallas en Accesos Mall y Tótems de Proximidad"
+        soporte_primario_desc = "Valla Monumental / Letrero Estático en Eje Principal de Acceso"
+        soporte_secundario_titulo = "CIRCUITO PANTALLAS DIGITALES (DOOH)"
+        soporte_secundario_desc = "Pantallas en Accesos Principales del Mall y Tótems de Proximidad"
         estrategia_texto = (
             f"Para {nombre_sucursal}, no se contemplan buses debido al costo mínimo de entrada y la dispersión de recorridos en la plaza. "
             "La recomendación más costo-eficiente es un elemento estático de alto impacto (valla monumental o unipolar vial) sobre el eje estructurante de aproximación, "
@@ -188,9 +187,9 @@ def render_smartfit_advisor():
 
     elif es_autopista:
         soporte_primario_titulo = "GRAN FORMATO ESTÁTICO DE AUTOPISTA"
-        soporte_primario_desc = "Valla Monumental o Prisma Unipolar de Alto Flujo"
+        soporte_primario_desc = "Valla Monumental o Prisma Unipolar sobre Eje de Alta Velocidad"
         soporte_secundario_titulo = "PROXIMIDAD DIGITAL (DOOH MALL)"
-        soporte_secundario_desc = "Pantallas Digitales en Accesos y Estacionamientos"
+        soporte_secundario_desc = "Pantallas Digitales en Accesos Directos y Estacionamientos"
         estrategia_texto = (
             "En entornos de autopista y alta velocidad vehicular, los formatos de menor tamaño pierden visibilidad. "
             "El medio más efectivo es un soporte estático de gran escala o unipolar con 100% de Share of Voice permanente, "
@@ -198,10 +197,10 @@ def render_smartfit_advisor():
         )
 
     elif es_peatonal or es_corporativo:
-        soporte_primario_titulo = "MUPIS PEATONALES / VEREDA (<300M)"
-        soporte_primario_desc = "Circuito de Caras Peatonales en Radio Inmediato"
+        soporte_primario_titulo = "MUPIS PEATONALES / VEREDA (<300 METROS)"
+        soporte_primario_desc = "Circuito de Caras Peatonales en Radio Inmediato a la Sede"
         soporte_secundario_titulo = "DOOH INTERIOR / ACCESOS CORPORATIVOS"
-        soporte_secundario_desc = "Pantallas Digitales de Entrada y Tótems de Paso"
+        soporte_secundario_desc = "Pantallas Digitales en Hall de Acceso y Tótems de Paso"
         estrategia_texto = (
             "La audiencia se mueve caminando o llega en transporte menor directamente al polo comercial/oficinas. "
             "No se justifican buses ni vallas de autopista. La mayor tasa de conversión se logra con MUPIS peatonales a pasos de la sucursal "
@@ -210,9 +209,9 @@ def render_smartfit_advisor():
 
     elif es_metro_santiago and "Cenco" in nombre_sucursal:
         soporte_primario_titulo = "DOMINACIÓN ESTACIÓN DE METRO (TOBALABA)"
-        soporte_primario_desc = "Branding Integral en Andenes y Túneles Peatonales"
+        soporte_primario_desc = "Branding Integral en Andenes y Túneles Peatonales de Combinación"
         soporte_secundario_titulo = "MEGA PANTALLAS DIGITALES (DOOH)"
-        soporte_secundario_desc = "Pantallas Gran Formato en Accesos Costanera Center"
+        soporte_secundario_desc = "Pantallas de Gran Formato en Accesos Principales Costanera Center"
         estrategia_texto = (
             "Para el hito de marca en Cenco Costanera, la estrategia descarta formatos móviles y se enfoca en dominación fija: "
             "presencia estelar en los túneles y andenes de Metro Tobalaba combinada con pantallas digitales de gran impacto en los accesos del centro comercial."
@@ -220,9 +219,9 @@ def render_smartfit_advisor():
 
     else:
         soporte_primario_titulo = "LUNETAS DE BUSES (FLOTA CONURBADA)"
-        soporte_primario_desc = "Cobertura en Red de Microbuses Intercomunales"
+        soporte_primario_desc = "Cobertura en Red de Microbuses Intercomunales de la Plaza"
         soporte_secundario_titulo = "DOOH / SOPORTES FIJOS EN ACCESOS"
-        soporte_secundario_desc = "Pantallas Digitales en Accesos y Cruces Nodales"
+        soporte_secundario_desc = "Pantallas Digitales en Accesos al Mall y Cruces Nodales"
         estrategia_texto = (
             "En esta conurbación con presupuesto adecuado, las lunetas de buses en flota completa proporcionan el alcance intercomunal necesario "
             "para cubrir el radio de 15 a 20 minutos de viaje, complementándose con pantallas fijas en el centro comercial de destino."
@@ -234,15 +233,14 @@ def render_smartfit_advisor():
 
         sub_c1, sub_c2 = st.columns(2)
         with sub_c1:
-            st.markdown(f"**🎯 Soporte Primario (Impacto/Eje):**")
+            st.markdown("**🎯 Soporte Primario (Impacto/Eje):**")
             st.success(f"**{soporte_primario_titulo}**\n\n*{soporte_primario_desc}*")
         with sub_c2:
-            st.markdown(f"**📍 Soporte Secundario (Proximidad):**")
+            st.markdown("**📍 Soporte Secundario (Proximidad):**")
             st.warning(f"**{soporte_secundario_titulo}**\n\n*{soporte_secundario_desc}*")
 
         st.markdown("---")
 
-        # Generar lámina dinámica
         slide_bytes = generar_lamina_roles(
             nombre=nombre_sucursal,
             plaza=plaza,
@@ -266,23 +264,6 @@ def render_smartfit_advisor():
             type="primary",
             use_container_width=True
         )
-
-
-def wrap_text_clean(texto, max_len=36):
-    """Divide un texto en líneas respetando las palabras completas (sin cortar letras)."""
-    palabras = texto.split()
-    lineas = []
-    linea_actual = ""
-    for p in palabras:
-        if len(linea_actual + " " + p) <= max_len:
-            linea_actual = (linea_actual + " " + p).strip()
-        else:
-            if linea_actual:
-                lineas.append(linea_actual)
-            linea_actual = p
-    if linea_actual:
-        lineas.append(linea_actual)
-    return lineas
 
 
 def generar_lamina_roles(nombre, plaza, entorno, vial, presupuesto, tit1, desc1, tit2, desc2, estrategia):
@@ -315,70 +296,85 @@ def generar_lamina_roles(nombre, plaza, entorno, vial, presupuesto, tit1, desc1,
     f_sub = cargar(rutas_regular, 24)
     f_card_label = cargar(rutas_fuentes, 20)
     f_card_tit = cargar(rutas_fuentes, 26)
-    f_card_desc = cargar(rutas_regular, 21)
+    f_card_desc = cargar(rutas_regular, 22)
     f_body = cargar(rutas_regular, 22)
+
+    def wrap_texto(texto, max_chars):
+        palabras = texto.split()
+        lineas = []
+        actual = ""
+        for p in palabras:
+            if len(actual + " " + p) <= max_chars:
+                actual = (actual + " " + p).strip()
+            else:
+                if actual:
+                    lineas.append(actual)
+                actual = p
+        if actual:
+            lineas.append(actual)
+        return lineas
 
     amarillo_sf = "#FFB703"
 
-    # Barra superior de acento corporativo
+    # Barra de acento corporativo
     draw.rectangle([(0, 0), (ancho, 14)], fill=amarillo_sf)
 
     # Encabezado
     draw.text((100, 60), "SMART FIT | RECOMENDACIÓN TÁCTICA DE FORMATOS OOH", font=f_tag, fill=amarillo_sf)
-    draw.text((100, 100), nombre[:55], font=f_tit, fill="#FFFFFF")
+    draw.text((100, 100), nombre[:60], font=f_tit, fill="#FFFFFF")
     
-    # Metadatos limpios en 2 líneas sin cortes de paréntesis
     plaza_corta = plaza.split("(")[0].strip()
-    entorno_corto = entorno.split("/")[0].strip() if "/" in entorno else entorno
+    entorno_corto = entorno.split("(")[0].strip()
     vial_corto = vial.split("(")[0].strip()
     presupuesto_corto = presupuesto.split("(")[0].strip()
-
+    
     draw.text((100, 168), f"Plaza: {plaza_corta}   •   Entorno: {entorno_corto}", font=f_sub, fill="#A6B0BF")
-    draw.text((100, 204), f"Flujo Dominante: {vial_corto}   •   Perfil Presupuestario: {presupuesto_corto}", font=f_sub, fill="#7A828E")
+    draw.text((100, 204), f"Flujo Dominante: {vial_corto}   •   Presupuesto: {presupuesto_corto}", font=f_sub, fill="#7A828E")
 
-    # Card 1: Soporte Primario (Impacto / Cobertura de Eje)
-    draw.rounded_rectangle([(100, 265), (930, 565)], radius=18, fill="#1C1E24", outline="#2D3139", width=2)
-    draw.text((140, 298), "SOPORTE PRIMARIO (ALTO IMPACTO / EJE)", font=f_card_label, fill=amarillo_sf)
+    # Card 1: Soporte Primario (x: 100 a 930 -> 830px de ancho disponible)
+    draw.rounded_rectangle([(100, 270), (930, 560)], radius=18, fill="#1C1E24", outline="#2D3139", width=2)
+    draw.text((140, 305), "SOPORTE PRIMARIO (ALTO IMPACTO / EJE)", font=f_card_label, fill=amarillo_sf)
     
-    lineas_t1 = wrap_text_clean(tit1, max_len=26)
-    y_tit1 = 338
+    # max_chars ampliado a 44 para que el título ocupe todo el ancho sin cortar temprano
+    lineas_t1 = wrap_texto(tit1, 44)
+    y_t1 = 345
     for l in lineas_t1[:2]:
-        draw.text((140, y_tit1), l, font=f_card_tit, fill="#FFFFFF")
-        y_tit1 += 36
+        draw.text((140, y_t1), l, font=f_card_tit, fill="#FFFFFF")
+        y_t1 += 34
     
-    draw.text((140, 428), "Detalle operativo:", font=f_card_label, fill="#6C757D")
-    lineas_d1 = wrap_text_clean(desc1, max_len=38)
-    y_d1 = 462
+    draw.text((140, 440), "Detalle operativo:", font=f_card_label, fill="#6C757D")
+    lineas_d1 = wrap_texto(desc1, 52)
+    y_d1 = 472
     for l in lineas_d1[:2]:
         draw.text((140, y_d1), l, font=f_card_desc, fill="#D8DCE3")
-        y_d1 += 30
+        y_d1 += 28
 
-    # Card 2: Soporte Secundario (Proximidad / Cierre)
-    draw.rounded_rectangle([(990, 265), (1820, 565)], radius=18, fill="#1C1E24", outline="#2D3139", width=2)
-    draw.text((1030, 298), "SOPORTE SECUNDARIO (PROXIMIDAD / CIERRE)", font=f_card_label, fill="#60A5FA")
+    # Card 2: Soporte Secundario (x: 990 a 1820 -> 830px de ancho disponible)
+    draw.rounded_rectangle([(990, 270), (1820, 560)], radius=18, fill="#1C1E24", outline="#2D3139", width=2)
+    draw.text((1030, 305), "SOPORTE SECUNDARIO (PROXIMIDAD / CIERRE)", font=f_card_label, fill="#60A5FA")
     
-    lineas_t2 = wrap_text_clean(tit2, max_len=26)
-    y_tit2 = 338
+    lineas_t2 = wrap_texto(tit2, 44)
+    y_t2 = 345
     for l in lineas_t2[:2]:
-        draw.text((1030, y_tit2), l, font=f_card_tit, fill="#FFFFFF")
-        y_tit2 += 36
+        draw.text((1030, y_t2), l, font=f_card_tit, fill="#FFFFFF")
+        y_t2 += 34
 
-    draw.text((1030, 428), "Detalle operativo:", font=f_card_label, fill="#6C757D")
-    lineas_d2 = wrap_text_clean(desc2, max_len=38)
-    y_d2 = 462
+    draw.text((1030, 440), "Detalle operativo:", font=f_card_label, fill="#6C757D")
+    lineas_d2 = wrap_texto(desc2, 52)
+    y_d2 = 472
     for l in lineas_d2[:2]:
         draw.text((1030, y_d2), l, font=f_card_desc, fill="#D8DCE3")
-        y_d2 += 30
+        y_d2 += 28
 
     # Card 3: Racional Estratégico
     draw.rounded_rectangle([(100, 605), (1820, 960)], radius=18, fill="#181A20", outline="#303540", width=2)
     draw.rectangle([(100, 605), (115, 960)], fill=amarillo_sf)
     draw.text((150, 645), "RACIONAL TÁCTICO Y JUSTIFICACIÓN DE FORMATOS", font=f_tag, fill=amarillo_sf)
 
-    lineas_est = wrap_text_clean(estrategia, max_len=92)
+    lineas_est = wrap_texto(estrategia, 98)
     y_txt = 705
-    for linea in lineas_est[:6]:
-        draw.text((150, y_txt), linea, font=f_body, fill="#D8DCE3")
+    for l in lineas_est[:6]:
+        draw.text((150, y_txt), l, font=f_body, fill="#D8DCE3")
         y_txt += 38
 
     draw.text((100, 1010), "Generado con Planificador Táctico OOH • Optimización de Medios y Retorno de Inversión", font=f_body, fill="#555B66")
