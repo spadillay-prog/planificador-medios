@@ -1073,6 +1073,30 @@ if medio_tipo == "Metro de Santiago (Estaciones y Trenes)":
         if es_verano:
             texto_estrategico_default += f" Flujo diario ajustado por temporada estival ({int(factor_estival*100)}% de demanda regular)."
 
+elif medio_tipo == "Centros Comerciales / Malls":
+    fuente_medicion_pie = "Medición Oficial de Flujos: Mallplaza (Auditoría Ene - Abr)."
+    formato_dict = FORMATOS_MALLS
+
+    # Selector de Mall
+    mall_sel = st.sidebar.selectbox("1. Centro Comercial:", list(MALLPLAZA_FLUJOS_MENSUALES.keys()), index=5)
+    flujo_mes_mall = MALLPLAZA_FLUJOS_MENSUALES[mall_sel]
+    
+    # Flujo diario base
+    flujo_diario_base = flujo_mes_mall / 30.0
+
+    # Selector de Formato
+    formato_sel = st.sidebar.selectbox("2. Formato Mall:", list(formato_dict.keys()))
+    datos_formato = formato_dict[formato_sel]
+
+    # Variables de nombres y textos para la lámina
+    nombre_territorio = f"{mall_sel}"
+    nombre_titulo_lamina = f"{mall_sel.upper()} - {formato_sel.upper()}"
+    
+    texto_estrategico_default = (
+        f"{formato_sel} en {mall_sel} con aforo auditado de {flujo_mes_mall:,.0f} visitas mensuales. "
+        f"{datos_formato['contexto']}"
+    ).replace(",", ".")
+
 else: # Vía Pública Tradicional
     fuente_medicion_pie = "Medición Oficial de Audiencias: INE Chile · EOD / SECTRA / MTT · UOCT / MOP."
     if es_verano:
