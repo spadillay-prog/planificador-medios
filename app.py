@@ -1081,8 +1081,9 @@ elif medio_tipo == "Centros Comerciales / Malls":
     mall_sel = st.sidebar.selectbox("1. Centro Comercial:", list(MALLPLAZA_FLUJOS_MENSUALES.keys()), index=5)
     flujo_mes_mall = MALLPLAZA_FLUJOS_MENSUALES[mall_sel]
     
-    # Flujo diario base
-    flujo_diario_base = flujo_mes_mall / 30.0
+    # Flujo diario para el cálculo
+    universo_calculo = flujo_mes_mall / 30.0
+    factor_escala = 1.0
 
     # Selector de Formato
     formato_sel = st.sidebar.selectbox("2. Formato Mall:", list(formato_dict.keys()))
@@ -1097,7 +1098,6 @@ elif medio_tipo == "Centros Comerciales / Malls":
         f"{formato_sel} en {mall_sel} con aforo auditado de {flujo_mes_mall:,.0f} visitas mensuales. "
         f"{info_f['contexto']}"
     ).replace(",", ".")
-
 else: # Vía Pública Tradicional
     fuente_medicion_pie = "Medición Oficial de Audiencias: INE Chile · EOD / SECTRA / MTT · UOCT / MOP."
     if es_verano:
