@@ -895,7 +895,8 @@ FORMATOS_OOH = {
         "base": 100, "c": 0.35, "m": 0.45, "o": 0.55, "tipo": "Troncal + Alimentador", "unidad": "buses", "es_wrap": False,
         "contexto": "Circuito integrado de laterales (3,5×1,0 m) distribuidos entre recorridos Metbus y Redbus, cubriendo ejes estructurantes de más de 20 comunas de Santiago."
     },
-    "Valla Estática": {"base": 1, "c": 0.15, "m": 0.20, "o": 0.25, "tipo": "Soporte fijo", "unidad": "soportes", "es_wrap": False}
+    "Valla Estática": {"base": 1, "c": 0.15, "m": 0.20, "o": 0.25, "tipo": "Soporte fijo", "unidad": "soportes", "es_wrap": False},
+    "Valla Monumental / Autopista": {"base": 1, "c": 0.6, "m": 0.70, "o": 0.85, "tipo": "Soporte fijo", "unidad": "soportes", "es_wrap": False, "contexto: "Soporte unipolar o monumental de gran escala sobre autopista o vía expresa con cono visual frontal despejado de alta visibilidad."
 }
 FORMATOS_METRO = {
     "Muro Estación (Gran Formato)": {
