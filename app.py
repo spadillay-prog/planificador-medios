@@ -650,10 +650,12 @@ DATA_JERARQUICA = {
                     "contexto": "Capital regional y universitaria con alto flujo comercial por 1 Sur, Av. San Miguel, Las Rastras y sector poniente.",
                     "puntos": {
                         "Toda la comuna (General)": None,
-                        "Av. San Miguel / 30 Oriente (30 Norte)": {"flujo": 75000},
-                        "Uno Sur, entre 11 y 10 Poniente": {"flujo": 50000},
+                        "Av. San Miguel / 30 Oriente": {"flujo": 75000},
                         "Av. San Miguel con Mall Plaza Maule": {"flujo": 70000},
-                        "1 Sur con 5 Oriente (Paseo Peatonal)": {"flujo": 55000}
+                        "1 Sur con 5 Oriente (Paseo Peatonal)": {"flujo": 55000},
+                        "2 Sur con 7 Oriente (Centro Comercial)": {"flujo": 52000},
+                        "Uno Sur, entre 11 y 10 Oriente": {"flujo": 50000},
+                        "2 Norte con 14 Oriente (Eje Smart Fit)": {"flujo": 48000}
                     }
                 },
                 "Curicó": {
