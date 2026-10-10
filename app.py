@@ -661,8 +661,9 @@ DATA_JERARQUICA = {
                     "contexto": "Polo agroindustrial y de ruta del vino con alta concurrencia en eje Manso de Velasco, Camilo Henríquez y acceso a Ruta 5 por Zapallar.",
                     "puntos": {
                         "Toda la comuna (General)": None,
-                        "Av. Manso de Velasco / Buen Pastor": {"flujo": 65000},
-                        "Av. Manuel Labra Lillo / Ruta 5 Sur": {"flujo": 70000}
+                        "Av. Manso de Velasco / Buen Pastor": {"flujo": 32000},
+                        "Av. Bernardo O'Higgins con Merced (Centro Cívico)": {"flujo": 36000},
+                        "Av. Manuel Labra Lillo / Ruta 5 Sur": {"flujo": 24000}
                     }
                 },
                 "Linares": {
