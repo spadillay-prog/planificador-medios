@@ -214,7 +214,8 @@ DATA_JERARQUICA = {
                         "Toda la comuna (General)": None,
                         "Av. Grecia con Av. Matta": {"flujo": 85000},
                         "Av. Costanera con Balmaceda (Mall Plaza)": {"flujo": 110000},
-                        "Pedro Aguirre Cerda con Av. Pérez Zujovic": {"flujo": 90000}
+                        "Pedro Aguirre Cerda con Av. Pérez Zujovic": {"flujo": 90000},
+                        "Av. Grecia con Uribe (Frente Mallplaza / Muelle)": {"flujo": 75000}
                     }
                 },
                 "Calama": {
