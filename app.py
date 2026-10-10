@@ -171,7 +171,8 @@ DATA_JERARQUICA = {
                     "puntos": {
                         "Toda la comuna (General)": None,
                         "Av. Diego Portales con Santa María": {"flujo": 65000},
-                        "Av. 21 de Mayo (Centro Peatonal)": {"flujo": 50000}
+                        "Av. 21 de Mayo (Centro Peatonal)": {"flujo": 50000},
+                        "Av. Diego Portales / Alexis Carriel (Hacia Mallplaza)": {"flujo": 34000}
                     }
                 }
             }
