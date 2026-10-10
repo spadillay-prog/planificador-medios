@@ -261,6 +261,7 @@ DATA_JERARQUICA = {
                     "puntos": {
                         "Toda la comuna (General)": None,
                         "Ruta 5 con La Cantera": {"flujo": 75000},
+                        "Ruta 5 con Miraflores (Sodimac)": {"flujo": 65000},
                         "Av. Videla con Hospital": {"flujo": 55000}
                     }
                 },
