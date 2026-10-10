@@ -618,6 +618,8 @@ DATA_JERARQUICA = {
                         "Alameda con Manuel Montt, salida Carretera": {"flujo": 80000},
                         "Carretera del Cobre, esquina Bombero Villalobos": {"flujo": 70000},
                         "Calle Astorga con Paseo Independencia": {"flujo": 60000},
+                        "Av. Miguel Ramírez con Ex Ruta 5 (Paso Nivel / Mall Plaza América)": {"flujo": 48000},
+                        "Carretera del Cobre con Freire (Eje Machalí - Centro)": {"flujo": 55000},
                         "Av. Bernardo O'Higgins (Alameda) con Freire": {"flujo": 75000}
                     }
                 },
