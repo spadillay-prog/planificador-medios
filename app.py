@@ -878,7 +878,8 @@ FORMATOS_OOH = {
         "es_wrap": True,
         "contexto": "Gigantografía monumental de gran escala sobre fachada de edificio (>400-500 m²), con visibilidad a más de 400 metros de distancia y alta retención vehicular."
     },
-    "Pantalla Digital (DOOH)": {"base": 1, "c": 0.20, "m": 0.25, "o": 0.30, "tipo": "Gran impacto LED", "unidad": "pantallas", "es_wrap": False},
+    "Pantalla Digital DOOH Estándar (hasta 25 m²)": {"base": 1, "c": 0.06, "m": 0.08, "o": 0.10, "tipo": "DOOH Tótem / Nivel Calle", "unidad": "pantallas", "es_wrap": False, "contexto": "Pantalla digital de formato estándar (hasta 25 m²) con 500 pasadas diarias a nivel de calle o cruce con semáforo."},
+    "Pantalla Digital DOOH Gran Formato (> 25 m²)": {"base": 1, "c": 0.07, "m": 0.095, "o": 0.12, "tipo": "DOOH Gran Formato / Fachada", "unidad": "pantallas", "es_wrap": False, "contexto": "Pantalla digital de gran escala (mayor a 25 m²) en altura o fachada con 500 pasadas diarias y mayor cono de visión."},
     "Circuito MUPIS Digitales (MUD)": {"base": 1, "c": 0.20, "m": 0.25, "o": 0.30, "tipo": "Digital Urbano", "unidad": "circuitos", "es_wrap": False,
         "contexto": "Circuito integrado de MUPIS digitales en paraderos y refugios peatonales urbanos."
     },
