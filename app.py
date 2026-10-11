@@ -533,6 +533,7 @@ DATA_JERARQUICA = {
                     "puntos": {
                         "Toda la comuna (General)": None,
                         "Av. Alameda / Paseo Arauco Estación (Metro Estación Central - Vista Oriente)": {"flujo": 160000},
+                        "Alameda con Concón / San Alberto Hurtado (Smart Fit San Borja)": {"flujo": 110000},
                         "Alameda frente a Terminales de Buses": {"flujo": 180000}
                     }
                 },
