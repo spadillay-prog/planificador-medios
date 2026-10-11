@@ -507,6 +507,7 @@ DATA_JERARQUICA = {
                         "Toda la comuna (General)": None,
                         "Alameda con Paseo Ahumada / Metro U. de Chile": {"flujo": 220000},
                         "Paseo Ahumada / Huérfanos (Cara Paseo Ahumada)": {"flujo": 160000},
+                        "Alameda con Metro República / Gral. García (Telecanal)": {"flujo": 115000},
                         "Paseo Ahumada / Huérfanos (Cara Paseo Huérfanos)": {"flujo": 160000},
                         "Paseo Ahumada / Nueva York (Patio Centro - Vista Surponiente)": {"flujo": 150000},
                         "Alameda con Santa Rosa": {"flujo": 140000}
