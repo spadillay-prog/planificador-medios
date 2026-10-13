@@ -526,6 +526,17 @@ DATA_JERARQUICA = {
                         "Toda la comuna (General)": None,
                         "Plaza de Maipú (Pajaritos con 5 de Abril)": {"flujo": 130000},
                         "Pajaritos con Américo Vespucio (Mall Arauco Maipú)": {"flujo": 120000}
+                        
+                    }
+                },
+
+                "Cerrillos": {
+                    "res": 880000, "flot": 65000,
+                    "contexto": "Comuna del sector poniente atravesada por la Autopista Vespucio Sur y nodo comercial Mallplaza Oeste.",
+                    "puntos": {
+                        "Toda la comuna (General)": None,
+                        "Américo Vespucio frente a Mallplaza Oeste (hacia Maipú)": {"flujo": 115000}
+                                                
                     }
                 },
                 "Estación Central": {
