@@ -484,7 +484,8 @@ DATA_JERARQUICA = {
                     "contexto": "Gran polo comercial del suroriente con concurrencia masiva en torno a malls y estaciones de metro.",
                     "puntos": {
                         "Toda la comuna (General)": None,
-                        "Vicuña Mackenna con Américo Vespucio (Mall Plaza Vespucio)": {"flujo": 170000}
+                        "Vicuña Mackenna con Américo Vespucio (Mall Plaza Vespucio)": {"flujo": 170000},
+                        "Vicuña Mackenna Ote. / Metro Mirador (Acceso Florida Center)": {"flujo": 92000}
                     }
                 },
                 "Puente Alto": {
