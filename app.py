@@ -969,7 +969,7 @@ MALLPLAZA_FLUJOS_MENSUALES = {
 }
 
 FORMATOS_MALLS = {
-    "Videowall Aéreo Pasillo (7x2 m)": {
+    "Videowall Aéreo Pasillo": {
         "base": 1, "c": 0.30, "m": 0.375, "o": 0.45,
         "tipo": "DOOH Aéreo Suspendido", "unidad": "pantallas", "es_wrap": False,
         "contexto": "Pantalla LED suspendida en nave central o plaza principal con cono visual frontal abierto."
@@ -1110,7 +1110,7 @@ elif medio_tipo == "Centros Comerciales / Malls":
 
     # Variables de nombres y textos para la lámina
     nombre_territorio = f"{mall_sel}"
-    nombre_titulo_lamina = f"{mall_sel.upper()} - {formato_sel.upper()}"
+    nombre_titulo_lamina = f"{mall_sel.upper()}"
     
     texto_estrategico_default = (
         f"{formato_sel} en {mall_sel} con aforo auditado de {flujo_mes_mall:,.0f} visitas mensuales. "
