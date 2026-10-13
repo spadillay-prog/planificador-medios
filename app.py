@@ -989,7 +989,8 @@ FORMATOS_MALLS = {
     },
         "Mega Pantalla Icónica Hall Central (Multi-nivel 1 al 3)": {
         "base": 1, "c": 0.4, "m": 0.48, "o": 0.56,
-        "tipo": "DOOH Icónico Indoor Gran Formato", "es_wrap": False,
+        "tipo": "DOOH Icónico Indoor Gran Formato", "unidad": "pantallas", "es_wrap": False,
+        "pasadas_diarias": 360,    
         "contexto": "Soporte premium indoor de triple altura ubicado en el epicentro neurálgico de Mallplaza Oeste (Hall Central). Su formato vertical envolvente impacta el tráfico de los niveles 1, 2 y 3 junto al flujo continuo de escaleras mecánicas. Actúa como hito de máxima notoriedad ('Point of Sale') para orientar y captar tráfico hacia la sede Smart Fit del centro comercial."
     },
     "Acceso principal costado lider Mallplaza Arica": {
