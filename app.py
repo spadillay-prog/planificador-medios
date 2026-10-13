@@ -966,7 +966,8 @@ MALLPLAZA_FLUJOS_MENSUALES = {
     "Mallplaza Copiapó": 486250,
     "Mallplaza Alameda": 458333,
     "Mallplaza Iquique": 410000,
-    "Mallplaza Arica": 361250
+    "Mallplaza Arica": 361250,
+    "Mall Marina": 1700000
 }
 
 FORMATOS_MALLS = {
@@ -979,6 +980,11 @@ FORMATOS_MALLS = {
         "base": 1, "c": 0.07, "m": 0.09, "o": 0.12,
         "tipo": "Mobiliario Peatonal Suelo", "unidad": "caras", "es_wrap": False,
         "contexto": "MUPIS / Tótem peatonal unitario a nivel de piso en pasillo de alto tráfico."
+    },
+        "Cenefa LED Panorámica Plaza Central (15x0.6 m)": {
+        "base": 1, "c": 0.3, "m": 0.38, "o": 0.46,
+        "tipo": "DOOH Aéreo Plaza Central", "unidad": "caras", "es_wrap": False,
+        "contexto": "Pantalla LED suspendida P5 (15x0.6 m) en antepecho 2° nivel Plaza Central Rosa de los Vientos (MMA2). Cono visual abierto hacia flujo de 1er nivel y acceso norte."
     },
     "Acceso principal costado lider Mallplaza Arica": {
         "base": 1, "c": 0.18, "m": 0.245, "o": 0.30,
