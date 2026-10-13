@@ -979,6 +979,13 @@ FORMATOS_MALLS = {
         "tipo": "Mobiliario Peatonal Suelo", "unidad": "caras", "es_wrap": False,
         "contexto": "MUPIS / Tótem peatonal unitario a nivel de piso en pasillo de alto tráfico."
     },
+    "Acceso principal costado lider Mallplaza Arica": {
+        "base": 1, "c": 0.18, "m": 0.245, "o": 0.30,
+        "tipo": "DOOH Acceso Exterior", "unidad": "pantallas", "es_wrap": False,
+        "ancho": 4.5, "alto": 3.0, "superficie": 13.5,
+        "pasadas_diarias": 400,
+        "contexto": "Pantalla LED exterior en monoposte / acceso vehicular y peatonal con alta detención obligatoria."
+    },
     "Pantalla Digital de Acceso (Vial / Estacionamiento)": {
         "base": 1, "c": 0.18, "m": 0.245, "o": 0.30,
         "tipo": "DOOH Acceso Exterior", "unidad": "pantallas", "es_wrap": False,
