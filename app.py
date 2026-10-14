@@ -580,6 +580,7 @@ DATA_JERARQUICA = {
                     "puntos": {
                         "Toda la comuna (General)": None,
                         "Ciudad Empresarial (Av. del Parque)": {"flujo": 110000},
+                        "Av. Las Torres con Lo Marcoleta (Polo Líder / Easy / Tottus)": {"flujo": 68000},
                         "Av. Américo Vespucio Norte Km 27,7 (Bajada La Pirámide - Vista Nororiente)": {"flujo": 115000}
                     }
                 },
