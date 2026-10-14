@@ -147,6 +147,7 @@ METRO_DATA = {
         "Plaza De Armas": {"flujo_mes": 8058030, "alcance_dia": 268601},
         "Plaza De Maipu": {"flujo_mes": 4796760, "alcance_dia": 159892},
         "San Joaquin": {"flujo_mes": 2736360, "alcance_dia": 91212},
+        "San Pablo": {"flujo_mes": 5112600, "alcance_dia": 170420},
         "Santa Ana": {"flujo_mes": 7378950, "alcance_dia": 245965}
     },
     "Línea 6": {
