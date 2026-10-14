@@ -375,6 +375,10 @@ DATA_JERARQUICA = {
                         "Toda la comuna (General)": None,
                         "Eje Providencia / Nueva Providencia (Circuito 20 Caras)": {"flujo": 1040000},
                         "Providencia con Tobalaba (Costanera Center)": {"flujo": 180000},
+                        "Av. Providencia 2700 / Metro Tobalaba (Acceso Costanera - MUT)": {"flujo": 150000},
+                        "Av. Andrés Bello / Fachada Costanera Center (Nueva Los Leones - El Cerro)": {"flujo": 130000},
+                        "Av. Andrés Bello con Pedro de Valdivia": {"flujo": 105000},
+                        "Av. Providencia con Pedro de Valdivia": {"flujo": 120000},
                         "Plaza Baquedano": {"flujo": 150000}
                     }
                 },
