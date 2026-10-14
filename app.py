@@ -580,7 +580,6 @@ DATA_JERARQUICA = {
                     "puntos": {
                         "Toda la comuna (General)": None,
                         "Ciudad Empresarial (Av. del Parque)": {"flujo": 110000},
-                        "Av. Las Torres con Lo Marcoleta (Polo Líder / Easy / Tottus)": {"flujo": 68000},
                         "Av. Américo Vespucio Norte Km 27,7 (Bajada La Pirámide - Vista Nororiente)": {"flujo": 115000}
                     }
                 },
@@ -590,6 +589,7 @@ DATA_JERARQUICA = {
                     "puntos": {
                         "Toda la comuna (General)": None,
                         "Av. O'Higgins 581 / José Francisco Vergara (Mall Arauco Quilicura)": {"flujo": 80000},
+                        "Av. Las Torres con Lo Marcoleta (Polo Líder / Easy / Tottus)": {"flujo": 68000},
                         "Av. San Ignacio / Ruta 5 Norte (Polo Outlets Buenaventura - Vista Oriente)": {"flujo": 50000},
                         "Américo Vespucio Norte con Panamericana": {"flujo": 115000}
                     }
