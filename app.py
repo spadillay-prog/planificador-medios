@@ -674,6 +674,7 @@ DATA_JERARQUICA = {
                         "Toda la comuna (General)": None,
                         "Av. San Miguel / 30 Oriente": {"flujo": 75000},
                         "Av. San Miguel con Mall Plaza Maule": {"flujo": 70000},
+                        "Uno Sur con Andrés Vaccaro (Paradero Varoli / Conexión Las Rastras)": {"flujo": 52000},
                         "1 Sur con 5 Oriente (Paseo Peatonal)": {"flujo": 55000},
                         "2 Sur con 7 Oriente (Centro Comercial)": {"flujo": 52000},
                         "Uno Sur, entre 11 y 10 Oriente": {"flujo": 50000},
