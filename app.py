@@ -329,7 +329,8 @@ DATA_JERARQUICA = {
                     "contexto": "Polo residencial del Marga Marga con fuerte tránsito diario por el troncal urbano hacia Viña y Valparaíso.",
                     "puntos": {
                         "Toda la comuna (General)": None,
-                        "Av. Los Carrera (Troncal Urbano)": {"flujo": 65000}
+                        "Av. Los Carrera (Troncal Urbano)": {"flujo": 65000},
+                        "Av. Los Carrera / Paso Hondo (Entrada Quilpué desde Viña)": {"flujo": 46000}
                     }
                 },
                 "Villa Alemana": {
