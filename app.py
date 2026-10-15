@@ -158,6 +158,12 @@ METRO_DATA = {
         "Inés De Suárez": {"flujo_mes": 2687550, "alcance_dia": 89585},
         "Los Leones": {"flujo_mes": 8199240, "alcance_dia": 273308},
         "Ñuñoa": {"flujo_mes": 4545000, "alcance_dia": 151500}
+    },
+    "Tren Nos (EFE)": {
+        "Estación Central (EFE)": {"flujo_mes": 1500000, "alcance_dia": 50000},
+        "Lo Valledor (EFE)": {"flujo_mes": 720000, "alcance_dia": 24000},
+        "San Bernardo (EFE)": {"flujo_mes": 660000, "alcance_dia": 22000},
+        "Nos": {"flujo_mes": 360000, "alcance_dia": 12000}
     }
 }
 
