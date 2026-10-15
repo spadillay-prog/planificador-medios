@@ -627,6 +627,22 @@ DATA_JERARQUICA = {
                     }
                 }
             }
+        },
+        "RM Periferia": {
+            "res_sector": 420000, "flot_sector": 95000,
+            "comunas": {
+                "Melipilla": {
+                    "res": 140000, "flot": 35000,
+                    "contexto": "Cabecera provincial del sur-poniente de la RM, articulada por Autopista del Sol y con alto flujo comercial en su casco histórico.",
+                    "puntos": {
+                    "Toda la comuna (General)": None,
+                    "Calle Serrano #392 (Eje Comercial / Ugalde)": {"flujo": 36000},
+                    "Plaza de Armas de Melipilla": {"flujo": 32000},
+                    "Av. Vicuña Mackenna / Acceso Autopista del Sol": {"flujo": 42000}
+
+                    }
+                }
+            }
         }
     },
     "Región de O'Higgins": {
