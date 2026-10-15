@@ -120,6 +120,7 @@ METRO_DATA = {
         "Conchali": {"flujo_mes": 2446830, "alcance_dia": 81561},
         "Hospitales": {"flujo_mes": 3816750, "alcance_dia": 127225},
         "Irarrazaval": {"flujo_mes": 5290230, "alcance_dia": 176341},
+        "Lo Cruzat": {"flujo_mes": 2287200, "alcance_dia": 76240},
         "Ñuñoa": {"flujo_mes": 4545000, "alcance_dia": 151500},
         "Plaza De Armas": {"flujo_mes": 8058030, "alcance_dia": 268601},
         "Plaza Egaña": {"flujo_mes": 5462820, "alcance_dia": 182094},
