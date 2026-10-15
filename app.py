@@ -773,6 +773,7 @@ DATA_JERARQUICA = {
                         "Arturo Prat 434, pasado Av. O'Higgins hacia Lider": {"flujo": 80000},
                         "Av. Los Carrera con Colo Colo (Centro / Mall del Centro)": {"flujo": 62000},
                         "Av. Los Carrera con Lincoyán (Eje Troncal Poniente)": {"flujo": 58000},
+                        "Av. Los Carrera / Rotonda Paicaví (Nudo Vial Concepción)": {"flujo": 72000},
                         "Av. Pedro de Valdivia con Arturo Junge (Polo Residencial / Chiguayante)": {"flujo": 36000},
                         "Av. O'Higgins con Aníbal Pinto (Plaza Independencia)": {"flujo": 120000},
                         "Av. Los Carrera con Paicaví": {"flujo": 95000}
