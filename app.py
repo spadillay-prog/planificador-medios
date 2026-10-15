@@ -990,7 +990,15 @@ FORMATOS_METRO = {
     },
     "Panel Acceso / Torniquetes": {
         "base": 1, "c": 0.35, "m": 0.45, "o": 0.55, "tipo": "Panel Mesanina", "unidad": "paneles", "es_tren": False,
-        "contexto": "Impacto forzado al paso en torniquetes y accesos principales a la estación."
+        "contexto": "Impacto forzado al paso en torniquetes y accesos principales a la estación."    
+    },
+    "Muro Estático Mesanina": {
+        "base": 1, "c": 0.30, "m": 0.38, "o": 0.45, "tipo": "Transporte Muro Estático Interior", "unidad": "caras", "es_tren": False,
+        "contexto": "Muro publicitario en mesanina interior de Estación. Flujo peatonal cautivo de acceso y salida hacia San Bernardo y Mallplaza Sur." 
+    },
+    "Cenefa Digital Torniquetes (EFE Estación Central)": {
+        "base": 1, "c": 0.16, "m": 0.22, "o": 0.28, "tipo": "DOOH Cenefa Digital Transporte", "unidad": "pantallas", "es_tren": False,
+        "contexto": "Cenefa digital de 14,5 m² sobre línea de torniquetes en hall principal EFE Estación Central. Impacto frontal en punto de validación obligatoria (Tren Nos y Tren Rancagua)." 
     }
 }
 MALLPLAZA_FLUJOS_MENSUALES = {
