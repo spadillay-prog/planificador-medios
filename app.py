@@ -306,6 +306,9 @@ DATA_JERARQUICA = {
                         "Toda la comuna (General)": None,
                         "1 Norte con Libertad / Mall Marina": {"flujo": 130000},
                         "Av. 15 Norte esquina 4 Norte": {"flujo": 75000},
+                        "Av. Benidorm con Alessandri (Frente Mall Marina)": {"flujo": 68000},
+                        "Av. Benidorm entre 3 y 4 Oriente (Eje 15 Norte)": {"flujo": 52000},
+                        "1 Norte con Puente Villanelo (Viña Centro / Smart Fit)": {"flujo": 58000},
                         "Av. Borgoño costado Balneario Las Salinas hacia Viña": {"flujo": 65000},
                         "Av. Benidorm (15 Norte) con San Martín": {"flujo": 85000}
                     }
@@ -317,6 +320,7 @@ DATA_JERARQUICA = {
                         "Toda la comuna (General)": None,
                         "Av. España, sector Balmaceda": {"flujo": 120000},
                         "Pedro Montt & Edwards, Plaza Victoria": {"flujo": 95000},
+                        "Av. España frente a Caleta Portales (Eje Intercomunal)": {"flujo": 75000},
                         "Av. Argentina con Pedro Montt (Congreso / Terminal)": {"flujo": 110000}
                     }
                 },
