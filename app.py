@@ -771,6 +771,9 @@ DATA_JERARQUICA = {
                         "Toda la comuna (General)": None,
                         "Av. Paicaví esq. Independencia, hacia el Centro": {"flujo": 90000},
                         "Arturo Prat 434, pasado Av. O'Higgins hacia Lider": {"flujo": 80000},
+                        "Av. Los Carrera con Colo Colo (Centro / Mall del Centro)": {"flujo": 62000},
+                        "Av. Los Carrera con Lincoyán (Eje Troncal Poniente)": {"flujo": 58000},
+                        "Av. Pedro de Valdivia con Arturo Junge (Polo Residencial / Chiguayante)": {"flujo": 36000},
                         "Av. O'Higgins con Aníbal Pinto (Plaza Independencia)": {"flujo": 120000},
                         "Av. Los Carrera con Paicaví": {"flujo": 95000}
                     }
@@ -781,6 +784,7 @@ DATA_JERARQUICA = {
                     "puntos": {
                         "Toda la comuna (General)": None,
                         "Av. Pedro Aguirre Cerda esquina Diagonal Biobío, hacia Concepción": {"flujo": 85000},
+                        "Av. Pedro Aguirre Cerda con Colo Colo (Versluys / Laguna Chica / Smart Fit)": {"flujo": 54000},
                         "Ruta 160 con Puente Llacolén": {"flujo": 80000}
                     }
                 },
