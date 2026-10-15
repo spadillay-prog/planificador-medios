@@ -502,6 +502,7 @@ DATA_JERARQUICA = {
                     "puntos": {
                         "Toda la comuna (General)": None,
                         "Vicuña Mackenna con Américo Vespucio (Mall Plaza Vespucio)": {"flujo": 170000},
+                        "Av. La Florida 5870 / Américo Vespucio (Salida Norte La Florida)": {"flujo": 78000},
                         "Vicuña Mackenna Ote. / Metro Mirador (Acceso Florida Center)": {"flujo": 92000}
                     }
                 },
