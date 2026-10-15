@@ -762,7 +762,8 @@ DATA_JERARQUICA = {
                     "contexto": "Capital industrial y de servicios del Biobío interior, con máximo flujo en torno a la Plaza de Armas por Caupolicán y Valdivia.",
                     "puntos": {
                         "Toda la comuna (General)": None,
-                        "Caupolican con Valdivia costado Plaza": {"flujo": 55000}
+                        "Caupolican con Valdivia costado Plaza": {"flujo": 55000},
+                        "Lautaro con Villagrán (Centro Cívico)": {"flujo": 42000}
                     }
                 },
                 "Talcahuano": {
