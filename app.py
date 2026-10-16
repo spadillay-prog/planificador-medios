@@ -706,6 +706,8 @@ DATA_JERARQUICA = {
                         "Av. San Miguel con Mall Plaza Maule": {"flujo": 70000},
                         "Uno Sur con Andrés Vaccaro (Paradero Varoli / Conexión Las Rastras)": {"flujo": 52000},
                         "1 Sur con 5 Oriente (Paseo Peatonal)": {"flujo": 55000},
+                        "Av. Colín / Veintiséis Sur (Mall Go Florida / Sodimac Colín)": {"flujo": 44000},
+                        "Carlos Schorr con Colbún (Acceso Eje Colín / La Florida)": {"flujo": 38000},
                         "2 Sur con 7 Oriente (Centro Comercial)": {"flujo": 52000},
                         "Uno Sur, entre 11 y 10 Oriente": {"flujo": 50000},
                         "2 Norte con 14 Oriente (Eje Smart Fit)": {"flujo": 48000}
