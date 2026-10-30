@@ -388,12 +388,14 @@ DATA_JERARQUICA = {
                     "puntos": {
                         "Toda la comuna (General)": None,
                         "Eje Providencia / Nueva Providencia (Circuito 20 Caras)": {"flujo": 1040000},
+                        "Av. Providencia 2390 / Metro Los Leones (Paso Superior Suecia)": {"flujo": 135000},
                         "Providencia con Tobalaba (Costanera Center)": {"flujo": 180000},
                         "Av. Providencia 2700 / Metro Tobalaba (Acceso Costanera - MUT)": {"flujo": 150000},
                         "Av. Andrés Bello / Fachada Costanera Center (Nueva Los Leones - El Cerro)": {"flujo": 130000},
                         "Av. Andrés Bello con Pedro de Valdivia": {"flujo": 105000},
                         "Av. Providencia con Pedro de Valdivia": {"flujo": 120000},
                         "Plaza Baquedano": {"flujo": 150000}
+                        
                     }
                 },
                 "Ñuñoa": {
@@ -947,6 +949,7 @@ FORMATOS_OOH = {
     },
     "Pantalla Digital DOOH Estándar (hasta 25 m²)": {"base": 1, "c": 0.20, "m": 0.25, "o": 0.30, "tipo": "DOOH Tótem / Nivel Calle", "unidad": "pantallas", "es_wrap": False, "contexto": "Pantalla digital de formato estándar (hasta 25 m²) con 500 pasadas diarias a nivel de calle o cruce con semáforo."},
     "Pantalla Digital DOOH Gran Formato (> 25 m²)": {"base": 1, "c": 0.25, "m": 0.30, "o": 0.35, "tipo": "DOOH Gran Formato / Fachada", "unidad": "pantallas", "es_wrap": False, "contexto": "Pantalla digital de gran escala (mayor a 25 m²) en altura o fachada con 500 pasadas diarias y mayor cono de visión."},
+    "Totem Digital LED 3x5m (Providencia 2390 / Los Leones)": {"base": 1, "c": 0.25, "m": 0.32, "o": 0.40, "tipo": "DOOH Tótem / Nivel Suelo", "unidad": "pantallas", "es_wrap": False, "contexto": "Tótem LED vertical de 15 m² en acera norte de Av. Providencia 2390 sobre Los Leones con monopolio visual exclusivo y detención semafórica."},
     "Circuito MUPIS Digitales (MUD)": {"base": 1, "c": 0.20, "m": 0.25, "o": 0.30, "tipo": "Digital Urbano", "unidad": "circuitos", "es_wrap": False,
         "contexto": "Circuito integrado de MUPIS digitales en paraderos y refugios peatonales urbanos."
     },
