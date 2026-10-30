@@ -1033,7 +1033,8 @@ MALLPLAZA_FLUJOS_MENSUALES = {
     "Mallplaza Alameda": 458333,
     "Mallplaza Iquique": 410000,
     "Mallplaza Arica": 361250,
-    "Mall Marina": 1700000
+    "Mall Marina": 1700000,
+    "Cenco Costanera": 3350000
 }
 
 FORMATOS_MALLS = {
@@ -1069,6 +1070,11 @@ FORMATOS_MALLS = {
         "base": 1, "c": 0.18, "m": 0.245, "o": 0.30,
         "tipo": "DOOH Acceso Exterior", "unidad": "pantallas", "es_wrap": False,
         "contexto": "Pantalla LED en rampas de acceso vehicular y peatonal con alta detención obligatoria."
+    },
+    "Mega LED Vano Central 19x9m": {
+        "base": 1, "c": 0.18, "m": 0.25, "o": 0.32,
+        "tipo": "DOOH Gran Formato Interior", "unidad": "pantallas", "es_wrap": False,
+        "contexto": "Mega pantalla LED interior en vano central de Costanera Center con visibilidad panorámica desde todos los niveles."
     }
 }
 # --- 7. BARRA LATERAL: LOGO MADCOM Y CONFIGURACIÓN ---
