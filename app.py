@@ -394,6 +394,7 @@ DATA_JERARQUICA = {
                         "Av. Andrés Bello / Fachada Costanera Center (Nueva Los Leones - El Cerro)": {"flujo": 130000},
                         "Av. Andrés Bello con Pedro de Valdivia": {"flujo": 105000},
                         "Av. Providencia con Pedro de Valdivia": {"flujo": 120000},
+                        "Av. Nueva Providencia 2350 / Suecia (Eje Comercial Metro Los Leones)": {"flujo": 125000},
                         "Av. Vitacura 230 / Holanda (Polo Oficinas Costanera Norte)": {"flujo": 70000},
                         "Av. Andrés Bello / Nueva Los Leones (Acera Sur Costanera Center)": {"flujo": 115000},
                         "Plaza Baquedano": {"flujo": 150000}
