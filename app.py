@@ -864,7 +864,7 @@ DATA_JERARQUICA = {
                         "Toda la comuna (General)": None,
                         "Av. Alemania esq. Camilo Henriquez desde Isla Tejas hacia Mall Plaza": {"flujo": 65000},
                         "Casino Dreams (Carampangue)": {"flujo": 55000},
-                        "Av. Chacabuco con Av. Caupolicán (Eje Céntrico / Acceso Mall)": {"flujo": 52000}
+                        "Av. Chacabuco con Av. Caupolicán (Eje Céntrico / Acceso Mall)": {"flujo": 52000},
                         "Av. Ramón Picarte con Plaza de la República": {"flujo": 60000},
                         "Acceso Puente Pedro de Valdivia (Isla Teja)": {"flujo": 45000}
                     }
