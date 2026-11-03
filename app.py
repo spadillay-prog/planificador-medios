@@ -1061,7 +1061,7 @@ FORMATOS_MALLS = {
     "Mega LED Óvalo Central 8x3.8m (Mall Barrio Independencia)": {
         "base": 1, "c": 0.25, "m": 0.30, "o": 0.35,
         "tipo": "Pantalla led gran formato", "unidad": "caras", "es_wrap": False,
-        "contexto": "Mega pantalla LED de 36 m² en Nivel 02 Óvalo Central de Mall Barrio Independencia con 347 pasadas diarias y visibilidad multinivel."
+        "contexto": "Mega pantalla LED de 36 m² en Nivel 02 Óvalo Central con 347 pasadas diarias y visibilidad multinivel."
     },
         "Cenefa LED Panorámica Plaza Central (15x0.6 m)": {
         "base": 1, "c": 0.3, "m": 0.38, "o": 0.46,
