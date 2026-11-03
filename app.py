@@ -1058,6 +1058,11 @@ FORMATOS_MALLS = {
         "tipo": "Mobiliario Peatonal Suelo", "unidad": "caras", "es_wrap": False,
         "contexto": "MUPIS / Tótem peatonal unitario a nivel de piso en pasillo de alto tráfico."
     },
+    "Pantalla Pilar Nivel 3": {
+        "base": 1, "c": 0.10, "m": 0.14, "o": 0.18,
+        "tipo": "DOOH Mall Pilar Interior", "unidad": "caras", "es_wrap": False,
+        "contexto": "Pantalla digital adosada a pilar."
+    },
     "Mega LED Óvalo Central 8x3.8m (Mall Barrio Independencia)": {
         "base": 1, "c": 0.25, "m": 0.30, "o": 0.35,
         "tipo": "Pantalla led gran formato", "unidad": "caras", "es_wrap": False,
