@@ -1058,6 +1058,11 @@ FORMATOS_MALLS = {
         "tipo": "Mobiliario Peatonal Suelo", "unidad": "caras", "es_wrap": False,
         "contexto": "MUPIS / Tótem peatonal unitario a nivel de piso en pasillo de alto tráfico."
     },
+    "Mega LED Óvalo Central 8x3.8m (Mall Barrio Independencia)": {
+        "base": 1, "c": 0.25, "m": 0.30, "o": 0.35,
+        "tipo": "Pantalla led gran formato", "unidad": "caras", "es_wrap": False,
+        "contexto": "Mega pantalla LED de 36 m² en Nivel 02 Óvalo Central de Mall Barrio Independencia con 347 pasadas diarias y visibilidad multinivel."
+    },
         "Cenefa LED Panorámica Plaza Central (15x0.6 m)": {
         "base": 1, "c": 0.3, "m": 0.38, "o": 0.46,
         "tipo": "DOOH Aéreo Plaza Central", "unidad": "caras", "es_wrap": False,
