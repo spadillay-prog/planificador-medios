@@ -1043,7 +1043,8 @@ MALLPLAZA_FLUJOS_MENSUALES = {
     "Mallplaza Iquique": 410000,
     "Mallplaza Arica": 361250,
     "Mall Marina": 1700000,
-    "Cenco Costanera": 3350000
+    "Cenco Costanera": 3350000,
+    "Mall Barrio Independencia": 1150000
 }
 
 FORMATOS_MALLS = {
