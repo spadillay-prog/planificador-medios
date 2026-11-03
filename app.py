@@ -1064,7 +1064,7 @@ FORMATOS_MALLS = {
         "tipo": "DOOH Mall Pilar Interior", "unidad": "caras", "es_wrap": False,
         "contexto": "Pantalla digital adosada a pilar."
     },
-    "Mega LED Óvalo Central 8x3.8m (Mall Barrio Independencia)": {
+    "Mega LED Óvalo Central 8x3.8m": {
         "base": 1, "c": 0.25, "m": 0.30, "o": 0.35,
         "tipo": "Pantalla led gran formato", "unidad": "caras", "es_wrap": False,
         "contexto": "Mega pantalla LED de 36 m² en Nivel 02 Óvalo Central con 347 pasadas diarias y visibilidad multinivel."
