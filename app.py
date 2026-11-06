@@ -307,6 +307,7 @@ DATA_JERARQUICA = {
                         "1 Norte con Libertad / Mall Marina": {"flujo": 130000},
                         "Av. 15 Norte esquina 4 Norte": {"flujo": 75000},
                         "Av. Benidorm con Alessandri (Frente Mall Marina)": {"flujo": 68000},
+                        "Av. La Marina 1190 / Puente Casino (Eje Costero - Conexión 1 Norte)": {"flujo": 85000},
                         "Av. Benidorm entre 3 y 4 Oriente (Eje 15 Norte)": {"flujo": 52000},
                         "1 Norte con Puente Villanelo (Viña Centro / Smart Fit)": {"flujo": 58000},
                         "Av. Borgoño costado Balneario Las Salinas hacia Viña": {"flujo": 65000},
