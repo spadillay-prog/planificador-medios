@@ -948,7 +948,7 @@ DATA_JERARQUICA = {
 # --- 6. FORMATOS COMERCIALES (OOH & METRO) ---
 FORMATOS_OOH = {
     "Building Wrap (Edificio)": {
-        "base": 1, "c": 0.25, "m": 0.30, "o": 0.35, "tipo": "Gran impacto edificio", "unidad": "edificios",
+        "base": 1, "c": 0.35, "m": 0.45, "o": 0.55, "tipo": "Gran impacto edificio", "unidad": "edificios",
         "es_wrap": True,
         "contexto": "Gigantografía monumental de gran escala sobre fachada de edificio (>400-500 m²), con visibilidad a más de 400 metros de distancia y alta retención vehicular."
     },
