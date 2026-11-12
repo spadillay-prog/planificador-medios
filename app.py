@@ -958,9 +958,8 @@ FORMATOS_OOH = {
     "Paleta Digital MULED 1.2x1.7m (Andrés Bello / Costanera - MULEDCCH_2556)": {"base": 1, "c": 0.12, "m": 0.16, "o": 0.20, "tipo": "Digital Urbano", "unidad": "pantallas", "es_wrap": False, "contexto": "Paleta digital MULED en acera sur de Av. Andrés Bello antes de Nueva Los Leones frente a Costanera Center."},
     "Paleta Digital MULED 1.2x1.7m (Vitacura 230 / Holanda - MULEDCCH_2546)": {"base": 1, "c": 0.14, "m": 0.18, "o": 0.22, "tipo": "Digital Urbano", "unidad": "pantallas", "es_wrap": False, "contexto": "Paleta digital MULED en vereda de Av. Vitacura 230 con Holanda, captando flujo peatonal corporativo y acceso a Costanera."},
     "Paleta Digital MULED 1.2x1.7m (Nueva Providencia 2350 / Suecia - MULEDCCH_2540)": {"base": 1, "c": 0.15, "m": 0.20, "o": 0.25, "tipo": "Digital Urbano", "unidad": "pantallas", "es_wrap": False, "contexto": "Paleta digital MULED en vereda de Av. Nueva Providencia 2350 con Suecia. Orientación Oeste a Este, impacto frontal peatonal y vehicular hacia el oriente frente a Metro Los Leones."},
-    "Circuito 8 Caras Tótem Bifaz (Mall Arauco Maipú - MAMA0064A Massiva)": {"base": 1, "c": 0.25, "m": 0.30, "o": 0.35, "tipo": "DOOH Mall Circuito Interior", "mall": "Mall Arauco Maipú", "unidad": "circuitos", "es_wrap": False, "contexto": "Circuito de 4 tótems bifaz (8 caras de 1x2m, 16 m² totales) en pasillos centrales Nivel 1 y 2 frente a escaleras mecánicas de Mall Arauco Maipú (Massiva), 2.776 pasadas diarias totales."},
     "Circuito MUPIS Digitales (MUD)": {"base": 1, "c": 0.20, "m": 0.25, "o": 0.30, "tipo": "Digital Urbano", "unidad": "circuitos", "es_wrap": False,
-        "contexto": "Circuito integrado de MUPIS digitales en paraderos y refugios peatonales urbanos."
+    "contexto": "Circuito integrado de MUPIS digitales en paraderos y refugios peatonales urbanos."
     },
     "Lunetas Buses": {"base": 30, "c": 0.20, "m": 0.25, "o": 0.30, "tipo": "Cobertura móvil", "unidad": "lunetas", "es_wrap": False},
     "Buses Troncales": {"base": 70, "c": 0.30, "m": 0.35, "o": 0.40, "tipo": "Troncal móvil", "unidad": "buses", "es_wrap": False},
@@ -1094,6 +1093,11 @@ FORMATOS_MALLS = {
         "base": 1, "c": 0.18, "m": 0.245, "o": 0.30,
         "tipo": "DOOH Acceso Exterior", "unidad": "pantallas", "es_wrap": False,
         "contexto": "Pantalla LED en rampas de acceso vehicular y peatonal con alta detención obligatoria."
+
+    "Circuito 8 Caras Tótem Bifaz": {
+        "base": 1, "c": 0.25, "m": 0.30, "o": 0.35,
+        "tipo": "DOOH Mall Circuito Interior", "unidad": "caras", "es_wrap": False,
+        "contexto": "Circuito de 4 tótems bifaz (8 caras de 1x2m) en pasillos centrales Nivel 1 y 2 frente a escaleras mecánicas con 2.776 pasadas diarias totales."
     },
     "Mega LED Vano Central 19x9m": {
         "base": 1, "c": 0.18, "m": 0.25, "o": 0.32,
