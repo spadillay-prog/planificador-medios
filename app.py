@@ -1093,7 +1093,7 @@ FORMATOS_MALLS = {
         "base": 1, "c": 0.18, "m": 0.245, "o": 0.30,
         "tipo": "DOOH Acceso Exterior", "unidad": "pantallas", "es_wrap": False,
         "contexto": "Pantalla LED en rampas de acceso vehicular y peatonal con alta detención obligatoria."
-
+    },
     "Circuito 8 Caras Tótem Bifaz": {
         "base": 1, "c": 0.25, "m": 0.30, "o": 0.35,
         "tipo": "DOOH Mall Circuito Interior", "unidad": "caras", "es_wrap": False,
