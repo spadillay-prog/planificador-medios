@@ -1071,12 +1071,12 @@ FORMATOS_MALLS = {
         "tipo": "Pantalla led gran formato", "unidad": "caras", "es_wrap": False,
         "contexto": "Mega pantalla LED de 36 m² en Nivel 02 Óvalo Central con 347 pasadas diarias y visibilidad multinivel."
     },
-        "Cenefa LED Panorámica Plaza Central (15x0.6 m)": {
+    "Cenefa LED Panorámica Plaza Central (15x0.6 m)": {
         "base": 1, "c": 0.3, "m": 0.38, "o": 0.46,
         "tipo": "DOOH Aéreo Plaza Central", "unidad": "caras", "es_wrap": False,
         "contexto": "Pantalla LED suspendida P5 (15x0.6 m) en antepecho 2° nivel Plaza Central Rosa de los Vientos (MMA2). Cono visual abierto hacia flujo de 1er nivel y acceso norte."
     },
-        "Mega Pantalla Icónica Hall Central (Multi-nivel 1 al 3)": {
+    "Mega Pantalla Icónica Hall Central (Multi-nivel 1 al 3)": {
         "base": 1, "c": 0.4, "m": 0.48, "o": 0.56,
         "tipo": "DOOH Icónico Indoor Gran Formato", "unidad": "pantallas", "es_wrap": False,
         "pasadas_diarias": 360,    
