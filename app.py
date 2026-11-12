@@ -1046,7 +1046,8 @@ MALLPLAZA_FLUJOS_MENSUALES = {
     "Mallplaza Arica": 361250,
     "Mall Marina": 1700000,
     "Cenco Costanera": 3350000,
-    "Mall Barrio Independencia": 1150000
+    "Mall Barrio Independencia": 1150000,
+    "Mall Arauco Maipú": 1650000
 }
 
 FORMATOS_MALLS = {
